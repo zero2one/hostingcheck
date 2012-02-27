@@ -1,0 +1,24 @@
+<?php
+/**
+ * Prints out the login form
+ */
+?>
+
+<div id="login" class="container"><div class="section">
+  <h2>Login required</h2>
+    
+  <form id="login" method="post" action="<?php print $urlLogin; ?>">
+    <div class="form-item">
+      <label for="username">Username</label>  
+      <input type="text" id="username" name="username" />
+    </div>
+    <div class="form-item">
+      <label for="password">Password</label>  
+      <input type="password" id="password" name="password" />
+    </div>
+    <div class="form-buttons">
+      <input type="submit" name="op" value="Login" />
+    </div>
+              
+  </form>
+</div></div>
