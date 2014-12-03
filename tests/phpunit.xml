@@ -1,0 +1,8 @@
+<phpunit bootstrap="./bootstrap.php">
+    <testsuite name="Hostingcheck Library tests">
+        <directory>./Lib</directory>
+    </testsuite>
+    <testsuite name="Hostingcheck Included Checks tests">
+        <directory>./Check</directory>
+    </testsuite>
+</phpunit>

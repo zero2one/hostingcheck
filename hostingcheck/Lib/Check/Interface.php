@@ -1,21 +1,19 @@
 <?php
 /**
- * Hostingcheck_Test_Interface
+ * Hostingcheck_Check_Interface
  *
  * @category   Hostingcheck
- * @package    Hostingcheck_Test
+ * @package    Hostingcheck_Check
  * @copyright  Copyright (c) 2012 Serial Graphics (http://serial-graphics.be)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Hostingcheck_Test_Interface
+interface Hostingcheck_Check_Interface
 {
     /**
      * Constructor
      * 
      * @param $options
      *     An array with the test specific configuration
-     * 
-     * @return void
      */
     public function __construct($options = array());
     
@@ -24,16 +22,18 @@ interface Hostingcheck_Test_Interface
      * 
      * @param void
      * 
-     * @return Hostingcheck_Test_Interface
+     * @return Hostingcheck_Check_Interface
      */
     public function run();
     
     /**
-     * Reset the test. This will remove all previous test results
+     * Reset the test.
+     *
+     * This will remove all previous test results
      * 
      * @param void
      * 
-     * @return Hostingcheck_Test_Interface
+     * @return Hostingcheck_Check_Interface
      */
     public function reset();
     
@@ -60,7 +60,7 @@ interface Hostingcheck_Test_Interface
      * @param string $info
      *     Extra info
      * 
-     * @return Hostingcheck_Test_Interface
+     * @return Hostingcheck_Check_Interface
      */
     public function addResult($group, $type, $check, $result = null, $info = null);
     

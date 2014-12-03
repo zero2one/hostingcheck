@@ -1,13 +1,13 @@
 <?php
 /**
- * Hostingcheck_Test_Abstract
+ * Hostingcheck_Check_Abstract
  *
  * @category   Hostingcheck
- * @package    Hostingcheck_Test
+ * @package    Hostingcheck_Check
  * @copyright  Copyright (c) 2012 Serial Graphics (http://serial-graphics.be)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Hostingcheck_Test_Abstract implements Hostingcheck_Test_Interface
+abstract class Hostingcheck_Check_Abstract implements Hostingcheck_Check_Interface
 {
     /**
      * The types
@@ -44,9 +44,8 @@ abstract class Hostingcheck_Test_Abstract implements Hostingcheck_Test_Interface
     /**
      * Constructor
      * 
-     * @param $options
+     * @param array $options
      *     An array with the test specific configuration
-     * @return void
      */
     public function __construct($options = array())
     {
@@ -60,8 +59,7 @@ abstract class Hostingcheck_Test_Abstract implements Hostingcheck_Test_Interface
     /**
      * Run all the tests
      * 
-     * @param void
-     * @return Hostingcheck_Test_Interface
+     * @return Hostingcheck_Check_Interface
      */
     public function run()
     {
@@ -87,14 +85,14 @@ abstract class Hostingcheck_Test_Abstract implements Hostingcheck_Test_Interface
      * Reset the test. This will remove all previous test results
      * 
      * @param void
-     * @return Hostingcheck_Test_Interface
+     * @return Hostingcheck_Check_Interface
      */
     public function reset()
     {
         $this->_results = array();
         $this->_count   = array();
         
-        $reflection = new ReflectionClass($self);
+        $reflection = new ReflectionClass($this);
         $constants  = $reflection->getConstants();
         foreach($constants AS $name => $value) {
             if(!preg_match('/^TYPE_/', $name)) {
@@ -111,7 +109,7 @@ abstract class Hostingcheck_Test_Abstract implements Hostingcheck_Test_Interface
      * @param string $group
      *     The group to who the test should be added
      * @param string $type
-     *     The result type (see TYPE_ contstants)
+     *     The result type (see TYPE_ constants)
      * @param string $check
      *     The check that has been performed
      * @param string $result
@@ -119,7 +117,7 @@ abstract class Hostingcheck_Test_Abstract implements Hostingcheck_Test_Interface
      * @param string $info
      *     Extra info
      * 
-     * @return Hostingcheck_Test_Interface
+     * @return Hostingcheck_Check_Interface
      */
     public function addResult($group, $type, $check, $result = null, $info = null)
     {
@@ -165,6 +163,6 @@ abstract class Hostingcheck_Test_Abstract implements Hostingcheck_Test_Interface
     public function __toString()
     {
         $reporter = new Hostingcheck_Reporter();
-        return $reporter->print($self);
+        return $reporter->print($this);
     }
 }

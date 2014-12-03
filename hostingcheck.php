@@ -9,9 +9,12 @@
  */
 
 // check the minimal PHP version
+define('HOSTINGCHECK_ROOT', dirname(__FILE__));
+define(
+  'HOSTINGCHECK_BASEPATH',
+  HOSTINGCHECK_ROOT . DIRECTORY_SEPARATOR . 'hostingcheck' . DIRECTORY_SEPARATOR
+);
 
-define('HOSTINGCHECK_BASEPATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
- 
 // Start the autoloader
 require_once (HOSTINGCHECK_BASEPATH . 'Lib/Autoloader.php');
 new Hostingcheck_Autoloader();
