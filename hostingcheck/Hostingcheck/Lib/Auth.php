@@ -34,10 +34,10 @@ class Hostingcheck_Auth
     {
         // get the config
         $config = Hostingcheck_Config::getInstance()->get(
-            'login', 
+            'login',
             array()
         );
-        
+
         foreach($this->_config AS $key => $value) {
             if(!isset($config[$key])) {
                 continue;

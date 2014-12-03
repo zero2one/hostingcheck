@@ -19,21 +19,26 @@ class Hostingcheck_Autoloader {
      * The loader method
      */
     private function loader($className) {
-        $parts = explode('_', $className);
-        
-        // we don't need the hostingcheck_ prefix
-        $replace = array(0 => HOSTINGCHECK_BASEPATH);
-        
-        // add the Lib to the core libraries
-        $tests = array('Test', 'Tests');
-        if($parts[1] !== 'Tests') {
-            $replace[0] .= DIRECTORY_SEPARATOR . 'Lib';
+        $path = explode('_', $className);
+
+        // We support only the hostingcheck prefix.
+        if ($path[0] !== 'Hostingcheck') {
+            return;
         }
-        
-        $path = array_replace($parts, $replace);
-        
+
+        // Construct the path.
+        $base = HOSTINGCHECK_BASEPATH;
+        switch ($path[1]) {
+            case 'Test':
+                break;
+
+            default:
+                $path[0] .= DIRECTORY_SEPARATOR . 'Lib';
+                break;
+        }
+
         // construct the file path
-        $file = implode(DIRECTORY_SEPARATOR, $path) . '.php';
+        $file = $base . implode(DIRECTORY_SEPARATOR, $path) . '.php';
         include $file;
     }
 }
