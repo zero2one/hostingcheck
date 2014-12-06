@@ -1,114 +1,150 @@
 <?php
 /**
- * Hostingcheck_Auth
+ * Hostingcheck (https://github.com/zero2one/hostingcheck)
  *
- * @category   Hostingcheck
- * @package    Hostingcheck_Auth
- * @copyright  Copyright (c) 2012 Serial Graphics (http://serial-graphics.be)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      https://github.com/zero2one/hostingcheck source repository.
+ * @copyright Copyright (c) 2014 Serial Graphics (http://serial-graphics.be)
+ * @license   http://opensource.org/licenses/GPL-2.0 GNU Public License
+ */
+
+
+/**
+ * Class Hostingcheck_Auth
+ *
+ * Basic authentication based on a single username & password.
+ * Login will save the credentials in the session.
+ *
+ * @author Peter Decuyper <peter@serial-graphics.be>
  */
 class Hostingcheck_Auth
 {
     /**
-     * logged in session name
+     * Session array key where the logged in information is kept.
      * 
      * @var string
      */
-    const SESSION_NAMESPACE = 'hostingcheck_login';
-    
+    const SESSION_NAMESPACE = 'hostingcheck_auth';
+
     /**
-     * Log in onfig
-     * 
+     * Session data.
+     *
      * @var array
      */
-    protected $_config = array(
-        'username' => NULL,
-        'password' => NULL,
-        'nologin'  => TRUE,
-    );
-    
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        // get the config
-        $config = Hostingcheck_Config::getInstance()->get(
-            'login',
-            array()
-        );
+    protected $session;
 
-        foreach($this->_config AS $key => $value) {
-            if(!isset($config[$key])) {
-                continue;
-            }
-            
-            $this->_config[$key] = $config[$key];
-            $this->_config['nologin'] = FALSE;
+    /**
+     * MD5 hash of the username that should be used to access hostingcheck.
+     *
+     * @var string
+     */
+    protected $username;
+
+    /**
+     * MD5 hash of the password that should be used to access hostingcheck.
+     *
+     * @var string
+     */
+    protected $password;
+    
+
+    /**
+     * Constructor.
+     *
+     * @param string $username
+     *      The MD5 hash of the username that will be used to validate the
+     *      authentication.
+     * @param string $password
+     *      The MD5 hash of the password that will be used to validate the
+     *      authentication.
+     * @param array $session
+     *      The session data (pass $_SESSION).
+     */
+    public function __construct($username, $password, &$session)
+    {
+        $this->username = $username;
+        $this->password = $password;
+
+        // Make sure there is an authentication array in the session.
+        if (empty($session[self::SESSION_NAMESPACE])) {
+            $session[self::SESSION_NAMESPACE] = array(
+                'username' => null,
+                'password' => null,
+            );
         }
-        
-        if(!isset($_SESSION)) {
-            session_start();
+        if (!isset($session[self::SESSION_NAMESPACE]['username'])) {
+            $session[self::SESSION_NAMESPACE]['username'] = null;
         }
+        if (!isset($session[self::SESSION_NAMESPACE]['password'])) {
+            $session[self::SESSION_NAMESPACE]['password'] = null;
+        }
+        $this->session =& $session[self::SESSION_NAMESPACE];
     }
     
     /**
-     * Check if user is logged in
-     * 
-     * @param void
+     * Check if there is an authenticated user in the session.
      * 
      * @return bool
+     *      Authenticated.
      */
     public function isAuthenticated()
     {
-        if($this->_config['nologin']) {
-            return true;
-        }
-        
-        // check from session
-        if(isset($_SESSION[self::SESSION_NAMESPACE])
-            && isset($_SESSION[self::SESSION_NAMESPACE][$this->_config['username']])
-            && $_SESSION[self::SESSION_NAMESPACE][$this->_config['username']] === $this->_config['password']
-        ) {
-            return true;
-        }
-        
-        return false;
-    }
-    
-    /**
-     * Try to authenticate a user
-     * 
-     * @param string $username
-     * @param string $password
-     * 
-     * @return bool
-     *     Success
-     */
-    public function authenticate($username, $password)
-    {
-        $userCrypt = md5($username);
-        $passCrypt = md5($password);
-        if($this->_config['username'] !== $userCrypt
-            || $this->_config['password'] !== $passCrypt
-        ) {
+        $username = $this->session['username'];
+        if (empty($username)) {
             return false;
         }
-        
-        $_SESSION[self::SESSION_NAMESPACE][$userCrypt] = $passCrypt;
-        
+        $password = $this->session['password'];
+        if (empty($password)) {
+            return false;
+        }
+
+        // Validate stored data.
+        if ($username !== $this->username) {
+            return false;
+        }
+        if ($password !== $this->password) {
+            return false;
+        }
+
+        // All ok.
         return true;
     }
     
     /**
-     * Logout the user
+     * Login a user by its username & password.
      * 
-     * @param void
+     * @param string $username
+     *      The raw username string.
+     * @param string $password
+     *      The raw password string.
      * 
-     * @return void
+     * @return bool
+     *     Success.
+     */
+    public function login($username, $password)
+    {
+        $usernameHash = md5($username);
+        $passwordHash = md5($password);
+
+        if ($usernameHash !== $this->username) {
+            return false;
+        }
+        if ($passwordHash !== $this->password) {
+            return false;
+        }
+
+        $this->session['username'] = $usernameHash;
+        $this->session['password'] = $passwordHash;
+        return true;
+    }
+    
+    /**
+     * Logout the current authenticated user.
      */
     public function logout()
     {
-        unset($_SESSION[self::SESSION_NAMESPACE]);
+        $this->session = array(
+            'username' => null,
+            'password' => null,
+        );
     }
 }
