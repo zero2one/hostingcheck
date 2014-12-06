@@ -1,58 +1,43 @@
 <?php
 /**
- * Hostingcheck_Config
+ * Hostingcheck (https://github.com/zero2one/hostingcheck)
  *
- * @category   Hostingcheck
- * @package    Hostingcheck_Config
- * @copyright  Copyright (c) 2012 Serial Graphics (http://serial-graphics.be)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      https://github.com/zero2one/hostingcheck source repository.
+ * @copyright Copyright (c) 2014 Serial Graphics (http://serial-graphics.be)
+ * @license   http://opensource.org/licenses/GPL-2.0 GNU Public License
+ */
+
+
+/**
+ * Class Hostingcheck_Config
+ *
+ * Container to store a configuration array and to get the values from it.
+ *
+ * @author Peter Decuyper <peter@serial-graphics.be>
  */
 class Hostingcheck_Config
 {
     /**
-     * Config instance
-     * 
-     * @var Hostingcheck_Config
-     */
-    protected static $_instance;
-    
-    /**
-     * The config array
+     * The config array.
      * 
      * @var array
      */
-    protected $_config;
+    protected $config;
     
     
     /**
-     * Constructor
+     * Constructor.
+     *
+     * @param array $config
+     *      The configuration to use in the configuration class.
      */
-    protected function __construct()
+    public function __construct(array $config)
     {
-        include(HOSTINGCHECK_BASEPATH . 'settings.php');
-        $this->_config = $settings;
+        $this->config = $config;
     }
     
     /**
-     * Protect clone
-     */
-    protected function __clone()
-    {}
-    
-    /**
-     * Get an instance
-     */
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
-    }
-    
-    /**
-     * Get a part of the config
+     * Get a part of the config.
      * 
      * @param string $key
      * @param mixed $default
@@ -60,12 +45,16 @@ class Hostingcheck_Config
      * 
      * @return mixed
      */
-     public function get($key, $default = null)
-     {
-         if(!isset($this->_config[$key])) {
-             return $default;
-         }
-         
-         return $this->_config[$key];
-     }
+    public function get($key, $default = null)
+    {
+        $value = isset($this->config[$key])
+            ? $this->config[$key]
+            : $default;
+
+        if (is_array($value)) {
+            return new Hostingcheck_Config($value);
+        }
+
+        return $value;
+    }
 }
