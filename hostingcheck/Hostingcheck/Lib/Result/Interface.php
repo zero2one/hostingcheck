@@ -20,12 +20,22 @@ interface Hostingcheck_Result_Interface
      *
      * @param string $value
      *      The value of the result.
+     * @param array $messages
+     *      Optional messages.
      */
-    public function __construct($value);
+    public function __construct($value, $messages = array());
 
     /**
      * @return string
      *      The result value of the test.
      */
     public function getValue();
+
+    /**
+     * Get the messages (if any).
+     *
+     * @return array
+     *      Array of all messages in the result.
+     */
+    public function getMessages();
 }

@@ -21,7 +21,7 @@ class Hostingcheck_Test_DateNow extends Hostingcheck_Test_Abstract
      * @param array $args
      *      Arguments to use in the test.
      *
-     * @return Hostingcheck_Test_Result
+     * @return Hostingcheck_Result_Info
      */
     public function run($args = array())
     {

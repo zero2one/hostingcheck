@@ -23,7 +23,7 @@ class Hostingcheck_Test_Info extends Hostingcheck_Test_Abstract
      *      There should be only one argument:
      *      - value : the value to show in the result.
      *
-     * @return Hostingcheck_Test_Result
+     * @return Hostingcheck_Result_Info
      */
     public function run($args = array())
     {

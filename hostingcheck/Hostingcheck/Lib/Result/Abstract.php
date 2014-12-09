@@ -24,22 +24,38 @@ abstract class Hostingcheck_Result_Abstract
     protected $value;
 
     /**
-     * Constructor.
+     * The messages array.
      *
-     * @param string $value
-     *      The value of the result.
+     * @var array
      */
-    public function __construct($value)
+    protected $messages = array();
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __construct($value, $messages = array())
     {
         $this->value = $value;
+
+        if (!empty($messages) && is_array($messages)) {
+            $this->messages = $messages;
+        }
     }
 
     /**
-     * @return string
-     *      The result value of the test.
+     * {@inheritDoc}
      */
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMessages()
+    {
+        return $this->messages;
     }
 }
