@@ -1,89 +1,138 @@
 <?php
 /**
- * Hostingcheck_View
+ * Hostingcheck (https://github.com/zero2one/hostingcheck)
  *
- * @category   Hostingcheck
- * @package    Hostingcheck_View
- * @copyright  Copyright (c) 2012 Serial Graphics (http://serial-graphics.be)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      https://github.com/zero2one/hostingcheck source repository.
+ * @copyright Copyright (c) 2014 Serial Graphics (http://serial-graphics.be)
+ * @license   http://opensource.org/licenses/GPL-2.0 GNU Public License
+ */
+
+
+/**
+ * Class Hostingcheck_View
+ *
+ * View script renderer.
+ *
+ * @author Peter Decuyper <peter@serial-graphics.be>
  */
 class Hostingcheck_View
 {
+    /**
+     * The base path where all view scripts are located.
+     *
+     * @var string
+     */
+    protected $path;
+
+    /**
+     * The optional template script name that should be used to render the
+     * content in.
+     *
+     * @var string
+     */
+    protected $template;
+
     /**
      * View variables
      * 
      * @var array
      */
-    protected $_vars = array();
-  
-  
+    protected $vars = array();
+
     /**
-     * Render html output
+     * Class constructor.
+     *
+     * @param string $path
+     *      Base path where all the views are located.
+     * @param string $template
+     *      The optional template script name that should be used to render the
+     *      content in.
+     *
+     * @throws Exception
+     *      If the base path does not exists.
+     */
+    public function __construct($path, $template = null)
+    {
+        if (!file_exists($path)) {
+            throw new Exception(
+                sprintf(
+                    'View scripts path "%s" is not valid.',
+                    $path
+                )
+            );
+        }
+        $this->path = $path;
+        $this->template = $template;
+    }
+
+    /**
+     * Render html output.
+     *
+     * @param string $script
+     *      The filename (without the .phtml extention) of the view script to
+     *      render.
+     *
+     * @return string
+     *      The rendered output.
      */
     public function render($script)
     {
-        $this->_vars['content'] = $this->_render($script);
-        echo $this->_render('page');
-    }
-    
-    /**
-     * Render the actual script
-     */
-    protected function _render($script)
-    {
-        $this->_preprocessPage();
-      
-        $template = HOSTINGCHECK_BASEPATH 
-            . 'Views' 
-            . DIRECTORY_SEPARATOR 
-            . $script . '.phtml';
-        unset($script);
-        
-        // add the vars
-        extract($this->_vars);
-        
+        // Create full path to the view script.
+        $file = $this->path . DIRECTORY_SEPARATOR . $script . '.phtml';
+
+        // Extract the set script variables so we can use them.
+        extract($this->vars);
+
+        // Render and capture the output.
         ob_start();
-          include($template);
-          $output = ob_get_contents();
+        include($file);
+        $output = ob_get_contents();
         ob_end_clean();
-        
+
         return $output;
     }
-    
+
     /**
-     * Add a var to the view
+     * Render html output within the template.
+     *
+     * @param string $script
+     *      The filename (without the .phtml extention) of the view script to
+     *      render.
+     * @param string $template
+     *      (optional) template to use. If no template is provided, the view
+     *      template (if any) will be used.
+     *
+     * @return string
+     *      The rendered output.
+     */
+    public function renderTemplate($script, $template = null)
+    {
+        // Render the content first.
+        $output = $this->render($script);
+
+        // Render the content within the template (if any).
+        if (empty($template)) {
+            $template = $this->template;
+        }
+        if (!empty($template)) {
+            $this->vars['content'] = $output;
+            $output = $this->render($template);
+        }
+
+        return $output;
+    }
+
+    /**
+     * Magic function to capture the set variables as variables to render in the
+     * view script.
      * 
-     * @param $name
+     * @param string $name
+     *      The name of the variable.
      * @param $value
-     * 
-     * @return void
+     *      The value of the variable.
      */
     public function __set($name, $value)
     {
-        $this->_vars[$name] = $value;
-    }
-    
-    
-    /**
-     * Preprocess the page variables
-     */
-    protected function _preprocessPage()
-    {
-        $auth = new Hostingcheck_Auth();
-        $this->_vars['page_title'] = 'Hostingcheck';
-        $this->_vars['show_logout'] = FALSE;
-        $this->_vars['url_logout'] = Hostingcheck_Controller::getUrl('logout');
-        $this->_vars['controls']   = array();
-        
-        if($auth->isAuthenticated()) {
-            $this->_vars['show_logout'] = TRUE;
-            $this->_vars['controls'] = array(
-                Hostingcheck_Controller::getUrl(Hostingcheck_Controller::ACTION_RUN) => 'Run test',
-                Hostingcheck_Controller::getUrl(Hostingcheck_Controller::ACTION_DOWNLOAD_REPORT) => 'Download report',
-                Hostingcheck_Controller::getUrl(Hostingcheck_Controller::ACTION_DOWNLOAD_PHPINFO) => 'Download PHP info',
-            );
-        }
-        
-        $this->_vars['messages'] = array();
+        $this->vars[$name] = $value;
     }
 }
