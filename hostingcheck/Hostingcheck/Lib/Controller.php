@@ -1,21 +1,43 @@
 <?php
 /**
- * Hostingcheck_Controller
+ * Hostingcheck (https://github.com/zero2one/hostingcheck)
  *
- * @category   Hostingcheck
- * @package    Hostingcheck_Controller
- * @copyright  Copyright (c) 2012 Serial Graphics (http://serial-graphics.be)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      https://github.com/zero2one/hostingcheck source repository.
+ * @copyright Copyright (c) 2014 Serial Graphics (http://serial-graphics.be)
+ * @license   http://opensource.org/licenses/GPL-2.0 GNU Public License
+ */
+
+
+/**
+ * Class Hostingcheck_Controller
+ *
+ * Main controller to decide, based on the GET request, what action to perform.
+ *
+ * @author Peter Decuyper <peter@serial-graphics.be>
  */
 class Hostingcheck_Controller
 {
     /**
-     * View class
+     * Configuration object.
+     *
+     * @var Hostingcheck_Config
+     */
+    protected $config;
+
+    /**
+     * Authentication object.
+     *
+     * @var Hostingcheck_Auth
+     */
+    protected $auth;
+
+    /**
+     * View object.
      * 
      * @var Hostingcheck_View
      */
-    protected $_view;
-  
+    protected $view;
+
     /**
      * The possible actions
      * 
@@ -25,18 +47,40 @@ class Hostingcheck_Controller
     const ACTION_RUN              = 'run';
     const ACTION_DOWNLOAD_REPORT  = 'download_report';
     const ACTION_DOWNLOAD_PHPINFO = 'download_phpinfo';
-  
-  
+
+
     /**
-     * Constructor
-     * 
-     * @param void
-     * 
-     * @return void
+     * Constructor.
+     *
+     * @param Hostingcheck_Config $config
+     *      The hostingcheck config.
+     * @param Hostingcheck_Auth $auth
+     *      The authentication object.
+     * @param Hostingcheck_View $view
+     *      The vew object to use in the controller.
      */
-    public function __construct()
+    public function __construct($config, $auth, $view)
     {
-        $this->_view = new Hostingcheck_View();
+        $this->config = $config;
+        $this->auth = $auth;
+
+        // Set up the base variables in the view.
+        $view->page_title  = 'Hostingcheck';
+        $view->show_logout = false;
+        $view->url_logout  = $this->getUrl('logout');
+        $view->controls    = array();
+        $view->messages    = array();
+        $this->view = $view;
+
+        // Add the navigation when the user is authenticated.
+        if($this->auth->isAuthenticated()) {
+            $this->view->show_logout = true;
+            $this->view->controls = array(
+                $this->getUrl(Hostingcheck_Controller::ACTION_RUN) => 'Run test',
+                $this->getUrl(Hostingcheck_Controller::ACTION_DOWNLOAD_REPORT) => 'Download report',
+                $this->getUrl(Hostingcheck_Controller::ACTION_DOWNLOAD_PHPINFO) => 'Download PHP info',
+            );
+        }
     }
   
     /**
@@ -45,15 +89,14 @@ class Hostingcheck_Controller
     public function run()
     {
         // check if logged in
-        $auth = new Hostingcheck_Auth();
-        if(!$auth->isAuthenticated()) {
-            $this->actionLogin();
+        if(!$this->auth->isAuthenticated()) {
+            echo $this->actionLogin();
             return;
         }
         
         switch($this->getRequest()) {
             case self::ACTION_LOGOUT:
-                $this->actionLogout();
+                $output = $this->actionLogout();
                 break;
                 
             case self::ACTION_DOWNLOAD_REPORT:
@@ -65,9 +108,11 @@ class Hostingcheck_Controller
                 break;
               
             default:
-                $this->actionReport();
+                $output = $this->actionReport();
                 break;
         }
+
+        echo $output;
     }
     
     /**
@@ -75,11 +120,10 @@ class Hostingcheck_Controller
      */
     public function actionLogin()
     {
-        $auth = new Hostingcheck_Auth();
-        $this->_view->urlLogin = self::getUrl();
+        $this->view->urlLogin = self::getUrl();
         
         if(!empty($_POST)) {
-            $login = $auth->authenticate(
+            $login = $this->auth->login(
                 $_POST['username'], 
                 $_POST['password']
             );
@@ -89,9 +133,8 @@ class Hostingcheck_Controller
             
             // add messages
         }
-        
-        
-        $this->_view->render('login');
+
+        return $this->view->renderTemplate('login');
     }
     
     /**
@@ -99,8 +142,7 @@ class Hostingcheck_Controller
      */
     public function actionLogout()
     {
-        $auth = new Hostingcheck_Auth();
-        $auth->logout();
+        $this->auth->logout();
         $this->_redirect();
     }
     
@@ -125,10 +167,9 @@ class Hostingcheck_Controller
      */
     public function actionReport()
     {
-        $this->_view->render('results');
+        return $this->view->renderTemplate('results');
     }
-    
-    
+
     /**
      * Get the request
      * 

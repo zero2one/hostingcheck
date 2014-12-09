@@ -32,23 +32,24 @@ class Hostingcheck_Autoloader {
     private function loader($className) {
         $path = explode('_', $className);
 
-        // We support only the hostingcheck prefix.
-        if ($path[0] !== 'Hostingcheck') {
-            return;
-        }
-
         // Construct the file path.
         $base = HOSTINGCHECK_BASEPATH;
-        switch ($path[1]) {
+        switch ($path[0]) {
             case 'Test':
+                $path[0] .= DIRECTORY_SEPARATOR . 'Tests';
+                break;
+
+            case 'Hostingcheck':
+                $path[0] .= DIRECTORY_SEPARATOR . 'Lib';
                 break;
 
             default:
-                $path[0] .= DIRECTORY_SEPARATOR . 'Lib';
+                // Not supported class prefix.
+                return;
                 break;
         }
-        $file = $base . implode(DIRECTORY_SEPARATOR, $path) . '.php';
 
+        $file = $base . implode(DIRECTORY_SEPARATOR, $path) . '.php';
         include $file;
     }
 }
