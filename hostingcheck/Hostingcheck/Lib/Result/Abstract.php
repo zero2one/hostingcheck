@@ -9,54 +9,34 @@
 
 
 /**
- * Result value object of a test.
+ * Abstract implementation of the Result interface.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Test_Result {
+abstract class Hostingcheck_Result_Abstract
+    implements Hostingcheck_Result_Interface
+{
     /**
-     * Is the test result positive.
-     *
-     * @var bool
-     */
-    protected $success = false;
-
-    /**
-     * The test result value.
+     * The value of the result.
      *
      * @var string
      */
     protected $value;
 
-
     /**
      * Constructor.
      *
-     * @param bool $success
-     *      The result success status.
      * @param string $value
-     *      The result value.
+     *      The value of the result.
      */
-    public function __construct($success, $value)
+    public function __construct($value)
     {
-        $this->success = (bool) $success;
         $this->value = $value;
     }
 
     /**
-     * Is the result successful?
-     *
-     * @return bool
-     */
-    public function isSuccess()
-    {
-        return $this->success;
-    }
-
-    /**
-     * Get the result value.
-     *
      * @return string
+     *      The result value of the test.
      */
     public function getValue()
     {

@@ -9,27 +9,23 @@
 
 
 /**
- * Interface for all test classes.
+ * Interface for all result objects.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-interface Hostingcheck_Test_Interface
+interface Hostingcheck_Result_Interface
 {
     /**
      * Constructor.
      *
-     * @param Hostingcheck_Config $config
-     *      The config object, can be used during test run.
+     * @param string $value
+     *      The value of the result.
      */
-    public function __construct(Hostingcheck_Config $config);
+    public function __construct($value);
 
     /**
-     * Run the test.
-     *
-     * @param array $args
-     *      Arguments to use in the test.
-     *
-     * @return Hostingcheck_Test_Result
+     * @return string
+     *      The result value of the test.
      */
-    public function run($args = array());
+    public function getValue();
 }

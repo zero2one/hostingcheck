@@ -13,7 +13,8 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Test_DateNow extends Hostingcheck_Test_Abstract {
+class Hostingcheck_Test_DateNow extends Hostingcheck_Test_Abstract
+{
     /**
      * Run the test.
      *
@@ -25,10 +26,7 @@ class Hostingcheck_Test_DateNow extends Hostingcheck_Test_Abstract {
     public function run($args = array())
     {
         $now  = new DateTime();
-        $result = new Hostingcheck_Test_Result(
-            true,
-            $now->format('Y-m-d H:i (P)')
-        );
+        $result = new Hostingcheck_Result_Info($now->format('Y-m-d H:i (P)'));
         return $result;
     }
 }

@@ -13,23 +13,24 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Test_DateNow_TestCase extends PHPUnit_Framework_TestCase
+class Hostingcheck_Test_Info_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Check success method.
      */
     public function testRun()
     {
-        $now = new DateTime();
-
         $config = new Hostingcheck_Config(array());
-        $test = new Hostingcheck_Test_DateNow($config);
 
+        $test = new Hostingcheck_Test_Info($config);
         $result = $test->run();
         $this->assertInstanceOf('Hostingcheck_Result_Info', $result);
-        $this->assertEquals(
-            $now->format('Y-m-d H:i (P)'),
-            $result->getValue()
-        );
+        $this->assertNull($result->getValue());
+
+        $value = 'Foo message 123';
+        $test = new Hostingcheck_Test_Info($config);
+        $result = $test->run(array('value' => $value));
+        $this->assertInstanceOf('Hostingcheck_Result_Info', $result);
+        $this->assertEquals($value, $result->getValue());
     }
 }

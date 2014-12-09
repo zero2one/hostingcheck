@@ -13,7 +13,9 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-abstract class Hostingcheck_Test_Abstract {
+abstract class Hostingcheck_Test_Abstract
+    implements Hostingcheck_Test_Interface
+{
     /**
      * The configuration object.
      *
