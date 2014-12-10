@@ -43,6 +43,6 @@ abstract class Hostingcheck_Value_Abstract
      */
     public function __toString()
     {
-        return $this->getValue();
+        return (string) $this->getValue();
     }
 }
