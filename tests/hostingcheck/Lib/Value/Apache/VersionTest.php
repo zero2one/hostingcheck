@@ -13,7 +13,7 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Value_Apache_VersionTest extends PHPUnit_Framework_TestCase
+class Hostingcheck_Value_Apache_Version_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Check get value method.
