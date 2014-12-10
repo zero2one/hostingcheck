@@ -16,14 +16,15 @@
 class Hostingcheck_Result_Info_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Get the result value method.
+     * Get the messages method.
      */
-    public function testGetValue()
+    public function testGetMessages()
     {
-        $result = new Hostingcheck_Result_Info(null);
-        $this->assertNull($result->getValue());
+        $result = new Hostingcheck_Result_Info();
+        $this->assertEquals(array(), $result->getMessages());
 
-        $result = new Hostingcheck_Result_Info('foo');
-        $this->assertEquals('foo', $result->getValue());
+        $messages = array('Foo message.', 'Bar message.');
+        $result = new Hostingcheck_Result_Info($messages);
+        $this->assertEquals($messages, $result->getMessages());
     }
 }

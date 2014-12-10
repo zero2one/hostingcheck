@@ -17,13 +17,6 @@ abstract class Hostingcheck_Result_Abstract
     implements Hostingcheck_Result_Interface
 {
     /**
-     * The value of the result.
-     *
-     * @var string
-     */
-    protected $value;
-
-    /**
      * The messages array.
      *
      * @var array
@@ -34,21 +27,11 @@ abstract class Hostingcheck_Result_Abstract
     /**
      * {@inheritDoc}
      */
-    public function __construct($value, $messages = array())
+    public function __construct($messages = array())
     {
-        $this->value = $value;
-
         if (!empty($messages) && is_array($messages)) {
             $this->messages = $messages;
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getValue()
-    {
-        return $this->value;
     }
 
     /**

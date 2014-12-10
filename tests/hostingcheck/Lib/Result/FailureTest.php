@@ -16,27 +16,15 @@
 class Hostingcheck_Result_Failure_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Get the result value method.
-     */
-    public function testGetValue()
-    {
-        $result = new Hostingcheck_Result_Failure(null);
-        $this->assertNull($result->getValue());
-
-        $result = new Hostingcheck_Result_Failure('foo');
-        $this->assertEquals('foo', $result->getValue());
-    }
-
-    /**
      * Get the messages method.
      */
     public function testGetMessages()
     {
-        $result = new Hostingcheck_Result_Failure(null);
+        $result = new Hostingcheck_Result_Failure();
         $this->assertEquals(array(), $result->getMessages());
 
         $messages = array('Foo message.', 'Bar message.');
-        $result = new Hostingcheck_Result_Failure(null, $messages);
+        $result = new Hostingcheck_Result_Failure($messages);
         $this->assertEquals($messages, $result->getMessages());
     }
 }
