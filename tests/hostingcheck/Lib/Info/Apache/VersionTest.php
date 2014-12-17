@@ -13,14 +13,14 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Value_Apache_Version_TestCase extends PHPUnit_Framework_TestCase
+class Hostingcheck_Info_Apache_Version_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Check get value method.
      */
     public function testGetValue()
     {
-        $version = new Hostingcheck_Value_Apache_Version();
+        $version = new Hostingcheck_Info_Apache_Version();
         $this->assertInstanceOf(
             'Hostingcheck_Value_NotSupported',
             $version->getValue()

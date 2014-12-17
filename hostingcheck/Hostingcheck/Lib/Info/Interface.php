@@ -16,27 +16,20 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-interface Hostingcheck_Value_Interface
+interface Hostingcheck_Info_Interface
 {
     /**
      * Constructor.
      *
-     * @param mixed $value
-     *     The value to use in the value object.
+     * @param array $arguments
+     *      The optional arguments needed to retrieve the value.
      */
-    public function __construct($value = null);
+    public function __construct($arguments = array());
 
     /**
-     * Get the raw value.
+     * Get the value.
      *
-     * @return mixed
+     * @return Hostingcheck_Value_Interface
      */
     public function getValue();
-
-    /**
-     * To string method in case we want to print the value.
-     *
-     * @return string
-     */
-    public function __toString();
 }

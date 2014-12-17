@@ -13,7 +13,7 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Value_Apache_Version extends Hostingcheck_Value_Abstract
+class Hostingcheck_Info_Apache_Version extends Hostingcheck_Info_Abstract
 {
     /**
      * {@inheritDoc}
@@ -25,22 +25,10 @@ class Hostingcheck_Value_Apache_Version extends Hostingcheck_Value_Abstract
     {
         if (function_exists('apache_get_version')) {
             preg_match('#Apache\/([0-9\.]*)#', apache_get_version(), $found);
-            $this->value = $found[1];
+            $this->value = new Hostingcheck_Value_Version($found[1]);
         }
         else {
             $this->value = new Hostingcheck_Value_NotSupported();
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __toString()
-    {
-        if ($this->getValue() instanceof Hostingcheck_Value_NotSupported) {
-            return (string) $this->getValue();
-        }
-
-        parent::__toString();
     }
 }

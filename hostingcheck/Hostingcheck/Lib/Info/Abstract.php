@@ -9,25 +9,26 @@
 
 
 /**
- * Value that indicates that the requested value is not supported.
+ * Abstract implemntation of the value object.
+ *
+ * {@inheritDoc}
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Value_NotSupported extends Hostingcheck_Value_Abstract
+abstract class Hostingcheck_Info_Abstract
+    implements Hostingcheck_Info_Interface
 {
+    /**
+     * {@inheritDoc}
+     */
+    protected $value;
+
+
     /**
      * {@inheritDoc}
      */
     public function getValue()
     {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __toString()
-    {
-        return 'Not Supported.';
+        return $this->value;
     }
 }

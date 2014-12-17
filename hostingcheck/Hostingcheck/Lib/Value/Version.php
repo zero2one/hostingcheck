@@ -13,21 +13,7 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Value_NotSupported extends Hostingcheck_Value_Abstract
+class Hostingcheck_Value_Version extends Hostingcheck_Value_Abstract
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getValue()
-    {
-        return null;
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function __toString()
-    {
-        return 'Not Supported.';
-    }
 }

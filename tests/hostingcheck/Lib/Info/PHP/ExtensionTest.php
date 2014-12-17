@@ -13,7 +13,7 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Value_PHP_Extension_TestCase extends PHPUnit_Framework_TestCase
+class Hostingcheck_Info_PHP_Extension_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Check get value method.
@@ -21,17 +21,21 @@ class Hostingcheck_Value_PHP_Extension_TestCase extends PHPUnit_Framework_TestCa
     public function testGetValue()
     {
         $jsonVersion = phpversion('json');
-        $value = new Hostingcheck_Value_PHP_Extension(array('name' => 'json'));
-        $this->assertEquals($jsonVersion, $value->getValue());
+        $info = new Hostingcheck_Info_PHP_Extension(array('name' => 'json'));
+        $this->assertInstanceOf(
+            'Hostingcheck_Value_Version',
+            $info->getValue()
+        );
+        $this->assertEquals($jsonVersion, $info->getValue()->getValue());
 
         $name = 'foo_bar_fake_extension';
-        $value = new Hostingcheck_Value_PHP_Extension(array('name' => $name));
+        $value = new Hostingcheck_Info_PHP_Extension(array('name' => $name));
         $this->assertInstanceOf(
             'Hostingcheck_Value_NotSupported',
             $value->getValue()
         );
 
-        $value = new Hostingcheck_Value_PHP_Extension(array());
+        $value = new Hostingcheck_Info_PHP_Extension(array());
         $this->assertInstanceOf(
             'Hostingcheck_Value_NotSupported',
             $value->getValue()

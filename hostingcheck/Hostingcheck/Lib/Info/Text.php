@@ -13,19 +13,22 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Value_Info extends Hostingcheck_Value_Abstract
+class Hostingcheck_Info_Text extends Hostingcheck_Info_Abstract
 {
     /**
      * {@inheritDoc}
      *
      * Supported arguments:
-     * - info  : The info that should be stored as the value of this object.
+     * - text  : The info that should be stored as the value of this object.
      */
     public function __construct($arguments = array())
     {
         // Create the value.
-        if (!empty($arguments['info'])) {
-            $this->value = $arguments['info'];
+        if (!empty($arguments['text'])) {
+            $this->value = new Hostingcheck_Value_Text($arguments['text']);
+        }
+        else {
+            $this->value = new Hostingcheck_Value_Text();
         }
     }
 }

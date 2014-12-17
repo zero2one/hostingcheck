@@ -9,7 +9,7 @@
 
 
 /**
- * Tests for Hostingcheck_Value_DateTime.
+ * Tests for Hostingcheck_Value_NotSupported.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
@@ -20,39 +20,42 @@ class Hostingcheck_Value_DateTime_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testGetValue()
     {
-        // Default date = now.
-        $value = new Hostingcheck_Value_DateTime();
-        $this->assertInstanceOf('DateTime', $value->getValue());
+        $dateTime = new DateTime();
+        $value = new Hostingcheck_Value_DateTime($dateTime);
+        $this->assertEquals($dateTime, $value->getValue());
 
-        // Based on passed date.
-        $date = new DateTime('2014-05-25 13:31:15');
-        $arguments = array(
-            'date' => $date->format('Y-m-d H:i:s'),
-            'format' => 'Y-m-d H:i:s',
+        $dateTime = new DateTime('2012-12-25 13:14:15');
+        $value = new Hostingcheck_Value_DateTime($dateTime);
+        $this->assertEquals($dateTime, $value->getValue());
+    }
+
+    /**
+     * Check set format.
+     */
+    public function testSetFormat()
+    {
+        $dateTime = new DateTime('2012-12-25 13:14:15');
+        $format = 'd/m/Y H:i:s';
+        $value = new Hostingcheck_Value_DateTime($dateTime);
+        $this->assertInstanceOf(
+            'Hostingcheck_Value_DateTime',
+            $value->setFormat($format)
         );
-        $value = new Hostingcheck_Value_DateTime($arguments);
         $this->assertEquals(
-            $date->format('Y-m-d H:i:s'),
-            $value->getValue()->format('Y-m-d H:i:s')
+            $dateTime->format($format),
+            (string) $value
         );
     }
 
     /**
-     * Check to string method.
+     * Check get string.
      */
     public function testToString()
     {
-        $now = new DateTime();
-
-        $value = new Hostingcheck_Value_DateTime();
+        $dateTime = new DateTime('2012-12-25 13:14:15');
+        $value = new Hostingcheck_Value_DateTime($dateTime);
         $this->assertEquals(
-            $now->format('Y-m-d H:i (P)'),
-            (string) $value
-        );
-
-        $value = new Hostingcheck_Value_DateTime(array('format' => 'Ymd Hi'));
-        $this->assertEquals(
-            $now->format('Ymd Hi'),
+            $dateTime->format('Y-m-d H:i (P)'),
             (string) $value
         );
     }

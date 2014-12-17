@@ -13,20 +13,22 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Value_Info_TestCase extends PHPUnit_Framework_TestCase
+class Hostingcheck_Info_Text_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Check success method.
      */
     public function testGetValue()
     {
-        $value = new Hostingcheck_Value_Info();
-        $this->assertNull($value->getValue());
-        $this->assertEmpty((string) $value);
+        $info = new Hostingcheck_Info_Text();
+        $this->assertInstanceOf(
+            'Hostingcheck_Value_Text',
+            $info->getValue()
+        );
+        $this->assertNull($info->getValue()->getValue());
 
-        $arguments = array('info' => 'Foo value');
-        $value = new Hostingcheck_Value_Info($arguments);
-        $this->assertEquals($arguments['info'], $value->getValue());
-        $this->assertEquals($arguments['info'], (string) $value);
+        $arguments = array('text' => 'Foo value');
+        $info = new Hostingcheck_Info_Text($arguments);
+        $this->assertEquals($arguments['text'], $info->getValue()->getValue());
     }
 }

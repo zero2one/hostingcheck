@@ -22,7 +22,7 @@ class Hostingcheck_Validate_Version_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testValidate($version, $arguments, $resultType, $messages)
     {
-        $value = new Hostingcheck_Value_Info(array('info' => $version));
+        $value = new Hostingcheck_Value_Version($version);
         $validator = new Hostingcheck_Validate_Version($arguments);
         $result = $validator->validate($value);
         $this->assertInstanceOf($resultType, $result);

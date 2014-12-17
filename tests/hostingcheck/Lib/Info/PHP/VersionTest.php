@@ -13,7 +13,7 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Value_PHP_Version_TestCase extends PHPUnit_Framework_TestCase
+class Hostingcheck_Info_PHP_Version_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Check get value method.
@@ -22,7 +22,12 @@ class Hostingcheck_Value_PHP_Version_TestCase extends PHPUnit_Framework_TestCase
     {
         $phpversion = phpversion();
 
-        $version = new Hostingcheck_Value_PHP_Version();
-        $this->assertEquals($phpversion, $version->getValue());
+        $info = new Hostingcheck_Info_PHP_Version();
+        $this->assertInstanceOf(
+            'Hostingcheck_Value_Version',
+            $info->getValue()
+        );
+
+        $this->assertEquals($phpversion, $info->getValue()->getValue());
     }
 }

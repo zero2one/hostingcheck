@@ -9,7 +9,7 @@
 
 
 /**
- * Retrieve the current Date-Time.
+ * Value that indicates that the requested value is not supported.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
@@ -22,34 +22,32 @@ class Hostingcheck_Value_DateTime extends Hostingcheck_Value_Abstract
      */
     protected $format = 'Y-m-d H:i (P)';
 
-
     /**
      * {@inheritDoc}
      *
-     * Supported arguments:
-     * - date   : The date to use as the value.
-     * - format : The date-time format to use to represent as string.
-     *            Supported formats :
-     *            @link http://php.net/manual/en/function.date.php
+     * @return DateTime
      */
-    public function __construct($arguments = array())
+    public function getValue()
     {
-        // Create the value.
-        if (empty($arguments['date'])) {
-            $this->value = new DateTime();
-        }
-        else {
-            $this->value = new DateTime($arguments['date']);
-        }
-
-        // Set the format to use during the to string method.
-        if (!empty($arguments['format'])) {
-            $this->format = $arguments['format'];
-        }
+        return $this->value;
     }
 
     /**
-     * {@inheritDoc}
+     * Helper to set the desired date format.
+     *
+     * @param string $format
+     *      Any DateFormat supported format.
+     *
+     * @return Hostingcheck_Value_DateTime
+     */
+    public function setFormat($format)
+    {
+        $this->format = $format;
+        return $this;
+    }
+
+    /**
+     * Return the string version of the DateTime
      */
     public function __toString()
     {

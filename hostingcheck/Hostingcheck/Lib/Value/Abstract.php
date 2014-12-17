@@ -25,11 +25,16 @@ abstract class Hostingcheck_Value_Abstract
      */
     protected $value;
 
+    /**
+     * {@inheritDoc}
+     */
+    public function __construct($value = null)
+    {
+        $this->value = $value;
+    }
 
     /**
-     * Retrieve the value.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getValue()
     {
@@ -37,9 +42,7 @@ abstract class Hostingcheck_Value_Abstract
     }
 
     /**
-     * To string method in case we want to print the result.
-     *
-     * @return string
+     * {@inheritDoc}
      */
     public function __toString()
     {
