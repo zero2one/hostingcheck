@@ -20,12 +20,12 @@ class Hostingcheck_Value_Version_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testGetValue()
     {
-        $value = new Hostingcheck_Value_Version();
-        $this->assertNull($value->getValue());
+        $version = new Hostingcheck_Value_Version();
+        $this->assertNull($version->getValue());
 
         $text = '2.5.7';
-        $value = new Hostingcheck_Value_Version($text);
-        $this->assertEquals($text, $value->getValue());
+        $version = new Hostingcheck_Value_Version($text);
+        $this->assertEquals($text, $version->getValue());
     }
 
     /**
@@ -33,11 +33,107 @@ class Hostingcheck_Value_Version_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testToString()
     {
-        $value = new Hostingcheck_Value_Text();
-        $this->assertEquals('', (string) $value);
+        $version = new Hostingcheck_Value_Text();
+        $this->assertEquals('', (string) $version);
 
         $text = '2.5.7';
-        $value = new Hostingcheck_Value_Text($text);
-        $this->assertEquals($text, (string) $value);
+        $version = new Hostingcheck_Value_Text($text);
+        $this->assertEquals($text, (string) $version);
+    }
+
+    /**
+     * Test the compareTo() method.
+     */
+    public function testCompareTo()
+    {
+        $version = new Hostingcheck_Value_Version('2.5.1');
+        $this->assertSame(
+            -1,
+            $version->compareTo(new Hostingcheck_Value_Version('2.5.2'))
+        );
+        $this->assertSame(
+            0,
+            $version->compareTo(new Hostingcheck_Value_Version('2.5.1'))
+        );
+        $this->assertSame(
+            1,
+            $version->compareTo(new Hostingcheck_Value_Version('2.5'))
+        );
+    }
+
+    /**
+     * Test the equals() method.
+     */
+    public function testEquals()
+    {
+        $version = new Hostingcheck_Value_Version('3.0');
+        $this->assertFalse(
+            $version->equals(new Hostingcheck_Value_Version('3.0.1'))
+        );
+        $this->assertTrue(
+            $version->equals(new Hostingcheck_Value_Version('3.0'))
+        );
+    }
+
+    /**
+     * Test the greaterThan() method.
+     */
+    public function testGreaterThan()
+    {
+        $version = new Hostingcheck_Value_Version('3');
+        $this->assertFalse(
+            $version->greaterThan(new Hostingcheck_Value_Version('3'))
+        );
+        $this->assertTrue(
+            $version->greaterThan(new Hostingcheck_Value_Version('2.9.9.9'))
+        );
+    }
+
+    /**
+     * Test the greaterThanOrEqual() method.
+     */
+    public function testGreaterThanOrEqual()
+    {
+        $version = new Hostingcheck_Value_Version('3');
+        $this->assertFalse(
+            $version->greaterThanOrEqual(new Hostingcheck_Value_Version('3.0'))
+        );
+        $this->assertTrue(
+            $version->greaterThanOrEqual(new Hostingcheck_Value_Version('3'))
+        );
+        $this->assertTrue(
+            $version->greaterThanOrEqual(new Hostingcheck_Value_Version('2.9.9.9'))
+        );
+    }
+
+    /**
+     * Test the lessThan() method.
+     */
+    public function testLessThan()
+    {
+        $version = new Hostingcheck_Value_Version('3');
+        $this->assertFalse(
+            $version->lessThan(new Hostingcheck_Value_Version('3'))
+        );
+        $this->assertTrue(
+            $version->lessThan(new Hostingcheck_Value_Version('3.0'))
+        );
+    }
+
+    /**
+     * Test the lessThanOrEqual() method.
+     */
+    public function testLessThanOrEqual()
+    {
+        $version = new Hostingcheck_Value_Version('3');
+        $this->assertFalse(
+            $version->lessThanOrEqual(new Hostingcheck_Value_Version('2.9'))
+        );
+        $this->assertTrue(
+            $version->lessThanOrEqual(new Hostingcheck_Value_Version('3'))
+        );
+        $this->assertTrue(
+            $version->lessThanOrEqual(new Hostingcheck_Value_Version('3.0'))
+        );
     }
 }

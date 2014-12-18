@@ -32,9 +32,8 @@ class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Abstract
     /**
      * {@inheritDoc}
      */
-    public function validate(hostingcheck_Value_Interface $value)
+    public function validate(hostingcheck_Value_Interface $version)
     {
-        $version = (string) $value;
         $messages = array();
 
         // If an equals value is given, check only if that is valid.
@@ -63,17 +62,16 @@ class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Abstract
     /**
      * Helper to validate if the given version is the same as the expected..
      *
-     * @param string $version
-     *      The version number to compare.
+     * @param Hostingcheck_Value_Version $version
      *
      * @return string
      *      Error message if the validation is not ok.
      */
-    protected function isEqual($version)
+    protected function isEqual(Hostingcheck_Value_Version $version)
     {
         $equal = $this->arguments['equal'];
-
-        if (version_compare($version, $equal) !== 0) {
+        $other = new Hostingcheck_Value_Version($equal);
+        if (!$version->equals($other)) {
             return sprintf(
                 'Version is not equal to %s.',
                 $equal
@@ -84,17 +82,17 @@ class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Abstract
     /**
      * Helper to validate te minimal version.
      *
-     * @param string $version
-     *      The version number to compare.
+     * @param Hostingcheck_Value_Version $version
      *
      * @return string
      *      Error message if the validation is not ok.
      */
-    protected function isMin($version)
+    protected function isMin(Hostingcheck_Value_Version $version)
     {
         $min = $this->arguments['min'];
+        $other = new Hostingcheck_Value_Version($min);
 
-        if (version_compare($version, $min) < 0) {
+        if (!$version->greaterThanOrEqual($other)) {
             return sprintf(
                 'Version is to low, should be at least %s.',
                 $min
@@ -105,17 +103,17 @@ class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Abstract
     /**
      * Helper to validate the maximum version.
      *
-     * @param string $version
-     *      The version number to compare.
+     * @param Hostingcheck_Value_Version $version
      *
      * @return bool
      *      Result of the comparison.
      */
-    protected function isMax($version)
+    protected function isMax(Hostingcheck_Value_Version $version)
     {
         $max = $this->arguments['max'];
+        $other = new Hostingcheck_Value_Version($max);
 
-        if (version_compare($version, $max) > 0) {
+        if (!$version->lessThanOrEqual($other)) {
             return sprintf(
                 'Version is to high, should be at most %s.',
                 $max
