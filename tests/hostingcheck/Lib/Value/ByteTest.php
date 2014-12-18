@@ -91,6 +91,102 @@ class Hostingcheck_Value_Byte_TestCase extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test the compareTo method.
+     */
+    public function testCompareTo()
+    {
+        $byte = new Hostingcheck_Value_Byte('1K');
+        $this->assertSame(
+            1,
+            $byte->compareTo(new Hostingcheck_Value_Byte('500B'))
+        );
+        $this->assertSame(
+            0,
+            $byte->compareTo(new Hostingcheck_Value_Byte(1024))
+        );
+        $this->assertSame(
+            -1,
+            $byte->compareTo(new Hostingcheck_Value_Byte(1025))
+        );
+    }
+
+    /**
+     * Test the equals() method.
+     */
+    public function testEquals()
+    {
+        $byte = new Hostingcheck_Value_Byte('2M');
+        $this->assertFalse(
+            $byte->equals(new Hostingcheck_Value_Byte('1M'))
+        );
+        $this->assertTrue(
+            $byte->equals(new Hostingcheck_Value_Byte(2*1024*1024))
+        );
+    }
+
+    /**
+     * Test the greatherThan() method.
+     */
+    public function testGreatherThan()
+    {
+        $byte = new Hostingcheck_Value_Byte('5K');
+        $this->assertFalse(
+            $byte->greaterThan(new Hostingcheck_Value_Byte('0.5M'))
+        );
+        $this->assertTrue(
+            $byte->greaterThan(new Hostingcheck_Value_Byte('5000B'))
+        );
+    }
+
+    /**
+     * Test the greatherThan() method.
+     */
+    public function testGreatherThanOrEqual()
+    {
+        $byte = new Hostingcheck_Value_Byte('512K');
+        $this->assertFalse(
+            $byte->greaterThanOrEqual(new Hostingcheck_Value_Byte('0.6M'))
+        );
+        $this->assertTrue(
+            $byte->greaterThanOrEqual(new Hostingcheck_Value_Byte('0.5M'))
+        );
+        $this->assertTrue(
+            $byte->greaterThanOrEqual(new Hostingcheck_Value_Byte('512000B'))
+        );
+    }
+
+    /**
+     * Test the lessThan() method.
+     */
+    public function testLessThan()
+    {
+        $byte = new Hostingcheck_Value_Byte('1K');
+        $this->assertFalse(
+            $byte->lessThan(new Hostingcheck_Value_Byte('1K'))
+        );
+        $this->assertTrue(
+            $byte->lessThan(new Hostingcheck_Value_Byte(1025))
+        );
+    }
+
+    /**
+     * Test the lessThanOrEqual() method.
+     */
+    public function testLessThanOrEqual()
+    {
+        $byte = new Hostingcheck_Value_Byte('1K');
+        $this->assertFalse(
+            $byte->lessThanOrEqual(new Hostingcheck_Value_Byte(1023))
+        );
+        $this->assertTrue(
+            $byte->lessThanOrEqual(new Hostingcheck_Value_Byte(1024))
+        );
+        $this->assertTrue(
+            $byte->lessThanOrEqual(new Hostingcheck_Value_Byte(1025))
+        );
+    }
+
 
     /**
      * dataProvider for testGetValue().
@@ -158,7 +254,6 @@ class Hostingcheck_Value_Byte_TestCase extends PHPUnit_Framework_TestCase
     public function getFormatAutoProvider()
     {
         return array(
-            // Given formats.
             array(null,                             '0'),
             array(57,                             '57B'),
             array(1024,                            '1K'),
