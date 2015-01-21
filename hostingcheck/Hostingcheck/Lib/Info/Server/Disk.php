@@ -44,22 +44,22 @@ class Hostingcheck_Info_Server_Disk extends Hostingcheck_Info_Abstract
         switch ($name) {
             case 'free':
                 $size = disk_free_space($path);
-                break;
+                $this->value = new Hostingcheck_Value_Byte($size);
+                return;
 
             case 'used':
                 $size = disk_total_space($path) - disk_free_space($path);
-                break;
+                $this->value = new Hostingcheck_Value_Byte($size);
+                return;
 
             case 'total':
                 $size = disk_total_space($path);
-                break;
+                $this->value = new Hostingcheck_Value_Byte($size);
+                return;
 
             default:
                 $this->value = new Hostingcheck_Value_NotSupported();
                 return;
-                break;
         }
-
-        $this->value = new Hostingcheck_Value_Byte($size);
     }
 }

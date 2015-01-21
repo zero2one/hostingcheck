@@ -9,7 +9,7 @@
 
 
 /**
- * Abstract implemntation of the value object.
+ * Abstract implementation of the value object.
  *
  * {@inheritDoc}
  *

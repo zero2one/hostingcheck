@@ -66,10 +66,8 @@ class Hostingcheck_Value_Byte_TestCase extends PHPUnit_Framework_TestCase
             'Hostingcheck_Value_Byte',
             $byte->setFormat($format, $precision)
         );
-        $this->assertSame(
-            $expected,
-            (string) $byte
-        );
+
+        $this->assertSame($expected, (string) $byte);
     }
 
     /**
@@ -87,8 +85,22 @@ class Hostingcheck_Value_Byte_TestCase extends PHPUnit_Framework_TestCase
         $byte = new Hostingcheck_Value_Byte($value);
         $this->assertSame(
             $expected,
-            (string) $byte
+            $byte->__toString()
         );
+    }
+
+    /**
+     * Test format exception.
+     *
+     * @expectedException Exception
+     */
+    public function testFormatException()
+    {
+        $value = 1234;
+        $format = 'FOOBAR';
+
+        $byte  = new Hostingcheck_Value_Byte($value);
+        $byte->setFormat($format);
     }
 
     /**
@@ -205,6 +217,7 @@ class Hostingcheck_Value_Byte_TestCase extends PHPUnit_Framework_TestCase
             array('2.4M',       2516582),
             array('500G',  536870912000),
             array( '9.T', 9895604649984),
+            array( '.5K',           512),
         );
     }
 

@@ -31,11 +31,9 @@ abstract class Hostingcheck_Validate_Abstract
     public function __construct($arguments = array())
     {
         foreach ($arguments as $key => $argument) {
-            if (!array_key_exists($key, $this->arguments)) {
-                continue;
+            if (array_key_exists($key, $this->arguments)) {
+                $this->arguments[$key] = $argument;
             }
-
-            $this->arguments[$key] = $argument;
         }
     }
 }

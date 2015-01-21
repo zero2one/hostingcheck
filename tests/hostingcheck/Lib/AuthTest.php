@@ -44,6 +44,20 @@ class Hostingcheck_Auth_TestCase extends PHPUnit_Framework_TestCase
         );
         $auth = new Hostingcheck_Auth($usernameHash, $passwordHash, $session);
         $this->assertTrue($auth->isAuthenticated());
+
+        // Check authentication with empty password.
+        $session[$auth::SESSION_NAMESPACE] = array(
+            'username' => 'fake-user',
+            'password' => null,
+        );
+        $this->assertFalse($auth->isAuthenticated());
+
+        // Check authentication with false password.
+        $session[$auth::SESSION_NAMESPACE] = array(
+            'username' => $usernameHash,
+            'password' => 'fake-pass',
+        );
+        $this->assertFalse($auth->isAuthenticated());
     }
 
     /**
@@ -59,8 +73,11 @@ class Hostingcheck_Auth_TestCase extends PHPUnit_Framework_TestCase
 
         $auth = new Hostingcheck_Auth($usernameHash, $passwordHash, $session);
 
-        // Login with fake user.
+        // Login with fake user, fakse pass.
         $this->assertFalse($auth->login('fake-user', 'fake-pass'));
+
+        // Login with real user, fake pass.
+        $this->assertFalse($auth->login('test-user', 'fake-pass'));
 
         // Login with valid user.
         $this->assertTrue($auth->login($username, $password));

@@ -9,7 +9,7 @@
 
 
 /**
- * Value that indicates that the requested value is not supported.
+ * Value holding just a text message.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */

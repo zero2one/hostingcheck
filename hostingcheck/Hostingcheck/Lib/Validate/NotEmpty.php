@@ -61,9 +61,13 @@ class Hostingcheck_Validate_NotEmpty extends Hostingcheck_Validate_Abstract
      */
     protected function isEmpty(Hostingcheck_Value_Interface $value)
     {
+        $message = null;
         $valueValue = $value->getValue();
+
         if (empty($valueValue)) {
-            return 'Value is empty.';
+            $message = 'Value is empty.';
         }
+
+        return $message;
     }
 }

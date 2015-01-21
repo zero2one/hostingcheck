@@ -1,3 +1,7 @@
 
 # No settings in repo.
 hostingcheck/hostingcheck/settings.php
+
+# No coverage results in the repo.
+tests/coverage
+

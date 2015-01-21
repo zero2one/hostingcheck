@@ -89,13 +89,32 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Abstract
      *      Number of digits in the resulting formatted value.
      *
      * @return Hostingcheck_Value_Byte
-     *
-     * @throws Exception
-     *      If the format is not supported.
      */
     public function setFormat($format, $precision = 0)
     {
+        // Check if format is supported.
+        $this->checkFormat($format);
+
+        // Set the format.
+        $this->format = $format;
+        $this->precision = (int) $precision;
+
+        return $this;
+    }
+
+    /**
+     * Validate if the format is supported.
+     *
+     * @param string $format
+     *     The format to use in the string version of the value.
+     *
+     * @throws Exception
+     *     If the format is not supported.
+     */
+    protected function checkFormat($format)
+    {
         $mapping = $this->getMapping();
+
         if (!in_array($format, array_keys($mapping))) {
             throw new Exception(
                 sprintf(
@@ -104,10 +123,6 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Abstract
                 )
             );
         }
-        $this->format = $format;
-        $this->precision = (int) $precision;
-
-        return $this;
     }
 
     /**
@@ -115,11 +130,9 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Abstract
      */
     public function __toString()
     {
-        return (string) $this->format(
-            $this->getValue(),
-            $this->format,
-            $this->precision
-        );
+        $value = $this->getValue();
+        $string = $this->format($value, $this->format, $this->precision);
+        return $string;
     }
 
     /**
@@ -248,7 +261,7 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Abstract
 
         // Check for empty results.
         if (empty($value)) {
-            return 0;
+            return '0';
         }
         return $value . $format;
     }
@@ -267,8 +280,8 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Abstract
     protected function formatAuto($value, $precision)
     {
         $mapping = $this->getMapping();
-
         foreach ($mapping as $format => $divider) {
+            // Check if the value is still greather or equal as the divider.
             if ($value < ($divider * $this->kilo)) {
                 break;
             }
@@ -302,23 +315,15 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Abstract
     /**
      * Get the mapping by the format.
      *
-     * @return int
+     * @param string $format
+     *     The format (K, M, G, ...) used as the scale of the value.
      *
-     * @throws Exception
-     *      If the format is not supported.
+     * @return int
      */
     protected function getMappingByFormat($format)
     {
+        $this->checkFormat($format);
         $mapping = $this->getMapping();
-        if (!in_array($format, array_keys($mapping))) {
-            throw new Exception(
-                sprintf(
-                    'Format %s is not supported.',
-                    $format
-                )
-            );
-        }
-
         return $mapping[$format];
     }
 
