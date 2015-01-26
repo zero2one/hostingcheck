@@ -60,10 +60,53 @@ class Hostingcheck_Scenario_Group implements Countable, SeekableIterator
         $this->title = $title;
 
         foreach ($tests as $test) {
-            // TODO: create the test object and add it to the array.
+            if (empty($test['title'])) {
+                continue;
+            }
+            if (empty($test['info'])) {
+                continue;
+            }
+
+            $infoArgs = !empty($test['info args'])
+                ? $test['info args']
+                : array();
+            $validator = !empty($test['validator'])
+                ? $test['validator']
+                : null;
+            $validatorArgs = !empty($test['validator args'])
+                ? $test['validator args']
+                : null;
+
+            $this->tests[] = new Hostingcheck_Scenario_Test(
+                $test['title'],
+                $test['info'],
+                $infoArgs,
+                $validator,
+                $validatorArgs
+            );
         }
 
         $this->rewind();
+    }
+
+    /**
+     * Get the machine name of the group.
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get the human name (title) of the group.
+     *
+     * @return string
+     */
+    public function title()
+    {
+        return $this->title;
     }
 
 
@@ -96,7 +139,7 @@ class Hostingcheck_Scenario_Group implements Countable, SeekableIterator
      * {@inheritdoc}
      */
     public function next() {
-        ++$this->position;
+        $this->position++;
     }
 
     /**
