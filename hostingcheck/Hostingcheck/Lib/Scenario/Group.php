@@ -13,7 +13,7 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Scenario_Group implements Countable, SeekableIterator
+class Hostingcheck_Scenario_Group
 {
     /**
      * The group (machine) name.
@@ -32,17 +32,9 @@ class Hostingcheck_Scenario_Group implements Countable, SeekableIterator
     /**
      * The tests defined in the group.
      *
-     * @var array
+     * @var Hostingcheck_Scenario_Tests
      */
-    protected $tests = array();
-
-    /**
-     * The current position in the iterator array.
-     *
-     * @var int
-     */
-    protected $position = 0;
-
+    protected $tests;
 
     /**
      * Class constructor.
@@ -58,35 +50,7 @@ class Hostingcheck_Scenario_Group implements Countable, SeekableIterator
     {
         $this->name = $name;
         $this->title = $title;
-
-        foreach ($tests as $test) {
-            if (empty($test['title'])) {
-                continue;
-            }
-            if (empty($test['info'])) {
-                continue;
-            }
-
-            $infoArgs = !empty($test['info args'])
-                ? $test['info args']
-                : array();
-            $validator = !empty($test['validator'])
-                ? $test['validator']
-                : null;
-            $validatorArgs = !empty($test['validator args'])
-                ? $test['validator args']
-                : null;
-
-            $this->tests[] = new Hostingcheck_Scenario_Test(
-                $test['title'],
-                $test['info'],
-                $infoArgs,
-                $validator,
-                $validatorArgs
-            );
-        }
-
-        $this->rewind();
+        $this->tests = new Hostingcheck_Scenario_Tests($tests);
     }
 
     /**
@@ -109,69 +73,13 @@ class Hostingcheck_Scenario_Group implements Countable, SeekableIterator
         return $this->title;
     }
 
-
     /**
-     * {@inheritdoc}
-     */
-    public function rewind() {
-        $this->position = 0;
-    }
-
-    /**
-     * {@inheritdoc}
+     * Get the tests collection.
      *
-     * @return Hostingcheck_Scenario_Group
+     * @return Hostingcheck_Scenario_Tests
      */
-    public function current() {
-        return $this->tests[$this->position];
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return string
-     */
-    public function key() {
-        return $this->position;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function next() {
-        $this->position++;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    function valid() {
-        return isset($this->tests[$this->position]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function count()
+    public function tests()
     {
-        return count($this->tests);
-    }
-
-    /**
-     * Get the group element by the group name.
-     *
-     * @param int $position
-     *     The position in the tests array.
-     *
-     * @return Hostingcheck_Scenario_Test|null
-     *     Returns null if the test does not exists.
-     */
-    public function seek($position)
-    {
-        if (!isset($this->tests[$position])) {
-            return null;
-        }
-
-        return $this->tests[$position];
+        return $this->tests;
     }
 }

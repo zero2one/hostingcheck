@@ -22,75 +22,23 @@ class Hostingcheck_Scenario_Group_TestCase extends PHPUnit_Framework_TestCase
     {
         $name = 'group-name';
         $title = 'Group Title';
-        $tests = $this->getGroupTestsConfig();
+        $tests = $this->getTestsConfig();
 
         $group = new Hostingcheck_Scenario_Group($name, $title, $tests);
         $this->assertEquals($name, $group->name());
         $this->assertEquals($title, $group->title());
-        $this->assertCount(3, $group);
+
+        $tests = $group->tests();
+        $this->assertInstanceOf('Hostingcheck_Scenario_Tests', $tests);
+        $this->assertCount(3, $tests);
     }
-
-    /**
-     * Test the iterator functionality.
-     */
-    public function testSeekable()
-    {
-        $group = new Hostingcheck_Scenario_Group(
-            'test-seekable',
-            'Test Seekable',
-            $this->getGroupTestsConfig()
-        );
-
-        $this->assertCount(3, $group);
-
-        // Test first test in the group.
-        $this->assertEquals(0, $group->key());
-        $this->assertTrue($group->valid());
-        $first = $group->current();
-        $this->assertInstanceOf('Hostingcheck_Scenario_Test', $first);
-
-        // Test second.
-        $group->next();
-        $this->assertEquals(1, $group->key());
-        $this->assertTrue($group->valid());
-        $second = $group->current();
-        $this->assertInstanceOf('Hostingcheck_Scenario_Test', $second);
-
-        // Seek specific test by the key.
-        $third = $group->seek(2);
-        $this->assertInstanceOf('Hostingcheck_Scenario_Test', $third);
-
-        $notExisting = $group->seek(404);
-        $this->assertNull($notExisting);
-
-        // Go to the 3thd item.
-        $group->next();
-        $this->assertTrue($group->valid());
-
-        // Collection should be at the end.
-        $group->next();
-        $this->assertFalse($group->valid());
-
-
-        // Rewind the collection.
-        $group->rewind();
-        $this->assertEquals(0, $group->key());
-
-        // Loop trough collection.
-        $i = 0;
-        foreach ($group as $key => $test) {
-            $this->assertEquals($i, $key);
-            $i++;
-        }
-    }
-
 
     /**
      * Get a group config array.
      *
      * @return array
      */
-    protected function getGroupTestsConfig()
+    protected function getTestsConfig()
     {
         $tests = array(
             array(
