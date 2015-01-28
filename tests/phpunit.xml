@@ -3,4 +3,8 @@
     <testsuite name="Hostingcheck">
         <directory>./hostingcheck</directory>
     </testsuite>
+
+    <logging>
+        <log type="coverage-html" target="coverage" />
+    </logging>
 </phpunit>
