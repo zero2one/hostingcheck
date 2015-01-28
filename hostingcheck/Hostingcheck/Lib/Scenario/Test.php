@@ -34,21 +34,14 @@ class Hostingcheck_Scenario_Test
      *
      * @var array
      */
-    protected $infoArguments;
+    protected $arguments;
 
     /**
-     * The optional validator to validate the info.
+     * The optional validators to validate the info.
      *
      * @var string
      */
-    protected $validator;
-
-    /**
-     * The arguments for the optional validator.
-     *
-     * @var array
-     */
-    protected $validatorArguments;
+    protected $validators;
 
 
     /**
@@ -58,26 +51,17 @@ class Hostingcheck_Scenario_Test
      *     The human title for the test.
      * @param string $info
      *     The info class name.
-     * @param array $infoArguments
+     * @param array $arguments
      *     The optional arguments to retrieve the info.
-     * @param string $validator
-     *     The optional validator to validate the info.
-     * @param array $validatorArguments
-     *     The optional arguments for the validator.
+     * @param array $validators
+     *     An optional array configuration of validators.
      */
-    public function __construct(
-        $title,
-        $info,
-        $infoArguments = array(),
-        $validator = null,
-        $validatorArguments = array()
-    )
+    public function __construct($title, $info, $arguments = array(), $validators = array())
     {
         $this->title = $title;
         $this->info = $info;
-        $this->infoArguments = $infoArguments;
-        $this->validator = $validator;
-        $this->validatorArguments = $validatorArguments;
+        $this->arguments = $arguments;
+        $this->validators = new Hostingcheck_Scenario_Validators($validators);
     }
 
     /**
@@ -105,28 +89,18 @@ class Hostingcheck_Scenario_Test
      *
      * @return array
      */
-    public function infoArguments()
+    public function arguments()
     {
-        return $this->infoArguments;
+        return $this->arguments;
     }
 
     /**
      * Get the validator to validate the retrieved info.
      *
-     * @return string
+     * @return Hostingcheck_Scenario_Validators
      */
-    public function validator()
+    public function validators()
     {
-        return $this->validator;
-    }
-
-    /**
-     * Get the validator arguments.
-     *
-     * @return array
-     */
-    public function validatorArguments()
-    {
-        return $this->validatorArguments;
+        return $this->validators;
     }
 }

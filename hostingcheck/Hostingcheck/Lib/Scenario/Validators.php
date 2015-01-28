@@ -9,18 +9,18 @@
 
 
 /**
- * A Seekable collection of tests.
+ * A Seekable collection of test validators.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Scenario_Tests implements Countable, SeekableIterator
+class Hostingcheck_Scenario_Validators implements Countable, SeekableIterator
 {
     /**
-     * The tests in the collection
+     * The validators in the collection
      *
      * @var array
      */
-    protected $tests = array();
+    protected $validators = array();
 
     /**
      * The current position in the iterator array.
@@ -33,32 +33,26 @@ class Hostingcheck_Scenario_Tests implements Countable, SeekableIterator
     /**
      * Class constructor.
      *
-     * @param array $tests
-     *     The tests configuration (array of settings).
+     * @param array $validators
+     *     The validators configuration (array of settings).
      */
-    public function __construct($tests)
+    public function __construct($validators)
     {
-        foreach ($tests as $test) {
-            if (empty($test['title'])) {
+        foreach ($validators as $info) {
+            if (empty($info['validator'])) {
                 continue;
             }
-            if (empty($test['info'])) {
+            $validatorClass = $info['validator'];
+
+            if (!class_exists($validatorClass)) {
                 continue;
             }
 
-            $arguments = !empty($test['info args'])
-                ? $test['info args']
-                : array();
-            $validators = !empty($test['validators'])
-                ? $test['validators']
-                : array();
+            if (empty($info['args'])) {
+                $info['args'] = array();
+            }
 
-            $this->tests[] = new Hostingcheck_Scenario_Test(
-                $test['title'],
-                $test['info'],
-                $test['info args'],
-                $validators
-            );
+            $this->validators[] = new $validatorClass($info['args']);
         }
 
         $this->rewind();
@@ -77,7 +71,7 @@ class Hostingcheck_Scenario_Tests implements Countable, SeekableIterator
      * @return Hostingcheck_Scenario_Group
      */
     public function current() {
-        return $this->tests[$this->position];
+        return $this->validators[$this->position];
     }
 
     /**
@@ -100,7 +94,7 @@ class Hostingcheck_Scenario_Tests implements Countable, SeekableIterator
      * {@inheritdoc}
      */
     function valid() {
-        return isset($this->tests[$this->position]);
+        return isset($this->validators[$this->position]);
     }
 
     /**
@@ -108,7 +102,7 @@ class Hostingcheck_Scenario_Tests implements Countable, SeekableIterator
      */
     public function count()
     {
-        return count($this->tests);
+        return count($this->validators);
     }
 
     /**
@@ -122,10 +116,10 @@ class Hostingcheck_Scenario_Tests implements Countable, SeekableIterator
      */
     public function seek($position)
     {
-        if (!isset($this->tests[$position])) {
+        if (!isset($this->validators[$position])) {
             return null;
         }
 
-        return $this->tests[$position];
+        return $this->validators[$position];
     }
 }
