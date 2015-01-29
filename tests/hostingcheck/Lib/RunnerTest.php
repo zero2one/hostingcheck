@@ -15,16 +15,41 @@
  */
 class Hostingcheck_RunnerTest extends PHPUnit_Framework_TestCase {
     /**
-     * Test the constructor.
+     * Test the Run method.
      */
-    public function testConstructor()
+    public function testRun()
     {
-        $scenario = new Hostingcheck_Scenario(array());
+        $config = array(
+            'group1' => array(
+                'title' => 'Test Group 1',
+                'tests' => array(
+                    array(
+                        'title' => 'Group 1 Info text 1',
+                        'info' => 'Hostingcheck_Info_Text',
+                        'info args' => array('text' => 'Group 1 Dummy text 1'),
+                    ),
+                ),
+            ),
+            'group2' => array(
+                'title' => 'Test Group 2',
+                'tests' => array(
+                    array(
+                        'title' => 'Group 2 Info text 1',
+                        'info' => 'Hostingcheck_Info_Text',
+                        'info args' => array('text' => 'Group 2 Dummy text 1'),
+                    ),
+                    array(
+                        'title' => 'Group 2 Info text 2',
+                        'info' => 'Hostingcheck_Info_Text',
+                        'info args' => array('text' => 'Group 2 Dummy text 2'),
+                    ),
+                ),
+            ),
+        );
+
+        $scenario = new Hostingcheck_Scenario($config);
         $runner = new Hostingcheck_Runner($scenario);
-
-        $this->assertEquals($scenario, $runner->scenario());
-
-        $results = $runner->results();
-        $this->assertInstanceOf('Hostingcheck_Results', $results);
+        $results = $runner->run();
+        $this->assertCount(2, $results);
     }
 }

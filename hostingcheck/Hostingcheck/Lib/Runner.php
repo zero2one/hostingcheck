@@ -23,13 +23,6 @@ class Hostingcheck_Runner
     protected $scenario;
 
     /**
-     * The results collection.
-     *
-     * @var Hostingcheck_Results
-     */
-    protected $results;
-
-    /**
      * Class constructor.
      *
      * @param Hostingcheck_Scenario $scenario
@@ -38,26 +31,22 @@ class Hostingcheck_Runner
     public function __construct(Hostingcheck_Scenario $scenario)
     {
         $this->scenario = $scenario;
-        $this->results = new Hostingcheck_Results();
     }
 
     /**
-     * Get the scenario used in this runner.
-     *
-     * @return Hostingcheck_Scenario
-     */
-    public function scenario()
-    {
-        return $this->scenario;
-    }
-
-    /**
-     * Get the results.
+     * Run the runner.
      *
      * @return Hostingcheck_Results
      */
-    public function results()
+    public function run()
     {
-        return $this->results;
+        $results = new Hostingcheck_Results();
+
+        foreach ($this->scenario as $group) {
+            $runner = new Hostingcheck_Runner_Group($group);
+            $results->add($runner->run());
+        }
+
+        return $results;
     }
 }
