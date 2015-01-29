@@ -34,7 +34,7 @@ class Hostingcheck_Scenario_Tests implements Countable, SeekableIterator
      * Class constructor.
      *
      * @param array $tests
-     *     The tests configuration (array of settings).
+     *     The tests configuration (array of test settings).
      */
     public function __construct($tests)
     {
@@ -46,18 +46,18 @@ class Hostingcheck_Scenario_Tests implements Countable, SeekableIterator
                 continue;
             }
 
-            $arguments = !empty($test['info args'])
-                ? $test['info args']
-                : array();
-            $validators = !empty($test['validators'])
-                ? $test['validators']
-                : array();
+            if (empty($test['info args'])) {
+                $test['info args'] = array();
+            }
+            if (empty($test['validators'])) {
+                $test['validators'] = array();
+            }
 
             $this->tests[] = new Hostingcheck_Scenario_Test(
                 $test['title'],
                 $test['info'],
                 $test['info args'],
-                $validators
+                $test['validators']
             );
         }
 
@@ -74,7 +74,7 @@ class Hostingcheck_Scenario_Tests implements Countable, SeekableIterator
     /**
      * {@inheritdoc}
      *
-     * @return Hostingcheck_Scenario_Group
+     * @return Hostingcheck_Scenario_Test
      */
     public function current() {
         return $this->tests[$this->position];

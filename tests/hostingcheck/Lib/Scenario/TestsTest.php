@@ -89,7 +89,6 @@ class Hostingcheck_Scenario_Tests_TestCase extends PHPUnit_Framework_TestCase
             array(
                 'title' => 'Info text 1',
                 'info' => 'Hostingcheck_Info_Text',
-                'info args' => array('info' => 'Dummy text 1'),
             ),
             array(
                 'title' => 'Info text 2',
