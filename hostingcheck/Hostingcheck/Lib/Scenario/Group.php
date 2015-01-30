@@ -12,6 +12,8 @@
  * A group of tests.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
+ *
+ * @wip
  */
 class Hostingcheck_Scenario_Group
 {
@@ -43,14 +45,14 @@ class Hostingcheck_Scenario_Group
      *     The machine name.
      * @param string $title
      *     The human title for the group.
-     * @param array $tests
+     * @param Hostingcheck_Scenario_Tests $tests
      *     The tests configuration (array of settings).
      */
-    public function __construct($name, $title, $tests)
+    public function __construct($name, $title, Hostingcheck_Scenario_Tests $tests)
     {
         $this->name = $name;
         $this->title = $title;
-        $this->tests = new Hostingcheck_Scenario_Tests($tests);
+        $this->tests = $tests;
     }
 
     /**

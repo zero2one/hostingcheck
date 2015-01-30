@@ -20,9 +20,8 @@ class Hostingcheck_Scenario_Validators_TestCase extends PHPUnit_Framework_TestCa
      */
     public function testConstructor()
     {
-        $validators = $this->getValidatorsConfig();
-        $collection = new Hostingcheck_Scenario_Validators($validators);
-        $this->assertCount(3, $collection);
+        $collection = new Hostingcheck_Scenario_Validators();
+        $this->assertCount(0, $collection);
     }
 
     /**
@@ -30,27 +29,34 @@ class Hostingcheck_Scenario_Validators_TestCase extends PHPUnit_Framework_TestCa
      */
     public function testSeekable()
     {
-        $validators = $this->getValidatorsConfig();
-        $collection = new Hostingcheck_Scenario_Validators($validators);
+        $collection = new Hostingcheck_Scenario_Validators();
 
+        $validate1 = new Hostingcheck_Validate_NotEmpty();
+        $collection->add($validate1);
+        $validate2 = new Hostingcheck_Validate_ByteSize();
+        $collection->add($validate2);
+        $validate3 = new Hostingcheck_Validate_Version();
+        $collection->add($validate3);
+
+        // Countable.
         $this->assertCount(3, $collection);
 
         // Test first test in the group.
         $this->assertEquals(0, $collection->key());
         $this->assertTrue($collection->valid());
         $first = $collection->current();
-        $this->assertInstanceOf('Hostingcheck_Validate_Interface', $first);
+        $this->assertEquals($validate1, $first);
 
         // Test second.
         $collection->next();
         $this->assertEquals(1, $collection->key());
         $this->assertTrue($collection->valid());
         $second = $collection->current();
-        $this->assertInstanceOf('Hostingcheck_Validate_Interface', $second);
+        $this->assertEquals($validate2, $second);
 
         // Seek specific test by the key.
         $third = $collection->seek(2);
-        $this->assertInstanceOf('Hostingcheck_Validate_Interface', $third);
+        $this->assertEquals($validate3, $third);
 
         $notExisting = $collection->seek(404);
         $this->assertNull($notExisting);
@@ -63,7 +69,6 @@ class Hostingcheck_Scenario_Validators_TestCase extends PHPUnit_Framework_TestCa
         $collection->next();
         $this->assertFalse($collection->valid());
 
-
         // Rewind the collection.
         $collection->rewind();
         $this->assertEquals(0, $collection->key());
@@ -74,39 +79,5 @@ class Hostingcheck_Scenario_Validators_TestCase extends PHPUnit_Framework_TestCa
             $this->assertEquals($i, $key);
             $i++;
         }
-    }
-
-
-    /**
-     * Get a tests config array.
-     *
-     * @return array
-     */
-    protected function getValidatorsConfig()
-    {
-        $validators = array(
-            array(
-                'validator' => 'Hostingcheck_Validate_ByteSize',
-                'args' => array('min' => '15M'),
-            ),
-            array(
-                'validator' => 'Hostingcheck_Validate_Version',
-                'args' => array('min' => '1.0', 'max' => '99.99'),
-            ),
-            array(
-                'validator' => 'Hostingcheck_Validate_NotEmpty',
-            ),
-
-            // Non existing validator.
-            array(
-                'validator' => 'Foo_Bar_NonExisting_Validator',
-            ),
-            // Missing validator class name.
-            array(
-                'args' => array('min' => '1.0', 'max' => '99.99'),
-            ),
-        );
-
-        return $validators;
     }
 }

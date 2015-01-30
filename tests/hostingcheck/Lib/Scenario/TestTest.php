@@ -21,22 +21,17 @@ class Hostingcheck_Scenario_Test_TestCase extends PHPUnit_Framework_TestCase
     public function testConstructor()
     {
         $title = 'Info test';
-        $info = 'Hostingcheck_Info_Text';
-        $arguments = array('text' => 'Test 1234');
-        $validators = array();
+        $info = new Hostingcheck_Info_Text();
+        $validators = new Hostingcheck_Scenario_Validators();
 
         $test = new Hostingcheck_Scenario_Test(
             $title,
             $info,
-            $arguments,
             $validators
         );
 
         $this->assertEquals($title, $test->title());
         $this->assertEquals($info, $test->info());
-        $this->assertEquals($arguments, $test->arguments());
-
-        $validators = $test->validators();
-        $this->assertInstanceOf('Hostingcheck_Scenario_Validators', $validators);
+        $this->assertEquals($validators, $test->validators());
     }
 }

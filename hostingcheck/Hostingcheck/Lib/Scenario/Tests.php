@@ -32,36 +32,21 @@ class Hostingcheck_Scenario_Tests implements Countable, SeekableIterator
 
     /**
      * Class constructor.
-     *
-     * @param array $tests
-     *     The tests configuration (array of test settings).
      */
-    public function __construct($tests)
+    public function __construct()
     {
-        foreach ($tests as $test) {
-            if (empty($test['title'])) {
-                continue;
-            }
-            if (empty($test['info'])) {
-                continue;
-            }
-
-            if (empty($test['info args'])) {
-                $test['info args'] = array();
-            }
-            if (empty($test['validators'])) {
-                $test['validators'] = array();
-            }
-
-            $this->tests[] = new Hostingcheck_Scenario_Test(
-                $test['title'],
-                $test['info'],
-                $test['info args'],
-                $test['validators']
-            );
-        }
-
+        $this->tests = array();
         $this->rewind();
+    }
+
+    /**
+     * Add a test scenario to the collection.
+     *
+     * @param Hostingcheck_Scenario_Test $test
+     */
+    public function add(Hostingcheck_Scenario_Test $test)
+    {
+        $this->tests[] = $test;
     }
 
     /**

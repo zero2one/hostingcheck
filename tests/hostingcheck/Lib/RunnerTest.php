@@ -19,35 +19,22 @@ class Hostingcheck_RunnerTest extends PHPUnit_Framework_TestCase {
      */
     public function testRun()
     {
-        $config = array(
-            'group1' => array(
-                'title' => 'Test Group 1',
-                'tests' => array(
-                    array(
-                        'title' => 'Group 1 Info text 1',
-                        'info' => 'Hostingcheck_Info_Text',
-                        'info args' => array('text' => 'Group 1 Dummy text 1'),
-                    ),
-                ),
-            ),
-            'group2' => array(
-                'title' => 'Test Group 2',
-                'tests' => array(
-                    array(
-                        'title' => 'Group 2 Info text 1',
-                        'info' => 'Hostingcheck_Info_Text',
-                        'info args' => array('text' => 'Group 2 Dummy text 1'),
-                    ),
-                    array(
-                        'title' => 'Group 2 Info text 2',
-                        'info' => 'Hostingcheck_Info_Text',
-                        'info args' => array('text' => 'Group 2 Dummy text 2'),
-                    ),
-                ),
-            ),
+        $scenario = new Hostingcheck_Scenario();
+        $scenario->add(
+            new Hostingcheck_Scenario_Group(
+                'group1',
+                'Group 1',
+                new Hostingcheck_Scenario_Tests()
+            )
+        );
+        $scenario->add(
+            new Hostingcheck_Scenario_Group(
+                'group2',
+                'Group 2',
+                new Hostingcheck_Scenario_Tests()
+            )
         );
 
-        $scenario = new Hostingcheck_Scenario($config);
         $runner = new Hostingcheck_Runner($scenario);
         $results = $runner->run();
         $this->assertCount(2, $results);

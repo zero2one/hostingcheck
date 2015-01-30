@@ -20,22 +20,19 @@ class Hostingcheck_Runner_Group_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testRun()
     {
-        $scenario = new Hostingcheck_Scenario_Group(
-            'test',
-            'Test Group',
-            array(
-                array(
-                    'title'      => 'Info text',
-                    'info'       => 'Hostingcheck_Info_Text',
-                    'info args'  => array('info' => 'Some smalltalk info text'),
-                ),
-                array(
-                    'title'      => 'Report Date',
-                    'info'       => 'Hostingcheck_Info_DateTime',
-                ),
-            )
-        );
+        $tests = new Hostingcheck_Scenario_Tests();
+        $tests->add(new Hostingcheck_Scenario_Test(
+            'Info text',
+            new Hostingcheck_Info_Text(),
+            new Hostingcheck_Scenario_Validators()
+        ));
+        $tests->add(new Hostingcheck_Scenario_Test(
+            'Report Date',
+            new Hostingcheck_Info_DateTime(),
+            new Hostingcheck_Scenario_Validators()
+        ));
 
+        $scenario = new Hostingcheck_Scenario_Group('group1', 'Group 1', $tests);
         $runner = new Hostingcheck_Runner_Group($scenario);
 
         $result = $runner->run();

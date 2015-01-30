@@ -41,9 +41,7 @@ class Hostingcheck_Runner_Test
      */
     public function run()
     {
-        $infoClass = $this->scenario->info();
-        $info = new $infoClass($this->scenario->arguments());
-        /* @var $info Hostingcheck_Info_Interface */
+        $info = $this->scenario->info();
 
         $validators = $this->scenario->validators();
         if (count($validators) === 0) {

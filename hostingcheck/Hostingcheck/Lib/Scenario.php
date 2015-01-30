@@ -41,31 +41,24 @@ class Hostingcheck_Scenario implements SeekableIterator, Countable
 
     /**
      * Class constructor.
-     *
-     * @param array $scenario
-     *     The scenario config array to use for this object.
      */
-    public function __construct($scenario)
+    public function __construct()
     {
-        foreach ($scenario as $name => $info) {
-            if (empty($info['title'])) {
-                continue;
-            }
-            if (empty($info['tests'])) {
-                continue;
-            }
-
-            $this->groups[$name] = new Hostingcheck_Scenario_Group(
-                $name,
-                $info['title'],
-                $info['tests']
-            );
-        }
-
-        $this->keys = array_keys($this->groups);
+        $this->groups = array();
+        $this->keys = array();
         $this->rewind();
     }
 
+    /**
+     * Add a group to the scenario.
+     *
+     * @param Hostingcheck_Scenario_Group $group
+     */
+    public function add($group)
+    {
+        $this->groups[$group->name()] = $group;
+        $this->keys = array_keys($this->groups);
+    }
 
     /**
      * {@inheritdoc}

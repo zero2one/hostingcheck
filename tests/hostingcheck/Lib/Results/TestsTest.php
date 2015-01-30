@@ -99,25 +99,21 @@ class Hostingcheck_Results_Tests_TestCase extends PHPUnit_Framework_TestCase
     /**
      * Create a dummy Hostingcheck_Results_Test() object.
      *
-     * @param string $name
-     *     Name of the test.
-     * @param string $info
-     *     The info class name.
-     *
      * @return Hostingcheck_Results_Test
      */
-    protected function createTestResult($name = null, $info = null)
+    protected function createTestResult()
     {
-        if (empty($name)) {
-            $name = md5(mt_rand(0, 5000) . time());
-        }
-        if (empty($info)) {
-            $info = 'Hostingcheck_Info_Text';
-        }
+        $name = md5(mt_rand(0, 5000) . time());
+
+        $scenario = new Hostingcheck_Scenario_Test(
+            $name,
+            new Hostingcheck_Info_Text(),
+            new Hostingcheck_Scenario_Validators()
+        );
 
         $testResult = new Hostingcheck_Results_Test(
-            new Hostingcheck_Scenario_Test($name, $info),
-            new $info(),
+            $scenario,
+            $scenario->info(),
             new Hostingcheck_Result_Info()
         );
 

@@ -20,7 +20,7 @@ class Hostingcheck_Scenario_Validators implements Countable, SeekableIterator
      *
      * @var array
      */
-    protected $validators = array();
+    protected $validators;
 
     /**
      * The current position in the iterator array.
@@ -32,30 +32,21 @@ class Hostingcheck_Scenario_Validators implements Countable, SeekableIterator
 
     /**
      * Class constructor.
-     *
-     * @param array $validators
-     *     The validators configuration (array of settings).
      */
-    public function __construct($validators)
+    public function __construct()
     {
-        foreach ($validators as $info) {
-            if (empty($info['validator'])) {
-                continue;
-            }
-            $validatorClass = $info['validator'];
-
-            if (!class_exists($validatorClass)) {
-                continue;
-            }
-
-            if (empty($info['args'])) {
-                $info['args'] = array();
-            }
-
-            $this->validators[] = new $validatorClass($info['args']);
-        }
-
+        $this->validators = array();
         $this->rewind();
+    }
+
+    /**
+     * Add a validator to the array.
+     *
+     * @param Hostingcheck_Validate_Interface $validate
+     */
+    public function add(Hostingcheck_Validate_Interface $validate)
+    {
+        $this->validators[] = $validate;
     }
 
     /**
@@ -68,7 +59,7 @@ class Hostingcheck_Scenario_Validators implements Countable, SeekableIterator
     /**
      * {@inheritdoc}
      *
-     * @return Hostingcheck_Scenario_Group
+     * @return Hostingcheck_Validate_Interface
      */
     public function current() {
         return $this->validators[$this->position];

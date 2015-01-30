@@ -20,7 +20,11 @@ class Hostingcheck_Results_Group_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $scenario = new Hostingcheck_Scenario_Group('test', 'Test', array());
+        $scenario = new Hostingcheck_Scenario_Group(
+            'test',
+            'Test',
+            new Hostingcheck_Scenario_Tests()
+        );
         $results = new Hostingcheck_Results_Group($scenario);
 
         $this->assertEquals($scenario, $results->scenario());

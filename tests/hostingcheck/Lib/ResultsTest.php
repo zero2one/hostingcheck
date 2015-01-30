@@ -33,17 +33,11 @@ class Hostingcheck_Results_TestCase extends PHPUnit_Framework_TestCase
         $results = new Hostingcheck_Results($scenario);
 
         // Add some group results.
-        $group1 = new Hostingcheck_Results_Group(
-            new Hostingcheck_Scenario_Group('group1', 'Group 1', array())
-        );
+        $group1 = $this->createGroupResults('group1', 'Group 1');
         $results->add($group1);
-        $group2 = new Hostingcheck_Results_Group(
-            new Hostingcheck_Scenario_Group('group2', 'Group 2', array())
-        );
+        $group2 = $this->createGroupResults('group2', 'Group 2');
         $results->add($group2);
-        $group3 = new Hostingcheck_Results_Group(
-            new Hostingcheck_Scenario_Group('group3', 'Group 3', array())
-        );
+        $group3 = $this->createGroupResults('group3', 'Group 3');
         $results->add($group3);
 
         // Countable.
@@ -81,5 +75,27 @@ class Hostingcheck_Results_TestCase extends PHPUnit_Framework_TestCase
             $this->assertEquals('group' . $i, $name);
             $i++;
         }
+    }
+
+    /**
+     * Create a new group scenario.
+     *
+     * @param string $name
+     *     The machine name.
+     * @param string $title
+     *     The human name.
+     *
+     * @return Hostincheck_Scenario_Group
+     */
+    protected function createGroupResults($name, $title)
+    {
+        $scenario = new Hostingcheck_Scenario_Group(
+            $name,
+            $title,
+            new Hostingcheck_Scenario_Tests()
+        );
+
+        $results = new Hostingcheck_Results_Group($scenario);
+        return $results;
     }
 }

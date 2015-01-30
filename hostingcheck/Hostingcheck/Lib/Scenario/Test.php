@@ -23,18 +23,11 @@ class Hostingcheck_Scenario_Test
     protected $title;
 
     /**
-     * The class name to retrieve the info.
+     * The info object.
      *
-     * @var string
+     * @var Hostingcheck_Info_Interface
      */
     protected $info;
-
-    /**
-     * The optional arguments to retrieve the info.
-     *
-     * @var array
-     */
-    protected $arguments;
 
     /**
      * The optional validators to validate the info.
@@ -49,19 +42,20 @@ class Hostingcheck_Scenario_Test
      *
      * @param string $title
      *     The human title for the test.
-     * @param string $info
-     *     The info class name.
-     * @param array $arguments
-     *     The optional arguments to retrieve the info.
-     * @param array $validators
-     *     An optional array configuration of validators.
+     * @param Hostingcheck_Info_Interface $info
+     *     The info object.
+     * @param Hostingcheck_Scenario_Validators
+     *     The validators to use in the test.
      */
-    public function __construct($title, $info, $arguments = array(), $validators = array())
+    public function __construct(
+        $title,
+        Hostingcheck_Info_Interface $info,
+        Hostingcheck_Scenario_Validators $validators
+    )
     {
         $this->title = $title;
         $this->info = $info;
-        $this->arguments = $arguments;
-        $this->validators = new Hostingcheck_Scenario_Validators($validators);
+        $this->validators = $validators;
     }
 
     /**
@@ -75,23 +69,13 @@ class Hostingcheck_Scenario_Test
     }
 
     /**
-     * Get the info class name for this test.
+     * Get the info object for this test.
      *
-     * @return string
+     * @return Hostingcheck_Info_Interface
      */
     public function info()
     {
         return $this->info;
-    }
-
-    /**
-     * Get the arguments to use when retrieving the info.
-     *
-     * @return array
-     */
-    public function arguments()
-    {
-        return $this->arguments;
     }
 
     /**

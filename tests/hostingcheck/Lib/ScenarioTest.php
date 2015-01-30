@@ -12,6 +12,8 @@
  * Tests for Hostingcheck_Scenario class.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
+ *
+ * @group api
  */
 class Hostingcheck_Scenario_TestCase extends PHPUnit_Framework_TestCase
 {
@@ -20,26 +22,8 @@ class Hostingcheck_Scenario_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $test = array(
-            'title' => 'Info text',
-            'info' => 'Hostingcheck_Info_Text',
-            'info args' => array('info' => 'Dummy text'),
-        );
-        $scenario = array(
-            'valid' => array(
-                'title' => 'Valid test',
-                'tests' => array($test),
-            ),
-            'invalid-test' => array(
-                'title' => 'No tests',
-            ),
-            'invalid-title' => array(
-                'tests' => array(),
-            ),
-        );
-
-        $scenario = new Hostingcheck_Scenario($scenario);
-        $this->assertCount(1, $scenario);
+        $scenario = new Hostingcheck_Scenario();
+        $this->assertCount(0, $scenario);
     }
 
     /**
@@ -47,48 +31,31 @@ class Hostingcheck_Scenario_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testSeekable()
     {
-        $test = array(
-            'title' => 'Info text',
-            'info' => 'Hostingcheck_Info_Text',
-            'info args' => array('info' => 'Dummy text'),
-        );
-        $scenario = array(
-            'group1' => array(
-                'title' => 'Valid test',
-                'tests' => array($test),
-            ),
-            'group2' => array(
-                'title' => 'Valid test',
-                'tests' => array($test),
-            ),
-            'group3' => array(
-                'title' => 'Valid test',
-                'tests' => array($test),
-            ),
-        );
+        $scenario = new Hostingcheck_Scenario();
 
-        $scenario = new Hostingcheck_Scenario($scenario);
+        $group1 = $this->createGroup('group1', 'Group 1');
+        $scenario->add($group1);
+        $group2 = $this->createGroup('group2', 'Group 2');
+        $scenario->add($group2);
+        $group3 = $this->createGroup('group3', 'Group 3');
+        $scenario->add($group3);
+
+        // Test countable.
         $this->assertCount(3, $scenario);
 
         // First element should be by default group1.
         $this->assertEquals('group1', $scenario->key());
         $this->assertTrue($scenario->valid());
+        $this->assertEquals($group1, $scenario->current());
 
         // Go to the next group, that should be group2.
         $scenario->next();
         $this->assertEquals('group2', $scenario->key());
-        $current = $scenario->current();
-        $this->assertInstanceOf(
-            'Hostingcheck_Scenario_Group',
-            $current
-        );
+        $this->assertEquals($group2, $scenario->current());
 
         // Seek a specific group by its machine name.
-        $group3 = $scenario->seek('group3');
-        $this->assertInstanceOf(
-            'Hostingcheck_Scenario_Group',
-            $current
-        );
+        $third = $scenario->seek('group3');
+        $this->assertEquals($group3, $third);
 
         // A non existing machine name should return null.
         $this->assertNull($scenario->seek('FooBar'));
@@ -110,4 +77,23 @@ class Hostingcheck_Scenario_TestCase extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Helper to create a new group based on the given params.
+     *
+     * @param string $name
+     *     Machine name of the group.
+     * @param string $title
+     *     Human name of the group.
+     *
+     * @return Hostingcheck_Scenario_Group
+     */
+    protected function createGroup($name, $title)
+    {
+        $group = new Hostingcheck_Scenario_Group(
+            $name,
+            $title,
+            new Hostingcheck_Scenario_Tests()
+        );
+        return $group;
+    }
 }

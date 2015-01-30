@@ -22,12 +22,11 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
     {
         $scenario = new Hostingcheck_Scenario_Test(
             'Test info',
-            'Hostingcheck_Info_Text',
-            array('text' => 'Test text info'),
-            array()
+            new Hostingcheck_Info_Text(array('text' => 'Test text info')),
+            new Hostingcheck_Scenario_Validators()
         );
-        $runner = new Hostingcheck_Runner_Test($scenario);
 
+        $runner = new Hostingcheck_Runner_Test($scenario);
         $result = $runner->run();
         $this->assertInstanceOf('Hostingcheck_Results_Test', $result);
         $this->assertInstanceOf('Hostingcheck_Info_Text', $result->info());
@@ -39,18 +38,16 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testRunWithScenarioWithValidValidators()
     {
+        $validators = new Hostingcheck_Scenario_Validators();
+        $validators->add(new Hostingcheck_Validate_NotEmpty());
+
         $scenario = new Hostingcheck_Scenario_Test(
             'Test info',
-            'Hostingcheck_Info_Text',
-            array('text' => 2),
-            array(
-                array(
-                    'validator' => 'Hostingcheck_Validate_NotEmpty',
-                ),
-            )
+            new Hostingcheck_Info_Text(array('text' => 2)),
+            $validators
         );
-        $runner = new Hostingcheck_Runner_Test($scenario);
 
+        $runner = new Hostingcheck_Runner_Test($scenario);
         $result = $runner->run();
         $this->assertInstanceOf('Hostingcheck_Results_Test', $result);
         $this->assertInstanceOf('Hostingcheck_Info_Text', $result->info());
@@ -62,18 +59,16 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testRunWithScenarioWithInvalidValidators()
     {
+        $validators = new Hostingcheck_Scenario_Validators();
+        $validators->add(new Hostingcheck_Validate_NotEmpty());
+
         $scenario = new Hostingcheck_Scenario_Test(
             'Test info',
-            'Hostingcheck_Info_Text',
-            array(),
-            array(
-                array(
-                    'validator' => 'Hostingcheck_Validate_NotEmpty',
-                ),
-            )
+            new Hostingcheck_Info_Text(),
+            $validators
         );
-        $runner = new Hostingcheck_Runner_Test($scenario);
 
+        $runner = new Hostingcheck_Runner_Test($scenario);
         $result = $runner->run();
         $this->assertInstanceOf('Hostingcheck_Results_Test', $result);
         $this->assertInstanceOf('Hostingcheck_Info_Text', $result->info());

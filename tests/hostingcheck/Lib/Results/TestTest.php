@@ -22,8 +22,8 @@ class Hostingcheck_Results_Test_TestCase extends PHPUnit_Framework_TestCase
     {
         $scenario = new Hostingcheck_Scenario_Test(
             'test',
-            'Hostingcheck_Info_Text',
-            array('text' => 'Scenario Test')
+            new Hostingcheck_Info_Text(array('text' => 'Scenario Test')),
+            new Hostingcheck_Scenario_Validators()
         );
         $info = new Hostingcheck_Info_Text(array('text' => 'Test info'));
         $result = new Hostingcheck_Result_Info();
