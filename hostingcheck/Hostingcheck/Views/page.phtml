@@ -37,14 +37,14 @@
       ul.controls a { display: block; border: 2px solid #7777AA; background-color: #CCCCCC; font-weight: bold; text-decoration: none; padding: .2em .5em; }
       ul.controls a:hover { background-color: #FFF; }
       
-      h2.ok, li.ok, 
-      tr.ok .result { background-color: #CCFF99; }
+      h2.success, li.success,
+      tr.success .result { background-color: #CCFF99; }
       h2.optional, li.optional, 
       tr.optional .result { background-color: #CCFFFF; } 
       h2.warning, li.warning, 
       tr.warning .result { background-color: #FFCC66; }
-      h2.error, li.error, 
-      tr.error .result { background-color: #FF9999; font-weight: bold; }
+      h2.failure, li.failure,
+      tr.failure .result { background-color: #FF9999; font-weight: bold; }
       
       .form-item, .form-buttons { margin: 0 0 1em 0; }
       .form-buttons { padding-left: 100px; }
@@ -83,9 +83,9 @@
     </div></div>
     
   <?php endif; ?>
-  
+
   <?php print $content; ?>
-  
+
   </body>
   
 </html>

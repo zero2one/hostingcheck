@@ -167,6 +167,12 @@ class Hostingcheck_Controller
      */
     public function actionReport()
     {
+        require_once HOSTINGCHECK_BASEPATH . 'Hostingcheck/scenario.php';
+        $parser = new Hostingcheck_Scenario_Parser();
+        $scenario = $parser->scenario($scenario);
+        $runner = new Hostingcheck_Runner($scenario);
+        $this->view->results = $runner->run();
+
         return $this->view->renderTemplate('results');
     }
 

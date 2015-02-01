@@ -37,7 +37,7 @@ abstract class Hostingcheck_Result_Abstract
     /**
      * {@inheritDoc}
      */
-    public function getMessages()
+    public function messages()
     {
         return $this->messages;
     }

@@ -21,10 +21,10 @@ class Hostingcheck_Result_Failure_TestCase extends PHPUnit_Framework_TestCase
     public function testGetMessages()
     {
         $result = new Hostingcheck_Result_Failure();
-        $this->assertEquals(array(), $result->getMessages());
+        $this->assertEquals(array(), $result->messages());
 
         $messages = array('Foo message.', 'Bar message.');
         $result = new Hostingcheck_Result_Failure($messages);
-        $this->assertEquals($messages, $result->getMessages());
+        $this->assertEquals($messages, $result->messages());
     }
 }

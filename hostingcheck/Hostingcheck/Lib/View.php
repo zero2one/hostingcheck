@@ -135,4 +135,26 @@ class Hostingcheck_View
     {
         $this->vars[$name] = $value;
     }
+
+    /**
+     * Magic function to call view helpers by their classname.
+     *
+     * Example:
+     * Calling the Hostingcheck_View_ResultClassName can be done by calling
+     * $view->resultClassName()
+     *
+     * @param string $name
+     *     The helper name.
+     * @param array $arguments
+     *     The parameters (if any).
+     *
+     * @return mixed
+     *     The result of the helper output.
+     */
+    public function __call($name, $arguments = array())
+    {
+        $className = 'Hostingcheck_View_' . ucfirst($name);
+        $class = new $className();
+        return $class->$name($arguments);
+    }
 }

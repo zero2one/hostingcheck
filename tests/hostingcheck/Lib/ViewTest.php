@@ -54,4 +54,16 @@ class Hostingcheck_View_TestCase extends PHPUnit_Framework_TestCase
         $output = $view->renderTemplate('script', 'template-custom');
         $this->assertEquals('<section><p>TEST 123</p></section>', $output);
     }
+
+    /**
+     * Test the __call() magic method run helper plugins.
+     */
+    public function testExistingHelper()
+    {
+        $path = __DIR__ . '/../Views';
+        $view = new Hostingcheck_View($path, 'template');
+
+        $result = new Hostingcheck_Result_Failure();
+        $this->assertEquals('failure', $view->resultCssClass($result));
+    }
 }

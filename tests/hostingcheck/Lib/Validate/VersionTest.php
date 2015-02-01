@@ -26,7 +26,7 @@ class Hostingcheck_Validate_Version_TestCase extends PHPUnit_Framework_TestCase
         $validator = new Hostingcheck_Validate_Version($arguments);
         $result = $validator->validate($value);
         $this->assertInstanceOf($resultType, $result);
-        $this->assertEquals($messages, $result->getMessages());
+        $this->assertEquals($messages, $result->messages());
     }
 
     /**

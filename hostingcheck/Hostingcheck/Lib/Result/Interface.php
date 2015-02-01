@@ -29,5 +29,5 @@ interface Hostingcheck_Result_Interface
      * @return array
      *      Array of all messages in the result.
      */
-    public function getMessages();
+    public function messages();
 }
