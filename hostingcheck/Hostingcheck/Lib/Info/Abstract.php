@@ -29,6 +29,17 @@ abstract class Hostingcheck_Info_Abstract
      */
     public function getValue()
     {
+        if (!($this->value instanceof Hostingcheck_Value_Interface)) {
+            $this->collectValue();
+        }
         return $this->value;
     }
+
+    /**
+     * Helper to extract and create the value.
+     *
+     * Will only be called the first time the getValue() method is called.
+     */
+    protected function collectValue()
+    {}
 }

@@ -16,6 +16,21 @@
 class Hostingcheck_Info_Server_Disk extends Hostingcheck_Info_Abstract
 {
     /**
+     * Type of disk information that will be collected.
+     *
+     * @var string
+     */
+    protected $type = 'total';
+
+    /**
+     * File path the information should be collected about.
+     *
+     * @var string
+     */
+    protected $path;
+
+
+    /**
      * {@inheritDoc}
      *
      * Supported arguments:
@@ -29,31 +44,40 @@ class Hostingcheck_Info_Server_Disk extends Hostingcheck_Info_Abstract
      */
     public function __construct($arguments = array())
     {
-        $name = (isset($arguments['name']))
-            ? $arguments['name']
-            : 'total';
+        if (isset($arguments['name'])) {
+            $this->type = $arguments['name'];
+        }
 
-        $path = (isset($arguments['path']))
+        $this->path = (isset($arguments['path']))
             ? $arguments['path']
             : dirname(__FILE__);
-        if (!file_exists($path) || !is_dir($path)) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function collectValue()
+    {
+        if (!file_exists($this->path) || !is_dir($this->path)) {
             $this->value = new Hostingcheck_Value_NotSupported();
             return;
         }
 
-        switch ($name) {
+        switch ($this->type) {
             case 'free':
-                $size = disk_free_space($path);
+                $size = disk_free_space($this->path);
                 $this->value = new Hostingcheck_Value_Byte($size);
                 return;
 
             case 'used':
-                $size = disk_total_space($path) - disk_free_space($path);
+                $total = disk_total_space($this->path);
+                $free = disk_free_space($this->path);
+                $size = $total - $free;
                 $this->value = new Hostingcheck_Value_Byte($size);
                 return;
 
             case 'total':
-                $size = disk_total_space($path);
+                $size = disk_total_space($this->path);
                 $this->value = new Hostingcheck_Value_Byte($size);
                 return;
 

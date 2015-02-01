@@ -16,6 +16,21 @@
 class Hostingcheck_Info_PHP_Config extends Hostingcheck_Info_Abstract
 {
     /**
+     * PHP Config key to be checked.
+     *
+     * @var string
+     */
+    protected $key;
+
+    /**
+     * Format to be used for the value.
+     *
+     * @var string
+     */
+    protected $format;
+
+
+    /**
      * {@inheritDoc}
      *
      * Supported arguments:
@@ -28,18 +43,23 @@ class Hostingcheck_Info_PHP_Config extends Hostingcheck_Info_Abstract
             return;
         }
 
-        $value = ini_get($arguments['name']);
+        $this->key = $arguments['name'];
+        $this->format = (isset($arguments['format']) && class_exists($arguments['format']))
+            ? $arguments['format']
+            : 'Hostingcheck_Value_Text';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function collectValue()
+    {
+        $value = ini_get($this->key);
         if ($value === false) {
             $this->value = new Hostingcheck_Value_NotSupported();
             return;
         }
 
-        if (isset($arguments['format']) && class_exists($arguments['format'])
-        ) {
-            $this->value = new $arguments['format']($value);
-            return;
-        }
-
-        $this->value = new Hostingcheck_Value_Text($value);
+        $this->value = new $this->format($value);
     }
 }

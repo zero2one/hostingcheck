@@ -84,9 +84,8 @@ class Hostingcheck_Scenario_Parser {
 
         $validators = new Hostingcheck_Scenario_Validators();
         foreach ($validatorsConfig as $validatorConfig) {
-            $validators->add(
-                $this->validate($validatorConfig)
-            );
+            $validator = $this->validate($validatorConfig);
+            $validators->add($validator);
         }
 
         $testScenario = new Hostingcheck_Scenario_Test(
@@ -119,9 +118,8 @@ class Hostingcheck_Scenario_Parser {
 
         $tests = new Hostingcheck_Scenario_Tests();
         foreach ($testsConfig as $testConfig) {
-            $tests->add(
-                $this->test($testConfig)
-            );
+            $test = $this->test($testConfig);
+            $tests->add($test);
         }
 
         $group = new Hostingcheck_Scenario_Group($name, $title, $tests);

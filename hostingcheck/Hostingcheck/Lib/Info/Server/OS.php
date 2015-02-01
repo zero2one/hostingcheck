@@ -22,6 +22,12 @@ class Hostingcheck_Info_Server_OS extends Hostingcheck_Info_Abstract
      * - None
      */
     public function __construct($arguments = array())
+    {}
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function collectValue()
     {
         $this->value = new Hostingcheck_Value_Text(
             php_uname()

@@ -16,6 +16,14 @@
 class Hostingcheck_Info_PHP_Extension extends Hostingcheck_Info_Abstract
 {
     /**
+     * The name of the extension.
+     *
+     * @var string
+     */
+    protected $name;
+
+
+    /**
      * {@inheritDoc}
      *
      * Supported arguments:
@@ -23,15 +31,26 @@ class Hostingcheck_Info_PHP_Extension extends Hostingcheck_Info_Abstract
      */
     public function __construct($arguments = array())
     {
-        if (empty($arguments['name'])
-            || !extension_loaded($arguments['name'])
-        ) {
+        if (empty($arguments['name'])) {
             $this->value = new Hostingcheck_Value_NotSupported();
+            return;
         }
-        else {
-            $this->value = new Hostingcheck_Value_Version(
-                phpversion($arguments['name'])
-            );
+
+        $this->name = $arguments['name'];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function collectValue()
+    {
+        if (!extension_loaded($this->name)) {
+            $this->value = new Hostingcheck_Value_NotSupported();
+            return;
         }
+
+        $this->value = new Hostingcheck_Value_Version(
+            phpversion($this->name)
+        );
     }
 }

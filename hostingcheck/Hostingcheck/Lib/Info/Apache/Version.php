@@ -22,6 +22,12 @@ class Hostingcheck_Info_Apache_Version extends Hostingcheck_Info_Abstract
      * - None
      */
     public function __construct($arguments = array())
+    {}
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function collectValue()
     {
         if (function_exists('apache_get_version')) {
             preg_match('#Apache\/([0-9\.]*)#', apache_get_version(), $found);
