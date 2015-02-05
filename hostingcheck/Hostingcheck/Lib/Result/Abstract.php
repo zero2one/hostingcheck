@@ -46,6 +46,14 @@ abstract class Hostingcheck_Result_Abstract
     /**
      * {@inheritDoc}
      */
+    public function hasMessages()
+    {
+        return (bool) count($this->messages());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function addMessage(Hostingcheck_Message $message)
     {
         $this->messages[] = $message;

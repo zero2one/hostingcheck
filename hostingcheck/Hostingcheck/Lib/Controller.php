@@ -67,18 +67,16 @@ class Hostingcheck_Controller
         // Set up the base variables in the view.
         $view->page_title  = $config->get('title', 'Hostingcheck');
         $view->show_logout = false;
-        $view->url_logout  = $this->getUrl('logout');
-        $view->controls    = array();
-        $view->messages    = array();
+        $view->show_actions = false;
         $this->view = $view;
 
-        // Add the navigation when the user is authenticated.
-        if($this->auth->isAuthenticated()) {
-            $this->view->show_logout = true;
-            $this->view->controls = array(
-                $this->getUrl(Hostingcheck_Controller::ACTION_DOWNLOAD_REPORT) => 'Download report',
-                $this->getUrl(Hostingcheck_Controller::ACTION_DOWNLOAD_PHPINFO) => 'Download PHP info',
-            );
+        // Do not show the actions when downloading report.
+        if (!preg_match('/^download_/', $this->getRequest())) {
+            $this->view->show_actions = true;
+
+            if($this->auth->isAuthenticated()) {
+                $this->view->show_logout = true;
+            }
         }
     }
   
@@ -160,14 +158,7 @@ class Hostingcheck_Controller
 
         $report = $this->actionReport();
 
-        //header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename=' . $filename);
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
-        echo $report;
-        exit;
+        $this->download($filename, $report);
     }
     
     /**
@@ -175,11 +166,6 @@ class Hostingcheck_Controller
      */
     public function actionDownloadPhpInfo()
     {
-        ob_start();
-        phpinfo();
-        $phpinfo = ob_get_contents();
-        ob_end_clean();
-
         $filename =
             $_SERVER['SERVER_NAME']
             . '_'
@@ -188,14 +174,12 @@ class Hostingcheck_Controller
             . date('Ymd-His')
             . '.html';
 
-        //header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename=' . $filename);
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
-        echo $phpinfo;
-        exit;
+        ob_start();
+            phpinfo();
+            $phpinfo = ob_get_contents();
+        ob_end_clean();
+
+        $this->download($filename, $phpinfo);
     }
     
     /**
@@ -204,6 +188,7 @@ class Hostingcheck_Controller
     public function actionReport()
     {
         require_once HOSTINGCHECK_BASEPATH . 'Hostingcheck/scenario.php';
+        /* @var $scenario array */
         $parser = new Hostingcheck_Scenario_Parser();
         $scenario = $parser->scenario($scenario);
         $runner = new Hostingcheck_Runner($scenario);
@@ -213,13 +198,32 @@ class Hostingcheck_Controller
     }
 
     /**
+     * Helper to force download of a report.
+     *
+     * @param string $filename
+     *     The filename to use.
+     * @param string $content
+     *     The content of the download.
+     */
+    protected function download($filename, $content) {
+        //header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . $filename);
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        echo $content;
+        exit;
+    }
+
+    /**
      * Get the request
      * 
      * @param void
      * 
      * @return array
      */
-    public function getRequest()
+    protected function getRequest()
     {
         $do = null;
         if (isset($_GET['do'])) {
@@ -238,7 +242,7 @@ class Hostingcheck_Controller
      *
      * @return  string
      */
-    static function getUrl($action = null, $arguments = array()) {
+    protected function getUrl($action = null, $arguments = array()) {
         $urlHelper = new Hostingcheck_View_Url();
         return $urlHelper->Url(array(
             $action,

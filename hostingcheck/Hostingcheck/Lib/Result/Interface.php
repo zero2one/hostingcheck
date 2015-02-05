@@ -32,6 +32,13 @@ interface Hostingcheck_Result_Interface
     public function messages();
 
     /**
+     * Has the result messages.
+     *
+     * @return bool
+     */
+    public function hasMessages();
+
+    /**
      * Add a message to the result.
      *
      * @param Hostingcheck_Message $message

@@ -4,64 +4,8 @@
     <title><?php print $page_title; ?></title>
     
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    
-    <style>
-      body, td { font-family: sans-serif; }
-      body { margin: 0; padding: 0; background-color: #CCCCCC;}
-      h2 { margin: 0 0 .5em 0; }
-      a { color: #0000EE; }
-      
-      .container { padding: 1em; }
-      #header { background-color: #9999CC; color: #000;  border-bottom: 2px solid #7777AA; margin-bottom: 1em;}
-      #checks { margin-bottom: 4em; }
-      #messenger .section { font-weight: bold; border: 2px solid #7777AA; }
-      div.section { background-color: #FFFFFF; padding: 1em; margin-bottom: 1em; }
-      
-      #totals h2 { margin-bottom: 0; padding: .5em 1em; }
-      
-      table { border-collapse: collapse; text-align: left; width: 100%; }
-      td, th { border: 1px solid #000; font-size: 75%; vertical-align: baseline; color: #000; }
-      th { font-weight: bold; }
-      thead th { background-color: #9999CC; }
-      tbody th { background-color: #CCCCFF; }
-      th.check  { width: 200px; }
-      th.result { width: 150px; }
-      
-      ul.legend, #messenger ul { list-style: none; margin: 0; padding: 0; }
-      ul.legend li { margin-bottom: .5em; padding: .2em .5em; }
-      
-      #logout, ul.controls { float: right; list-style: none; margin: 0; padding: 0; }
-      #logout li, ul.controls li { float: left; }
-      ul.controls { list-style: none; margin: 0 0 0 0; padding: 0; float: right; }
-      ul.controls li { margin-left: 1em; }
-      ul.controls a { display: block; border: 2px solid #7777AA; background-color: #CCCCCC; font-weight: bold; text-decoration: none; padding: .2em .5em; }
-      ul.controls a:hover { background-color: #FFF; }
-      
-      h2.success, li.success,
-      tr.success .result { background-color: #CCFF99; }
-      h2.optional, li.optional, 
-      tr.optional .result { background-color: #CCFFFF; } 
-      h2.warning, li.warning, 
-      tr.warning .result { background-color: #FFCC66; }
-      h2.failure, li.failure,
-      tr.failure .result { background-color: #FF9999; }
-      
-      .form-item, .form-buttons { margin: 0 0 1em 0; }
-      .form-buttons { padding-left: 100px; }
-      .form-item label { display: inline-block; width: 100px; }
 
-      .button {
-        text-decoration: none;
-        display: inline-block;
-        padding: .5em 1em;
-        background: #009;
-        color: #FFF;
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
-        border-radius: 10px;
-      }
-      a.button:hover { background-color: #00E; }
-    </style>
+    <?php echo $this->render('style.css'); ?>
   </head>
   
   <body>
@@ -69,34 +13,18 @@
     <div id="header" class="container">
       <?php if($show_logout): ?>
         <ul id="logout">
-          <li><a href="<?php print $url_logout; ?>">Logout</a></li>
+          <li><a href="<?php echo $this->url('logout'); ?>">Logout</a></li>
         </ul>
       <?php endif; ?>
       
       <h1><?php print $page_title; ?></h1>
       
-      <?php if($controls): ?>
-        <ul class="controls">
-          <?php foreach($controls AS $url => $label): ?>
-            <li><a href="<?php print $url; ?>"><?php print $label; ?></a></li>
-          <?php endforeach; ?>
-        </ul>
+      <?php if($show_actions): ?>
+        <?php echo $this->render('results-actions'); ?>
       <?php endif ?>
-      
     </div>
-    
-  <?php if(count($messages)): ?>
-    <div id="messenger" class="container"><div class="section">
-      <ul>
-        <?php foreach($messages AS $msg): ?>
-          <li><?php print $msg; ?></li>
-        <?php endforeach; ?>
-      </ul>
-    </div></div>
-    
-  <?php endif; ?>
 
-  <?php print $content; ?>
+    <?php print $content; ?>
 
   </body>
   
