@@ -64,7 +64,7 @@ $scenario = array(
 $info[] = array(
     'title'      => 'Info text',
     'info'       => 'Hostingcheck_Info_Text',
-    'info args'  => array('info' => 'Some smalltalk info text'),
+    'info args'  => array('text' => 'Some smalltalk info text'),
 );
 $info[] = array(
     'title'      => 'Report Date',
@@ -126,6 +126,17 @@ $php[] = array(
     'title'      => 'Extension : JSON',
     'info'       => 'Hostingcheck_Info_PHP_Extension',
     'info args'  => array('name' => 'json'),
+    'validators' => array(
+        array(
+            'validator'       => 'Hostingcheck_Validate_NotEmpty',
+        ),
+    ),
+    'required'   => true,
+);
+$php[] = array(
+    'title'      => 'Extension : FooBar',
+    'info'       => 'Hostingcheck_Info_PHP_Extension',
+    'info args'  => array('name' => 'foobar'),
     'validators' => array(
         array(
             'validator'       => 'Hostingcheck_Validate_NotEmpty',
