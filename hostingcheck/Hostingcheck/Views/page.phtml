@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title><?php print $page_title; ?></title>
+    
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+    <?php echo $this->render('style.css'); ?>
+  </head>
+  
+  <body>
+  
+    <div id="header" class="container">
+      <?php if($show_logout): ?>
+        <ul id="logout">
+          <li><a href="<?php echo $this->url('logout'); ?>">Logout</a></li>
+        </ul>
+      <?php endif; ?>
+      
+      <h1><?php print $page_title; ?></h1>
+      
+      <?php if($show_actions): ?>
+        <?php echo $this->render('results-actions'); ?>
+      <?php endif ?>
+    </div>
+
+    <?php print $content; ?>
+
+  </body>
+  
+</html>

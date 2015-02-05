@@ -1,0 +1,28 @@
+
+<div id="results" class="container">
+    <?php foreach ($results as $group): ?>
+        <?php if (!count($group->tests())): continue; endif; ?>
+
+        <div class="section">
+            <h2>
+                <?php echo $group->scenario()->title(); ?>
+            </h2>
+            <table class="results">
+                <thead>
+                <tr>
+                    <th class="info">Info</th>
+                    <th class="value">Value</th>
+                    <th class="messages">Messages</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($group->tests() as $test): ?>
+                    <?php $this->test = $test; ?>
+                    <?php echo $this->render('results-test'); ?>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+    <?php endforeach; ?>
+</div>

@@ -1,0 +1,47 @@
+
+<div id="totals" class="container">
+    <?php if ($results->countTestsFailure()): ?>
+        <h2 class="failure">
+            &#10006; Failure!
+            <small>
+                (<?php echo $results->countTestsValidations(); ?> checked, <?php echo $results->countTestsFailure(); ?> failed)
+            </small>
+        </h2>
+    <?php elseif ($results->countTestsSuccess()): ?>
+        <h2 class="success">
+            &#10003; Success
+        </h2>
+    <?php endif; ?>
+
+    <div class="section">
+
+        <p>
+            The test scenario run with following results:
+        </p>
+        <ul class="legend">
+            <li class="success">
+                &#10003;
+                <?php if ($results->countTestsSuccess() === 0): ?>
+                    No success.
+                <?php else: ?>
+                    <strong><?php echo $results->countTestsSuccess(); ?></strong> passed.
+                <?php endif; ?>
+            </li>
+            <li class="failure">
+                &#10006;
+                <?php if ($results->countTestsFailure() === 0): ?>
+                    No failures.
+                <?php elseif ($results->countTestsFailure() === 1): ?>
+                    <strong>1</strong> failure.
+                <?php else: ?>
+                    <strong><?php echo $results->countTestsFailure(); ?></strong> failures.
+                <?php endif; ?>
+            </li>
+        </ul>
+
+        <p>
+            Info was collected for <?php echo $results->countTests(); ?> items.
+        </p>
+
+    </div>
+</div>

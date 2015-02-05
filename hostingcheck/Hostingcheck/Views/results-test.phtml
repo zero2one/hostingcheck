@@ -1,0 +1,18 @@
+
+<tr class="<?php echo $this->resultCssClass($test->result()); ?>">
+    <th class="title">
+        <?php echo $test->scenario()->title(); ?>
+    </th>
+    <td class="value">
+        <?php echo $test->info()->getValue(); ?>
+    </td>
+    <td class="messages">
+        <?php if ($test->result()->hasMessages()): ?>
+            <ul>
+                <?php foreach ($test->result()->messages() as $message): ?>
+                    <li><?php echo $message; ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </td>
+</tr>
