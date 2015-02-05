@@ -76,7 +76,6 @@ class Hostingcheck_Controller
         if($this->auth->isAuthenticated()) {
             $this->view->show_logout = true;
             $this->view->controls = array(
-                $this->getUrl(Hostingcheck_Controller::ACTION_RUN) => 'Run test',
                 $this->getUrl(Hostingcheck_Controller::ACTION_DOWNLOAD_REPORT) => 'Download report',
                 $this->getUrl(Hostingcheck_Controller::ACTION_DOWNLOAD_PHPINFO) => 'Download PHP info',
             );
