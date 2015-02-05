@@ -368,7 +368,7 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Abstract
         // Properly format the value.
         $value = $found[1][0];
         $format = $found[2][0];
-        if ($value[0] === '.') {
+        if (isset($value[0]) && $value[0] === '.') {
             $value = '0' . $value;
         }
         $value = trim($value, '.');
