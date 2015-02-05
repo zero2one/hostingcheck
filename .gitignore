@@ -1,7 +1,7 @@
 
 # No settings & scenario in repo.
-hostingcheck/hostingcheck/scenario.php
-hostingcheck/hostingcheck/settings.php
+hostingcheck/Hostingcheck/scenario.php
+hostingcheck/Hostingcheck/settings.php
 
 # No coverage results in the repo.
 tests/coverage
