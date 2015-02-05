@@ -29,6 +29,17 @@ class Hostingcheck_Results_Tests implements Countable, SeekableIterator
      */
     protected $position = 0;
 
+    /**
+     * Array to keep track of the number of test result types.
+     *
+     * @var array
+     */
+    protected $count = array(
+        'info' => 0,
+        'success' => 0,
+        'failure' => 0,
+    );
+
 
     /**
      * Class constructor.
@@ -47,6 +58,7 @@ class Hostingcheck_Results_Tests implements Countable, SeekableIterator
     public function add(Hostingcheck_Results_Test $test)
     {
         $this->tests[] = $test;
+        $this->updateCount($test);
     }
 
     /**
@@ -94,6 +106,70 @@ class Hostingcheck_Results_Tests implements Countable, SeekableIterator
     public function count()
     {
         return count($this->tests);
+    }
+
+    /**
+     * Get the number of tests with info.
+     *
+     * @return int
+     */
+    public function countInfo()
+    {
+        return $this->count['info'];
+    }
+
+    /**
+     * Get the number of valid tests.
+     *
+     * @return int
+     */
+    public function countSuccess()
+    {
+        return $this->count['success'];
+    }
+
+    /**
+     * Get the number of failure tests.
+     *
+     * @return int
+     */
+    public function countFailure()
+    {
+        return $this->count['failure'];
+    }
+
+    /**
+     * Count the number of validations in this collection.
+     *
+     * @return int
+     */
+    public function countValidations()
+    {
+        return $this->countSuccess() + $this->countFailure();
+    }
+
+    /**
+     * Helper to update the counts when a new test is added.
+     *
+     * @param Hostingcheck_Results_Test $result
+     */
+    protected function updateCount(Hostingcheck_Results_Test $result)
+    {
+        $type = get_class($result->result());
+
+        switch ($type) {
+            case 'Hostingcheck_Result_Info':
+                $this->count['info']++;
+                break;
+
+            case 'Hostingcheck_Result_Success':
+                $this->count['success']++;
+                break;
+
+            case 'Hostingcheck_Result_Failure':
+                $this->count['failure']++;
+                break;
+        }
     }
 
     /**

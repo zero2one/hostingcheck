@@ -78,6 +78,40 @@ class Hostingcheck_Results_TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test the test count functionality.
+     */
+    public function testTestsCount()
+    {
+        $results = new Hostingcheck_Results();
+        $this->assertEquals(0, $results->countTests());
+        $this->assertEquals(0, $results->countTestsInfo());
+        $this->assertEquals(0, $results->countTestsSuccess());
+        $this->assertEquals(0, $results->countTestsFailure());
+        $this->assertEquals(0, $results->countTestsValidations());
+
+        $group1 = $this->createGroupResults('group1', 'Group 1');
+        $group1->tests()->add($this->createTestResult('info'));
+        $group1->tests()->add($this->createTestResult('success'));
+
+        $group2 = $this->createGroupResults('group2', 'Group 2');
+        $group2->tests()->add($this->createTestResult('info'));
+        $group2->tests()->add($this->createTestResult('success'));
+        $group2->tests()->add($this->createTestResult('failure'));
+        $group2->tests()->add($this->createTestResult('failure'));
+        $group2->tests()->add($this->createTestResult('failure'));
+
+
+        $results->add($group1);
+        $results->add($group2);
+
+        //$this->assertEquals(7, $results->countTests());
+        $this->assertEquals(2, $results->countTestsInfo());
+        $this->assertEquals(2, $results->countTestsSuccess());
+        $this->assertEquals(3, $results->countTestsFailure());
+        $this->assertEquals(5, $results->countTestsValidations());
+    }
+
+    /**
      * Create a new group scenario.
      *
      * @param string $name
@@ -85,7 +119,7 @@ class Hostingcheck_Results_TestCase extends PHPUnit_Framework_TestCase
      * @param string $title
      *     The human name.
      *
-     * @return Hostincheck_Scenario_Group
+     * @return Hostingcheck_Results_Group
      */
     protected function createGroupResults($name, $title)
     {
@@ -97,5 +131,46 @@ class Hostingcheck_Results_TestCase extends PHPUnit_Framework_TestCase
 
         $results = new Hostingcheck_Results_Group($scenario);
         return $results;
+    }
+
+    /**
+     * Create a dummy Hostingcheck_Results_Test() object.
+     *
+     * @param string $resultType
+     *     The result type (info|success|failure) to include in the test result.
+     *
+     * @return Hostingcheck_Results_Test
+     */
+    protected function createTestResult($resultType = 'info')
+    {
+        $name = md5(mt_rand(0, 5000) . time());
+
+        $scenario = new Hostingcheck_Scenario_Test(
+            $name,
+            new Hostingcheck_Info_Text(),
+            new Hostingcheck_Scenario_Validators()
+        );
+
+        switch ($resultType) {
+            case 'success':
+                $result = new Hostingcheck_Result_Success();
+                break;
+
+            case 'failure':
+                $result = new Hostingcheck_Result_Failure();
+                break;
+
+            default:
+                $result = new Hostingcheck_Result_Info();
+                break;
+        }
+
+        $testResult = new Hostingcheck_Results_Test(
+            $scenario,
+            $scenario->info(),
+            $result
+        );
+
+        return $testResult;
     }
 }

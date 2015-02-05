@@ -36,6 +36,17 @@ class Hostingcheck_Results implements SeekableIterator, Countable
      */
     protected $position = 0;
 
+    /**
+     * Counts of all the test result types in this result set.
+     *
+     * @var array
+     */
+    protected $countTests = array(
+        'info' => 0,
+        'success' => 0,
+        'failure' => 0,
+    );
+
 
     /**
      * Class constructor.
@@ -57,6 +68,8 @@ class Hostingcheck_Results implements SeekableIterator, Countable
         $key = $group->scenario()->name();
         $this->results[$key] = $group;
         $this->keys = array_keys($this->results);
+
+        $this->updateCount($group);
     }
 
     /**
@@ -104,6 +117,66 @@ class Hostingcheck_Results implements SeekableIterator, Countable
     public function count()
     {
         return count($this->keys);
+    }
+
+    /**
+     * Get the total count of tests that are info.
+     *
+     * @return int
+     */
+    public function countTestsInfo()
+    {
+        return $this->countTests['info'];
+    }
+
+    /**
+     * Get the total count of tests that are a success.
+     *
+     * @return int
+     */
+    public function countTestsSuccess()
+    {
+        return $this->countTests['success'];
+    }
+
+    /**
+     * Get the total count of tests that are a failure.
+     *
+     * @return int
+     */
+    public function countTestsFailure()
+    {
+        return $this->countTests['failure'];
+    }
+
+    /**
+     * Test the total amount of validations performed on the collected info.
+     */
+    public function countTestsValidations()
+    {
+        return $this->countTestsSuccess() + $this->countTestsFailure();
+    }
+
+    /**
+     * Count the total amount of tests.
+     *
+     * @return int
+     */
+    public function countTests()
+    {
+        return array_sum($this->countTests);
+    }
+
+    /**
+     * Update the counts by getting the counts of the added group.
+     *
+     * @param Hostingcheck_Results_Group $group
+     */
+    protected function updateCount(Hostingcheck_Results_Group $group)
+    {
+        $this->countTests['info'] += $group->tests()->countInfo();
+        $this->countTests['success'] += $group->tests()->countSuccess();
+        $this->countTests['failure'] += $group->tests()->countFailure();
     }
 
     /**

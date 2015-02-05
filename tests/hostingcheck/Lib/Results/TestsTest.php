@@ -97,11 +97,40 @@ class Hostingcheck_Results_Tests_TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test the counts.
+     */
+    public function testCount()
+    {
+        $collection = new Hostingcheck_Results_Tests();
+        $this->assertEquals(0, $collection->countInfo());
+        $this->assertEquals(0, $collection->countSuccess());
+        $this->assertEquals(0, $collection->countFailure());
+        $this->assertEquals(0, $collection->countValidations());
+
+        $collection->add($this->createTestResult('info'));
+
+        $collection->add($this->createTestResult('success'));
+        $collection->add($this->createTestResult('success'));
+
+        $collection->add($this->createTestResult('failure'));
+        $collection->add($this->createTestResult('failure'));
+        $collection->add($this->createTestResult('failure'));
+
+        $this->assertEquals(1, $collection->countInfo());
+        $this->assertEquals(2, $collection->countSuccess());
+        $this->assertEquals(3, $collection->countFailure());
+        $this->assertEquals(5, $collection->countValidations());
+    }
+
+    /**
      * Create a dummy Hostingcheck_Results_Test() object.
+     *
+     * @param string $resultType
+     *     The result type (info|success|failure) to include in the test result.
      *
      * @return Hostingcheck_Results_Test
      */
-    protected function createTestResult()
+    protected function createTestResult($resultType = 'info')
     {
         $name = md5(mt_rand(0, 5000) . time());
 
@@ -111,10 +140,24 @@ class Hostingcheck_Results_Tests_TestCase extends PHPUnit_Framework_TestCase
             new Hostingcheck_Scenario_Validators()
         );
 
+        switch ($resultType) {
+            case 'success':
+                $result = new Hostingcheck_Result_Success();
+                break;
+
+            case 'failure':
+                $result = new Hostingcheck_Result_Failure();
+                break;
+
+            default:
+                $result = new Hostingcheck_Result_Info();
+                break;
+        }
+
         $testResult = new Hostingcheck_Results_Test(
             $scenario,
             $scenario->info(),
-            new Hostingcheck_Result_Info()
+            $result
         );
 
         return $testResult;
