@@ -65,7 +65,7 @@ class Hostingcheck_Controller
         $this->auth = $auth;
 
         // Set up the base variables in the view.
-        $view->page_title  = 'Hostingcheck';
+        $view->page_title  = $config->get('title', 'Hostingcheck');
         $view->show_logout = false;
         $view->url_logout  = $this->getUrl('logout');
         $view->controls    = array();
@@ -223,7 +223,7 @@ class Hostingcheck_Controller
     public function getRequest()
     {
         $do = null;
-        if(isset($_GET['do'])) {
+        if (isset($_GET['do'])) {
             $do = strip_tags($_GET['do']);
         }
         return $do;
@@ -232,16 +232,19 @@ class Hostingcheck_Controller
     /**
      * Get the url to the controller
      * 
-     * @param   void
+     * @param string $action
+     *     Optional action name.
+     * @param array $arguments
+     *     Optional get arguments.
+     *
      * @return  string
      */
-    static function getUrl($action = null) {
-      $url = htmlentities(strip_tags($_SERVER['PHP_SELF']));
-      if($action) {
-          $url .= '?do=' . $action;
-      }
-      
-      return $url;
+    static function getUrl($action = null, $arguments = array()) {
+        $urlHelper = new Hostingcheck_View_Url();
+        return $urlHelper->Url(array(
+            $action,
+            $arguments
+        ));
     }
     
     /**
