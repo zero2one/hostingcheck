@@ -151,7 +151,24 @@ class Hostingcheck_Controller
      */
     public function actionDownloadReport()
     {
-        
+        $filename =
+            $_SERVER['SERVER_NAME']
+            . '_'
+            . 'report'
+            . '_'
+            . date('Ymd-His')
+            . '.html';
+
+        $report = $this->actionReport();
+
+        //header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . $filename);
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        echo $report;
+        exit;
     }
     
     /**
@@ -159,7 +176,27 @@ class Hostingcheck_Controller
      */
     public function actionDownloadPhpInfo()
     {
-        
+        ob_start();
+        phpinfo();
+        $phpinfo = ob_get_contents();
+        ob_end_clean();
+
+        $filename =
+            $_SERVER['SERVER_NAME']
+            . '_'
+            . 'phpinfo'
+            . '_'
+            . date('Ymd-His')
+            . '.html';
+
+        //header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . $filename);
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        echo $phpinfo;
+        exit;
     }
     
     /**

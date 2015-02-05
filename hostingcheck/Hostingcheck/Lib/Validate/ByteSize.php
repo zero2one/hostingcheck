@@ -72,9 +72,9 @@ class Hostingcheck_Validate_ByteSize extends Hostingcheck_Validate_Abstract
         $equal = $this->arguments['equal'];
         $other = new Hostingcheck_Value_Byte($equal);
         if (!$byte->equals($other)) {
-            return sprintf(
-                'Byte size is not equal to %s.',
-                $equal
+            return new Hostingcheck_Message(
+                'Byte size is not equal to {size}.',
+                array('size' => $equal)
             );
         }
     }
@@ -93,9 +93,9 @@ class Hostingcheck_Validate_ByteSize extends Hostingcheck_Validate_Abstract
         $other = new Hostingcheck_Value_Byte($min);
 
         if (!$byte->greaterThanOrEqual($other)) {
-            return sprintf(
-                'Byte size is to low, should be at least %s.',
-                $min
+            return new Hostingcheck_Message(
+                'Byte size is to low, should be at least {min}.',
+                array('min' => $min)
             );
         }
     }
@@ -114,9 +114,9 @@ class Hostingcheck_Validate_ByteSize extends Hostingcheck_Validate_Abstract
         $other = new Hostingcheck_Value_Byte($max);
 
         if (!$byte->lessThanOrEqual($other)) {
-            return sprintf(
-                'Byte size is to high, should be at most %s.',
-                $max
+            return new Hostingcheck_Message(
+                'Byte size is to high, should be at most {max}.',
+                array('max' => $max)
             );
         }
     }

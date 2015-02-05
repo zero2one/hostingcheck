@@ -72,9 +72,9 @@ class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Abstract
         $equal = $this->arguments['equal'];
         $other = new Hostingcheck_Value_Version($equal);
         if (!$version->equals($other)) {
-            return sprintf(
-                'Version is not equal to %s.',
-                $equal
+            return new Hostingcheck_Message(
+                'Version is not equal to {version}.',
+                array('version' => $equal)
             );
         }
     }
@@ -93,9 +93,9 @@ class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Abstract
         $other = new Hostingcheck_Value_Version($min);
 
         if (!$version->greaterThanOrEqual($other)) {
-            return sprintf(
-                'Version is to low, should be at least %s.',
-                $min
+            return new Hostingcheck_Message(
+                'Version is to low, should be at least {min}.',
+                array('min' => $min)
             );
         }
     }
@@ -114,9 +114,9 @@ class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Abstract
         $other = new Hostingcheck_Value_Version($max);
 
         if (!$version->lessThanOrEqual($other)) {
-            return sprintf(
-                'Version is to high, should be at most %s.',
-                $max
+            return new Hostingcheck_Message(
+                'Version is to high, should be at most {max}.',
+                array('max' => $max)
             );
         }
     }

@@ -30,4 +30,11 @@ interface Hostingcheck_Result_Interface
      *      Array of all messages in the result.
      */
     public function messages();
+
+    /**
+     * Add a message to the result.
+     *
+     * @param Hostingcheck_Message $message
+     */
+    public function addMessage(Hostingcheck_Message $message);
 }

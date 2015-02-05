@@ -26,7 +26,13 @@ class Hostingcheck_Validate_ByteSize_TestCase extends PHPUnit_Framework_TestCase
         $validator = new Hostingcheck_Validate_ByteSize($arguments);
         $result = $validator->validate($value);
         $this->assertInstanceOf($resultType, $result);
-        $this->assertEquals($messages, $result->messages());
+
+        $resultMessages = $result->messages();
+        foreach ($resultMessages as $key => $resultMessage) {
+            $this->assertEquals(
+                $messages[$key], $resultMessage->message()
+            );
+        }
     }
 
     /**

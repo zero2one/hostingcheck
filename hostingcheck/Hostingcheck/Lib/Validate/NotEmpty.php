@@ -46,7 +46,7 @@ class Hostingcheck_Validate_NotEmpty extends Hostingcheck_Validate_Abstract
         if ($value instanceof Hostingcheck_Value_NotSupported
             || $value->getValue() instanceof Hostingcheck_Value_NotSupported
         ) {
-            return 'Value is not supported.';
+            return new Hostingcheck_Message('Value is not supported.');
         }
     }
 
@@ -61,13 +61,10 @@ class Hostingcheck_Validate_NotEmpty extends Hostingcheck_Validate_Abstract
      */
     protected function isEmpty(Hostingcheck_Value_Interface $value)
     {
-        $message = null;
         $valueValue = $value->getValue();
 
         if (empty($valueValue)) {
-            $message = 'Value is empty.';
+            return new Hostingcheck_Message('Value is empty.');
         }
-
-        return $message;
     }
 }

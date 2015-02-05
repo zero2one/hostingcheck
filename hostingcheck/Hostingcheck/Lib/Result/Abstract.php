@@ -17,11 +17,11 @@ abstract class Hostingcheck_Result_Abstract
     implements Hostingcheck_Result_Interface
 {
     /**
-     * The messages array.
+     * Array of Hostingcheck_Message() 's.
      *
      * @var array
      */
-    protected $messages = array();
+    protected $messages;
 
 
     /**
@@ -29,8 +29,9 @@ abstract class Hostingcheck_Result_Abstract
      */
     public function __construct($messages = array())
     {
-        if (!empty($messages) && is_array($messages)) {
-            $this->messages = $messages;
+        $this->messages = array();
+        foreach ($messages as $message) {
+            $this->addMessage($message);
         }
     }
 
@@ -40,5 +41,13 @@ abstract class Hostingcheck_Result_Abstract
     public function messages()
     {
         return $this->messages;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addMessage(Hostingcheck_Message $message)
+    {
+        $this->messages[] = $message;
     }
 }
