@@ -18,7 +18,9 @@ before_script:
 
 
 script:
-  - cd tests
+  - pwd
+  - ls -lah
+  - cd $TRAVIS_BUILD_DIR/tests
   - phpunit
 
 after_script:
