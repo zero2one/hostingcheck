@@ -21,6 +21,7 @@ class Hostingcheck_Result_Info_TestCase extends PHPUnit_Framework_TestCase
     public function testMessages() {
         $result = new Hostingcheck_Result_Info();
         $this->assertEquals(array(), $result->messages());
+        $this->assertFalse($result->hasMessages());
 
         $messages = array(
             new Hostingcheck_Message('Foo message'),
@@ -29,6 +30,7 @@ class Hostingcheck_Result_Info_TestCase extends PHPUnit_Framework_TestCase
         $result = new Hostingcheck_Result_Info($messages);
         $this->assertEquals($messages, $result->messages());
 
+        $this->assertTrue($result->hasMessages());
     }
 
     /**
@@ -44,5 +46,7 @@ class Hostingcheck_Result_Info_TestCase extends PHPUnit_Framework_TestCase
         $message2 = new Hostingcheck_Message('Bar message');
         $result->addMessage($message2);
         $this->assertEquals(array($message1, $message2), $result->messages());
+
+        $this->assertTrue($result->hasMessages());
     }
 }
