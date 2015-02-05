@@ -28,7 +28,7 @@
       th.result { width: 150px; }
       
       ul.legend, #messenger ul { list-style: none; margin: 0; padding: 0; }
-      ul.legend li { margin-bottom: .5em; padding: .2em .5em; width: 300px; }
+      ul.legend li { margin-bottom: .5em; padding: .2em .5em; }
       
       #logout, ul.controls { float: right; list-style: none; margin: 0; padding: 0; }
       #logout li, ul.controls li { float: left; }
@@ -44,7 +44,7 @@
       h2.warning, li.warning, 
       tr.warning .result { background-color: #FFCC66; }
       h2.failure, li.failure,
-      tr.failure .result { background-color: #FF9999; font-weight: bold; }
+      tr.failure .result { background-color: #FF9999; }
       
       .form-item, .form-buttons { margin: 0 0 1em 0; }
       .form-buttons { padding-left: 100px; }
@@ -61,7 +61,7 @@
         </ul>
       <?php endif; ?>
       
-      <h1>PHP Hosting check</h1>  
+      <h1><?php print $page_title; ?></h1>
       
       <?php if($controls): ?>
         <ul class="controls">
