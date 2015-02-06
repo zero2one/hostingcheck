@@ -3,6 +3,9 @@
 hostingcheck/Hostingcheck/scenario.php
 hostingcheck/Hostingcheck/settings.php
 
-# No coverage results in the repo.
-tests/coverage
+# Do not include build folder.
+build
+
+# Do not include vendor packages
+vendor
 
