@@ -348,7 +348,7 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Abstract
 
         // Build the pattern.
         $mapping = $this->getMapping();
-        $pattern = '/^([0-9]*\.?[0-9]*)\s?(['
+        $pattern = '/^([0-9]+\.?[0-9]*|\.?[0-9]+)\s?(['
             . implode('|', array_keys($mapping))
             . ']?)$/';
 
