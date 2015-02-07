@@ -348,7 +348,7 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Abstract
 
         // Build the pattern.
         $mapping = $this->getMapping();
-        $pattern = '/^([0-9]*\.?[0-9]*)\s?(['
+        $pattern = '/^([0-9]+\.?[0-9]*|\.?[0-9]+)\s?(['
             . implode('|', array_keys($mapping))
             . ']?)$/';
 
@@ -368,7 +368,7 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Abstract
         // Properly format the value.
         $value = $found[1][0];
         $format = $found[2][0];
-        if ($value[0] === '.') {
+        if (isset($value[0]) && $value[0] === '.') {
             $value = '0' . $value;
         }
         $value = trim($value, '.');
