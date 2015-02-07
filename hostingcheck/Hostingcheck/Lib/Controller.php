@@ -59,7 +59,11 @@ class Hostingcheck_Controller
      * @param Hostingcheck_View $view
      *      The vew object to use in the controller.
      */
-    public function __construct($config, $auth, $view)
+    public function __construct(
+        Hostingcheck_Config $config,
+        Hostingcheck_Auth $auth,
+        Hostingcheck_View$view
+    )
     {
         $this->config = $config;
         $this->auth = $auth;
@@ -125,10 +129,9 @@ class Hostingcheck_Controller
                 $_POST['password']
             );
             if($login) {
-                $this->_redirect();
+                $this->redirect();
+                return;
             }
-            
-            // add messages
         }
 
         return $this->view->renderTemplate('login');
@@ -140,7 +143,7 @@ class Hostingcheck_Controller
     public function actionLogout()
     {
         $this->auth->logout();
-        $this->_redirect();
+        $this->redirect();
     }
     
     /**
@@ -206,14 +209,12 @@ class Hostingcheck_Controller
      *     The content of the download.
      */
     protected function download($filename, $content) {
-        //header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename=' . $filename);
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Pragma: public');
         echo $content;
-        exit;
     }
 
     /**
@@ -244,7 +245,7 @@ class Hostingcheck_Controller
      */
     protected function getUrl($action = null, $arguments = array()) {
         $urlHelper = new Hostingcheck_View_Url();
-        return $urlHelper->Url(array(
+        return $urlHelper->url(array(
             $action,
             $arguments
         ));
@@ -258,9 +259,8 @@ class Hostingcheck_Controller
      * 
      * @return void
      */
-    protected function _redirect($action = NULL)
+    protected function redirect($action = NULL)
     {
         header('Location: ' . Hostingcheck_Controller::getUrl($action));
-        exit;
     }
 }

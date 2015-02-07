@@ -24,7 +24,7 @@ class Hostingcheck_View_Url
      *
      * @return string
      */
-    public function Url($arguments)
+    public function url($arguments)
     {
         $action = array_shift($arguments);
         $parameters = array_shift($arguments);
