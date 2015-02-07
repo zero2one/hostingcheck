@@ -5,7 +5,3 @@ hostingcheck/Hostingcheck/settings.php
 
 # Do not include build folder.
 build
-
-# Do not include vendor packages
-vendor
-
