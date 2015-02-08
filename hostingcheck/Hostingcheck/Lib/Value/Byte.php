@@ -281,7 +281,7 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Abstract
     {
         $mapping = $this->getMapping();
         $format = 'B';
-        
+
         foreach ($mapping as $format => $divider) {
             // Check if the value is still greather or equal as the divider.
             if ($value < ($divider * $this->kilo)) {
