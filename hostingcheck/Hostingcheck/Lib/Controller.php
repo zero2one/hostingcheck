@@ -91,29 +91,27 @@ class Hostingcheck_Controller
     {
         // check if logged in
         if(!$this->auth->isAuthenticated()) {
-            echo $this->actionLogin();
+            $this->actionLogin();
             return;
         }
-        
+
         switch($this->getRequest()) {
             case self::ACTION_LOGOUT:
-                $output = $this->actionLogout();
-                break;
+                $this->actionLogout();
+                return;
                 
             case self::ACTION_DOWNLOAD_REPORT:
                 $this->actionDownloadReport();
-                break;
+                return;
               
             case self::ACTION_DOWNLOAD_PHPINFO:
                 $this->actionDownloadPhpInfo();
-                break;
+                return;
               
             default:
-                $output = $this->actionReport();
-                break;
+                echo $this->actionReport();
+                return;
         }
-
-        echo $output;
     }
     
     /**
