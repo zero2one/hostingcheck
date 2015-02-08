@@ -75,12 +75,11 @@ class Hostingcheck_Controller
         $this->view = $view;
 
         // Do not show the actions when downloading report.
-        if (!preg_match('/^download_/', $this->getRequest())) {
+        if (!preg_match('/^download_/', $this->getRequest())
+            && $this->auth->isAuthenticated()
+        ) {
             $this->view->show_actions = true;
-
-            if($this->auth->isAuthenticated()) {
-                $this->view->show_logout = true;
-            }
+            $this->view->show_logout = true;
         }
     }
   
@@ -91,7 +90,7 @@ class Hostingcheck_Controller
     {
         // check if logged in
         if(!$this->auth->isAuthenticated()) {
-            $this->actionLogin();
+            echo $this->actionLogin();
             return;
         }
 
