@@ -32,7 +32,7 @@ class Hostingcheck_Scenario_Test
     /**
      * The optional validators to validate the info.
      *
-     * @var string
+     * @var Hostingcheck_Scenario_Validators
      */
     protected $validators;
 
