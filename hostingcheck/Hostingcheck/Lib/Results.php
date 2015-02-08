@@ -13,28 +13,14 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Results implements SeekableIterator, Countable
+class Hostingcheck_Results extends Hostingcheck_Collection_Abstract
 {
-    /**
-     * The results collection.
-     *
-     * @var array
-     */
-    protected $results;
-
     /**
      * The group array keys.
      *
      * @var array
      */
     protected $keys = array();
-
-    /**
-     * The current position in the group array.
-     *
-     * @var int
-     */
-    protected $position = 0;
 
     /**
      * Counts of all the test result types in this result set.
@@ -53,9 +39,8 @@ class Hostingcheck_Results implements SeekableIterator, Countable
      */
     public function __construct()
     {
-        $this->results = array();
         $this->keys = array();
-        $this->rewind();
+        parent::__construct();
     }
 
     /**
@@ -66,17 +51,10 @@ class Hostingcheck_Results implements SeekableIterator, Countable
     public function add(Hostingcheck_Results_Group $group)
     {
         $key = $group->scenario()->name();
-        $this->results[$key] = $group;
-        $this->keys = array_keys($this->results);
+        $this->collection[$key] = $group;
+        $this->keys = array_keys($this->collection);
 
         $this->updateCount($group);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind() {
-        $this->position = 0;
     }
 
     /**
@@ -100,23 +78,8 @@ class Hostingcheck_Results implements SeekableIterator, Countable
     /**
      * {@inheritdoc}
      */
-    public function next() {
-        $this->position++;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     function valid() {
         return isset($this->keys[$this->position]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function count()
-    {
-        return count($this->keys);
     }
 
     /**
@@ -190,10 +153,10 @@ class Hostingcheck_Results implements SeekableIterator, Countable
      */
     public function seek($name)
     {
-        if (!isset($this->results[$name])) {
+        if (!isset($this->collection[$name])) {
             return null;
         }
 
-        return $this->results[$name];
+        return $this->collection[$name];
     }
 }
