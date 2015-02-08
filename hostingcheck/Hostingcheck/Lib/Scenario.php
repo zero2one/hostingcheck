@@ -15,15 +15,8 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Scenario implements SeekableIterator, Countable
+class Hostingcheck_Scenario extends Hostingcheck_Collection_Abstract
 {
-    /**
-     * The groups defined in the scenario.
-     *
-     * @var array
-     */
-    protected $groups = array();
-
     /**
      * The group array keys.
      *
@@ -32,21 +25,12 @@ class Hostingcheck_Scenario implements SeekableIterator, Countable
     protected $keys = array();
 
     /**
-     * The current position in the group array.
-     *
-     * @var int
-     */
-    protected $position = 0;
-
-
-    /**
      * Class constructor.
      */
     public function __construct()
     {
-        $this->groups = array();
         $this->keys = array();
-        $this->rewind();
+        parent::__construct();
     }
 
     /**
@@ -56,15 +40,8 @@ class Hostingcheck_Scenario implements SeekableIterator, Countable
      */
     public function add($group)
     {
-        $this->groups[$group->name()] = $group;
-        $this->keys = array_keys($this->groups);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind() {
-        $this->position = 0;
+        $this->collection[$group->name()] = $group;
+        $this->keys = array_keys($this->collection);
     }
 
     /**
@@ -88,27 +65,12 @@ class Hostingcheck_Scenario implements SeekableIterator, Countable
     /**
      * {@inheritdoc}
      */
-    public function next() {
-        $this->position++;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     function valid() {
         return isset($this->keys[$this->position]);
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function count()
-    {
-        return count($this->keys);
-    }
-
-    /**
-     * Get the group element by the group name.
+     * Get the group scenario by its name.
      *
      * @param string $name
      *     The group name
@@ -118,10 +80,10 @@ class Hostingcheck_Scenario implements SeekableIterator, Countable
      */
     public function seek($name)
     {
-        if (!isset($this->groups[$name])) {
+        if (!isset($this->collection[$name])) {
             return null;
         }
 
-        return $this->groups[$name];
+        return $this->collection[$name];
     }
 }

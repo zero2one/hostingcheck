@@ -13,32 +13,8 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Scenario_Validators implements Countable, SeekableIterator
+class Hostingcheck_Scenario_Validators extends Hostingcheck_Collection_Abstract
 {
-    /**
-     * The validators in the collection
-     *
-     * @var array
-     */
-    protected $validators;
-
-    /**
-     * The current position in the iterator array.
-     *
-     * @var int
-     */
-    protected $position = 0;
-
-
-    /**
-     * Class constructor.
-     */
-    public function __construct()
-    {
-        $this->validators = array();
-        $this->rewind();
-    }
-
     /**
      * Add a validator to the array.
      *
@@ -46,14 +22,7 @@ class Hostingcheck_Scenario_Validators implements Countable, SeekableIterator
      */
     public function add(Hostingcheck_Validate_Interface $validate)
     {
-        $this->validators[] = $validate;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind() {
-        $this->position = 0;
+        $this->collection[] = $validate;
     }
 
     /**
@@ -62,55 +31,20 @@ class Hostingcheck_Scenario_Validators implements Countable, SeekableIterator
      * @return Hostingcheck_Validate_Interface
      */
     public function current() {
-        return $this->validators[$this->position];
+        return parent::current();
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @return string
-     */
-    public function key() {
-        return $this->position;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function next() {
-        $this->position++;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    function valid() {
-        return isset($this->validators[$this->position]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function count()
-    {
-        return count($this->validators);
-    }
-
-    /**
-     * Get the group element by the group name.
+     * Get a validator by its position in the collection.
      *
      * @param int $position
-     *     The position in the tests array.
+     *     The position in the collection.
      *
-     * @return Hostingcheck_Scenario_Test|null
-     *     Returns null if the test does not exists.
+     * @return Hostingcheck_Validate_Interface|null
+     *     Returns null if no validator is found in the collection.
      */
     public function seek($position)
     {
-        if (!isset($this->validators[$position])) {
-            return null;
-        }
-
-        return $this->validators[$position];
+        return parent::seek($position);
     }
 }

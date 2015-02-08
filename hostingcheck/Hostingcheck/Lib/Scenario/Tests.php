@@ -13,32 +13,8 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Scenario_Tests implements Countable, SeekableIterator
+class Hostingcheck_Scenario_Tests extends Hostingcheck_Collection_Abstract
 {
-    /**
-     * The tests in the collection
-     *
-     * @var array
-     */
-    protected $tests = array();
-
-    /**
-     * The current position in the iterator array.
-     *
-     * @var int
-     */
-    protected $position = 0;
-
-
-    /**
-     * Class constructor.
-     */
-    public function __construct()
-    {
-        $this->tests = array();
-        $this->rewind();
-    }
-
     /**
      * Add a test scenario to the collection.
      *
@@ -46,14 +22,7 @@ class Hostingcheck_Scenario_Tests implements Countable, SeekableIterator
      */
     public function add(Hostingcheck_Scenario_Test $test)
     {
-        $this->tests[] = $test;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind() {
-        $this->position = 0;
+        $this->collection[] = $test;
     }
 
     /**
@@ -62,55 +31,20 @@ class Hostingcheck_Scenario_Tests implements Countable, SeekableIterator
      * @return Hostingcheck_Scenario_Test
      */
     public function current() {
-        return $this->tests[$this->position];
+        return parent::current();
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @return string
-     */
-    public function key() {
-        return $this->position;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function next() {
-        $this->position++;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    function valid() {
-        return isset($this->tests[$this->position]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function count()
-    {
-        return count($this->tests);
-    }
-
-    /**
-     * Get the group element by the group name.
+     * Get a test scenario by its position in the collection.
      *
      * @param int $position
-     *     The position in the tests array.
+     *     The position in the collection.
      *
      * @return Hostingcheck_Scenario_Test|null
      *     Returns null if the test does not exists.
      */
     public function seek($position)
     {
-        if (!isset($this->tests[$position])) {
-            return null;
-        }
-
-        return $this->tests[$position];
+        return parent::seek($position);
     }
 }
