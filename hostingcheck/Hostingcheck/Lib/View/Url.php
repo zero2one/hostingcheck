@@ -29,7 +29,7 @@ class Hostingcheck_View_Url
         $action = array_shift($arguments);
         $parameters = array_shift($arguments);
 
-        $url = htmlentities(strip_tags($_SERVER['PHP_SELF']));
+        $url = htmlentities(strip_tags($_SERVER['SCRIPT_NAME']));
         $args = array();
 
         if ($action) {
