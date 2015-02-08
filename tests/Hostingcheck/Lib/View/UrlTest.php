@@ -20,7 +20,7 @@ class Hostingcheck_View_Url_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testUrlWithoutArguments()
     {
-        $_SERVER['PHP_SELF'] = 'http://foobar.com';
+        $_SERVER['SCRIPT_NAME'] = 'http://foobar.com';
         $helper = new Hostingcheck_View_Url();
 
         $arguments = array(
@@ -37,7 +37,7 @@ class Hostingcheck_View_Url_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testUrlWithArguments()
     {
-        $_SERVER['PHP_SELF'] = 'http://foobar.com';
+        $_SERVER['SCRIPT_NAME'] = 'http://foobar.com';
         $helper = new Hostingcheck_View_Url();
 
         $arguments = array(

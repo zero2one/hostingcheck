@@ -81,8 +81,6 @@ $server[] = array(
     'info'       => 'Hostingcheck_Info_Server_Name',
 );
 
-// TODO : CPU info
-
 $server[] = array(
     'title'      => 'Total disk space',
     'info'       => 'Hostingcheck_Info_Server_Disk',
@@ -158,6 +156,3 @@ $php[] = array(
         ),
     ),
 );
-
-// TODO : memory info.
-

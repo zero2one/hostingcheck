@@ -42,19 +42,15 @@ class Hostingcheck_Runner_Test
     public function run()
     {
         $info = $this->scenario->info();
+        $result = new Hostingcheck_Result_Info();
 
         $validators = $this->scenario->validators();
-        if (count($validators) === 0) {
-            $result = new Hostingcheck_Result_Info();
-        }
-        else {
-            foreach ($validators as $validator) {
-                $result = $validator->validate($info->getValue());
+        foreach ($validators as $validator) {
+            $result = $validator->validate($info->getValue());
 
-                // Stop validating if there was an error.
-                if ($result instanceof Hostingcheck_Result_Failure) {
-                    break;
-                }
+            // Stop validating if there was an error.
+            if ($result instanceof Hostingcheck_Result_Failure) {
+                break;
             }
         }
 
