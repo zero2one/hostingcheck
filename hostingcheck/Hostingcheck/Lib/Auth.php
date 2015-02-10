@@ -89,19 +89,13 @@ class Hostingcheck_Auth
     public function isAuthenticated()
     {
         $username = $this->session['username'];
-        if (empty($username)) {
-            return false;
-        }
         $password = $this->session['password'];
-        if (empty($password)) {
-            return false;
-        }
 
         // Validate stored data.
-        if ($username !== $this->username) {
+        if (empty($username) || $username !== $this->username) {
             return false;
         }
-        if ($password !== $this->password) {
+        if (empty($password) || $password !== $this->password) {
             return false;
         }
 
