@@ -45,7 +45,7 @@ class Hostingcheck_Autoloader {
         }
 
         if ($file) {
-            include HOSTINGCHECK_BASEPATH . $file;
+            require_once HOSTINGCHECK_BASEPATH . $file;
         }
     }
 
