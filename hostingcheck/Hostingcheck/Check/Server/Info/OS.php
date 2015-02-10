@@ -9,11 +9,11 @@
 
 
 /**
- * Retrieve the Server Name information.
+ * Retrieve the Server OS information.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Info_Server_Name extends Hostingcheck_Info_Abstract
+class Check_Server_Info_OS extends Hostingcheck_Info_Abstract
 {
     /**
      * {@inheritDoc}
@@ -29,9 +29,8 @@ class Hostingcheck_Info_Server_Name extends Hostingcheck_Info_Abstract
      */
     protected function collectValue()
     {
-        $name = gethostname();
         $this->value = new Hostingcheck_Value_Text(
-            $name
+            php_uname()
         );
     }
 }

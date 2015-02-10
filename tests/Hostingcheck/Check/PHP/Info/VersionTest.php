@@ -9,25 +9,25 @@
 
 
 /**
- * Tests for Hostingcheck_Info_Server_Name.
+ * Tests for Hostingcheck_Value_PHP_VersionTest.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Info_Server_Name_TestCase extends PHPUnit_Framework_TestCase
+class Check_PHP_Info_Version_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Check get value method.
      */
     public function testGetValue()
     {
-        $name = gethostname();
+        $phpversion = phpversion();
 
-        $info = new Hostingcheck_Info_Server_Name();
+        $info = new Check_PHP_Info_Version();
         $this->assertInstanceOf(
-            'Hostingcheck_Value_Text',
+            'Hostingcheck_Value_Version',
             $info->getValue()
         );
 
-        $this->assertEquals($name, $info->getValue()->getValue());
+        $this->assertEquals($phpversion, $info->getValue()->getValue());
     }
 }

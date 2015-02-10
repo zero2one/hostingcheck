@@ -13,7 +13,7 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Info_PHP_Config extends Hostingcheck_Info_Abstract
+class Check_PHP_Info_Config extends Hostingcheck_Info_Abstract
 {
     /**
      * PHP Config key to be checked.

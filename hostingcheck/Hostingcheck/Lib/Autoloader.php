@@ -31,14 +31,30 @@ class Hostingcheck_Autoloader {
      */
     private function loader($className) {
         $path = explode('_', $className);
+        $file = null;
 
+        // List of class "namespaces" we support.
+        $whitelist = array(
+            'Hostingcheck' => 'Lib',
+            'Check' => null,
+        );
+
+        // Autoload Hostingcheck classes.
         if ($path[0] === 'Hostingcheck') {
             // Construct the file path.
-            $base = HOSTINGCHECK_BASEPATH;
             $path[0] .= DIRECTORY_SEPARATOR . 'Lib';
-            $file = $base . implode(DIRECTORY_SEPARATOR, $path) . '.php';
+            $file = implode(DIRECTORY_SEPARATOR, $path) . '.php';
+        }
 
-            include $file;
+        // Autoload Check classes.
+        if ($path[0] === 'Check') {
+            $path[-1] = 'Hostingcheck';
+            ksort($path);
+            $file = implode(DIRECTORY_SEPARATOR, $path) . '.php';
+        }
+
+        if ($file) {
+            include HOSTINGCHECK_BASEPATH . $file;
         }
     }
 }

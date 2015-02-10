@@ -9,11 +9,11 @@
 
 
 /**
- * Tests for Hostingcheck_Info_Server_Disk.
+ * Tests for Check_Server_Info_Disk.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Info_Server_Disk_TestCase extends PHPUnit_Framework_TestCase
+class Check_Server_Info_Disk_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Check get value method.
@@ -27,7 +27,7 @@ class Hostingcheck_Info_Server_Disk_TestCase extends PHPUnit_Framework_TestCase
         $used  = $total - $free;
 
         // Total.
-        $info = new Hostingcheck_Info_Server_Disk();
+        $info = new Check_Server_Info_Disk();
         $this->assertInstanceOf(
             'Hostingcheck_Value_Byte',
             $info->getValue()
@@ -35,15 +35,15 @@ class Hostingcheck_Info_Server_Disk_TestCase extends PHPUnit_Framework_TestCase
         $this->assertEquals($total, $info->getValue()->getValue());
 
         // Free.
-        $info = new Hostingcheck_Info_Server_Disk(array('name' => 'free'));
+        $info = new Check_Server_Info_Disk(array('name' => 'free'));
         $this->assertEquals($free, $info->getValue()->getValue());
 
         // Used.
-        $info = new Hostingcheck_Info_Server_Disk(array('name' => 'used'));
+        $info = new Check_Server_Info_Disk(array('name' => 'used'));
         $this->assertEquals($used, $info->getValue()->getValue());
 
         // Not supported.
-        $info = new Hostingcheck_Info_Server_Disk(array('name' => 'foobar'));
+        $info = new Check_Server_Info_Disk(array('name' => 'foobar'));
         $this->assertInstanceOf(
             'Hostingcheck_Value_NotSupported',
             $info->getValue()
@@ -58,12 +58,12 @@ class Hostingcheck_Info_Server_Disk_TestCase extends PHPUnit_Framework_TestCase
         $path = '/';
         $total = disk_total_space($path);
 
-        $info = new Hostingcheck_Info_Server_Disk(array('path' => $path));
+        $info = new Check_Server_Info_Disk(array('path' => $path));
         $this->assertEquals($total, $info->getValue()->getValue());
 
         // Non existing path.
         $path = '/foo/bar/buz/baz';
-        $info = new Hostingcheck_Info_Server_Disk(array('path' => $path));
+        $info = new Check_Server_Info_Disk(array('path' => $path));
         $this->assertInstanceOf(
             'Hostingcheck_Value_NotSupported',
             $info->getValue()
@@ -71,7 +71,7 @@ class Hostingcheck_Info_Server_Disk_TestCase extends PHPUnit_Framework_TestCase
 
         // Path to file instead of directory.
         $path = __FILE__;
-        $info = new Hostingcheck_Info_Server_Disk(array('path' => $path));
+        $info = new Check_Server_Info_Disk(array('path' => $path));
         $this->assertInstanceOf(
             'Hostingcheck_Value_NotSupported',
             $info->getValue()
