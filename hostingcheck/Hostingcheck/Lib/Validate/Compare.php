@@ -75,7 +75,7 @@ class Hostingcheck_Validate_Compare extends Hostingcheck_Validate_Abstract
     }
 
     /**
-     * Helper to validate te minimal byte.
+     * Validate if value is greater then or equal to min in the arguments.
      *
      * @param Hostingcheck_Value_Interface $value
      *
@@ -94,7 +94,7 @@ class Hostingcheck_Validate_Compare extends Hostingcheck_Validate_Abstract
     }
 
     /**
-     * Helper to validate the maximum byte.
+     * Validate if value is less then or equal to max in the arguments.
      *
      * @param Hostingcheck_Value_Interface $value
      *

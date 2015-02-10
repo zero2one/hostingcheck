@@ -13,7 +13,7 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Value_Byte extends Hostingcheck_Value_Abstract
+class Hostingcheck_Value_Byte extends Hostingcheck_Value_Comparable
 {
     /**
      * Special format string to auto calculate the best value.
@@ -134,94 +134,6 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Abstract
         $string = $this->format($value, $this->format, $this->precision);
         return $string;
     }
-
-    /**
-     * Compares this Byte object to another.
-     *
-     * Returns an integer less than, equal to, or greater than zero
-     * if the value of this Money object is considered to be respectively
-     * less than, equal to, or greater than the other Money object.
-     *
-     * @param Hostingcheck_Value_Byte $other
-     *      Byte value to compare to.
-     *
-     * @return integer
-     *      -1|0|1
-     */
-    public function compareTo(Hostingcheck_Value_Byte $other)
-    {
-        if ($this->getValue() == $other->getValue()) {
-            return 0;
-        }
-        return $this->getValue() < $other->getValue()
-            ? -1
-            : 1;
-    }
-
-    /**
-     * Returns TRUE if this Byte object equals to another.
-     *
-     * @param Hostingcheck_Value_Byte $other
-     *
-     * @return boolean
-     */
-    public function equals(Hostingcheck_Value_Byte $other)
-    {
-        return $this->compareTo($other) == 0;
-    }
-
-    /**
-     * Returns TRUE if the byte value represented by this Byte object
-     * is greater than that of another, FALSE otherwise.
-     *
-     * @param Hostingcheck_Value_Byte $other
-     *
-     * @return boolean
-     */
-    public function greaterThan(Hostingcheck_Value_Byte $other)
-    {
-        return $this->compareTo($other) == 1;
-    }
-
-    /**
-     * Returns TRUE if the byte value represented by this Byte object
-     * is greater than or equal that of another, FALSE otherwise.
-     *
-     * @param Hostingcheck_Value_Byte $other
-     *
-     * @return boolean
-     */
-    public function greaterThanOrEqual(Hostingcheck_Value_Byte $other)
-    {
-        return $this->greaterThan($other) || $this->equals($other);
-    }
-
-    /**
-     * Returns TRUE if the byte value represented by this Byte object
-     * is smaller than that of another, FALSE otherwise.
-     *
-     * @param Hostingcheck_Value_Byte $other
-     *
-     * @return boolean
-     */
-    public function lessThan(Hostingcheck_Value_Byte $other)
-    {
-        return $this->compareTo($other) == -1;
-    }
-
-    /**
-     * Returns TRUE if the byte value represented by this Byte object
-     * is smaller than or equal that of another, FALSE otherwise.
-     *
-     * @param Hostingcheck_Value_Byte $other
-     *
-     * @return boolean
-     */
-    public function lessThanOrEqual(Hostingcheck_Value_Byte $other)
-    {
-        return $this->lessThan($other) || $this->equals($other);
-    }
-
 
     /**
      * Convert to bytes.
