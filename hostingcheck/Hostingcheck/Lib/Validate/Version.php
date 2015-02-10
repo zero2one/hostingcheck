@@ -9,90 +9,39 @@
 
 
 /**
- * Validate a version number.
+ * Validate a value number.
  *
  * {@inheritDoc}
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Abstract
+class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Compare
 {
-    /**
-     * Arguments to use during the validation.
-     *
-     * @var array
-     */
-    protected $arguments = array(
-        'equal' => null,
-        'min' => null,
-        'max' => null,
-    );
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public function validate(hostingcheck_Value_Interface $version)
-    {
-        $messages = array();
-
-        // If an equals value is given, check only if that is valid.
-        if (!empty($this->arguments['equal'])) {
-            $messages[] = $this->isEqual($version);
-        }
-        else {
-            // Validate a minimal version.
-            if (!empty($this->arguments['min'])) {
-                $messages[] = $this->isMin($version);
-            }
-
-            // Validate a maximum version.
-            if (!empty($this->arguments['max'])) {
-                $messages[] = $this->isMax($version);
-            }
-        }
-
-        // If there are messages, the version is not valid.
-        $messages = array_values(array_filter($messages));
-        return (count($messages))
-            ? new Hostingcheck_Result_Failure($messages)
-            : new Hostingcheck_Result_Success();
-    }
-
     /**
      * Helper to validate if the given version is the same as the expected..
      *
-     * @param Hostingcheck_Value_Version $version
-     *
-     * @return string
-     *      Error message if the validation is not ok.
+     * {@inheritDoc}
      */
-    protected function isEqual(Hostingcheck_Value_Version $version)
+    protected function isEqual(Hostingcheck_Value_Interface $value)
     {
-        $equal = $this->arguments['equal'];
-        $other = new Hostingcheck_Value_Version($equal);
-        if (!$version->equals($other)) {
+        $equal = new Hostingcheck_Value_Version($this->getArgumentEqual());
+        if (!$value->equals($equal)) {
             return new Hostingcheck_Message(
-                'Version is not equal to {version}.',
-                array('version' => $equal)
+                'Version is not equal to {value}.',
+                array('value' => $equal)
             );
         }
     }
 
     /**
-     * Helper to validate te minimal version.
+     * Helper to validate te minimal version number.
      *
-     * @param Hostingcheck_Value_Version $version
-     *
-     * @return string
-     *      Error message if the validation is not ok.
+     * {@inheritDoc}
      */
-    protected function isMin(Hostingcheck_Value_Version $version)
+    protected function isMin(Hostingcheck_Value_Interface $value)
     {
-        $min = $this->arguments['min'];
-        $other = new Hostingcheck_Value_Version($min);
-
-        if (!$version->greaterThanOrEqual($other)) {
+        $min = new Hostingcheck_Value_Version($this->getArgumentMinimum());
+        if (!$value->greaterThanOrEqual($min)) {
             return new Hostingcheck_Message(
                 'Version is to low, should be at least {min}.',
                 array('min' => $min)
@@ -101,19 +50,14 @@ class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Abstract
     }
 
     /**
-     * Helper to validate the maximum version.
+     * Helper to validate the maximum version number.
      *
-     * @param Hostingcheck_Value_Version $version
-     *
-     * @return bool
-     *      Result of the comparison.
+     * {@inheritDoc}
      */
-    protected function isMax(Hostingcheck_Value_Version $version)
+    protected function isMax(Hostingcheck_Value_Interface $value)
     {
-        $max = $this->arguments['max'];
-        $other = new Hostingcheck_Value_Version($max);
-
-        if (!$version->lessThanOrEqual($other)) {
+        $max = new Hostingcheck_Value_Version($this->getArgumentMaximum());
+        if (!$value->lessThanOrEqual($max)) {
             return new Hostingcheck_Message(
                 'Version is to high, should be at most {max}.',
                 array('max' => $max)

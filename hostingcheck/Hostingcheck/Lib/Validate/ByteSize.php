@@ -15,57 +15,17 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Validate_ByteSize extends Hostingcheck_Validate_Abstract
+class Hostingcheck_Validate_ByteSize extends Hostingcheck_Validate_Compare
 {
-    /**
-     * Arguments to use during the validation.
-     *
-     * @var array
-     */
-    protected $arguments = array(
-        'equal' => null,
-        'min' => null,
-        'max' => null,
-    );
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public function validate(Hostingcheck_Value_Interface $byte)
-    {
-        $messages = array();
-
-        $messages[] = $this->isEqual($byte);
-        if (empty($this->arguments['equal'])) {
-            $messages[] = $this->isMin($byte);
-            $messages[] = $this->isMax($byte);
-        }
-
-        // If there are messages, the byte is not valid.
-        $messages = array_values(array_filter($messages));
-        return (count($messages))
-            ? new Hostingcheck_Result_Failure($messages)
-            : new Hostingcheck_Result_Success();
-    }
-
     /**
      * Helper to validate if the given byte is the same as the expected..
      *
-     * @param Hostingcheck_Value_Byte $byte
-     *
-     * @return string
-     *      Error message if the validation is not ok.
+     * {@inheritDoc}
      */
-    protected function isEqual(Hostingcheck_Value_Byte $byte)
+    protected function isEqual(Hostingcheck_Value_Interface $value)
     {
-        $equal = $this->arguments['equal'];
-        if (empty($equal)) {
-            return;
-        }
-
-        $other = new Hostingcheck_Value_Byte($equal);
-        if (!$byte->equals($other)) {
+        $equal = new Hostingcheck_Value_Byte($this->getArgumentEqual());
+        if (!$value->equals($equal)) {
             return new Hostingcheck_Message(
                 'Byte size is not equal to {size}.',
                 array('size' => $equal)
@@ -74,22 +34,14 @@ class Hostingcheck_Validate_ByteSize extends Hostingcheck_Validate_Abstract
     }
 
     /**
-     * Helper to validate te minimal byte.
+     * Helper to validate the minimal byte size.
      *
-     * @param Hostingcheck_Value_Byte $byte
-     *
-     * @return string
-     *      Error message if the validation is not ok.
+     * {@inheritDoc}
      */
-    protected function isMin(Hostingcheck_Value_Byte $byte)
+    protected function isMin(Hostingcheck_Value_Interface $value)
     {
-        $min = $this->arguments['min'];
-        if (empty($min)) {
-            return;
-        }
-
-        $other = new Hostingcheck_Value_Byte($min);
-        if (!$byte->greaterThanOrEqual($other)) {
+        $min = new Hostingcheck_Value_Byte($this->getArgumentMinimum());
+        if (!$value->greaterThanOrEqual($min)) {
             return new Hostingcheck_Message(
                 'Byte size is to low, should be at least {min}.',
                 array('min' => $min)
@@ -98,22 +50,14 @@ class Hostingcheck_Validate_ByteSize extends Hostingcheck_Validate_Abstract
     }
 
     /**
-     * Helper to validate the maximum byte.
+     * Helper to validate the maximum byte size.
      *
-     * @param Hostingcheck_Value_Byte $byte
-     *
-     * @return bool
-     *      Result of the comparison.
+     * {@inheritDoc}
      */
-    protected function isMax(Hostingcheck_Value_Byte $byte)
+    protected function isMax(Hostingcheck_Value_Interface $value)
     {
-        $max = $this->arguments['max'];
-        if (empty($max)) {
-            return;
-        }
-
-        $other = new Hostingcheck_Value_Byte($max);
-        if (!$byte->lessThanOrEqual($other)) {
+        $max = new Hostingcheck_Value_Byte($this->getArgumentMaximum());
+        if (!$value->lessThanOrEqual($max)) {
             return new Hostingcheck_Message(
                 'Byte size is to high, should be at most {max}.',
                 array('max' => $max)
