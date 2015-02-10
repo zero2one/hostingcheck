@@ -9,21 +9,21 @@
 
 
 /**
- * Tests for Hostingcheck_Validate_Byte size.
+ * Tests for Hostingcheck_Validate_Compare.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Validate_ByteSize_TestCase extends PHPUnit_Framework_TestCase
+class Hostingcheck_Validate_Compare_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Test the validate() method.
      *
      * @dataProvider validateProvider
      */
-    public function testValidate($byte, $arguments, $resultType, $messages)
+    public function testValidate($value, $arguments, $resultType, $messages)
     {
-        $value = new Hostingcheck_Value_Byte($byte);
-        $validator = new Hostingcheck_Validate_ByteSize($arguments);
+        $value = new Hostingcheck_Value_Text($value);
+        $validator = new Hostingcheck_Validate_Compare($arguments);
         $result = $validator->validate($value);
         $this->assertInstanceOf($resultType, $result);
 
@@ -43,93 +43,113 @@ class Hostingcheck_Validate_ByteSize_TestCase extends PHPUnit_Framework_TestCase
     public function validateProvider()
     {
         return array(
-            // Equal (min/max should be ignored).
+            // Equal text
             array(
-                '4.2M',
-                array('equal' => '4.2M', 'min' => '6M', 'max' => '2M'),
+                'Foo',
+                array('equal' => 'Foo'),
                 'Hostingcheck_Result_Success',
                 array(),
             ),
             array(
-                '4M',
-                array('equal' => '3M', 'min' => '6M', 'max' => '2M'),
+                'Bar',
+                array('equal' => 'Foo'),
                 'Hostingcheck_Result_Failure',
-                array('Byte size is not equal to 3M.'),
+                array('Value is not equal to Foo.'),
             ),
 
-            // Minimum size.
+            // Equal numbers.
             array(
-                '5.2M',
-                array('min' => '5.2M'),
+                4,
+                array('equal' => 4),
                 'Hostingcheck_Result_Success',
                 array(),
             ),
             array(
-                '5.21M',
-                array('min' => '5.2M'),
+                '4',
+                array('equal' => 4),
                 'Hostingcheck_Result_Success',
                 array(),
             ),
             array(
-                '6T',
-                array('min' => '6.1T'),
+                4,
+                array('equal' => '4'),
+                'Hostingcheck_Result_Success',
+                array(),
+            ),
+            array(
+                7,
+                array('equal' => 5, 'min' => 4, 'max' => 6),
                 'Hostingcheck_Result_Failure',
-                array('Byte size is to low, should be at least 6.1T.'),
+                array('Value is not equal to 5.'),
+            ),
+            array(
+                7,
+                array('equal' => 7, 'min' => 4, 'max' => 6),
+                'Hostingcheck_Result_Success',
+                array(),
+            ),
+
+            // Minimum version.
+            array(
+                5,
+                array('min' => 5),
+                'Hostingcheck_Result_Success',
+                array(),
+            ),
+            array(
+                5,
+                array('min' => 4.9),
+                'Hostingcheck_Result_Success',
+                array(),
+            ),
+            array(
+                4,
+                array('min' => 5),
+                'Hostingcheck_Result_Failure',
+                array('Value should be at least 5.'),
             ),
 
             // Maximum version.
             array(
-                '3000B',
-                array('max' => 3000),
+                '7',
+                array('max' => 8),
                 'Hostingcheck_Result_Success',
                 array(),
             ),
             array(
-                '3P',
-                array('max' => '3.001P'),
-                'Hostingcheck_Result_Success',
-                array(),
-            ),
-            array(
-                1025,
-                array('max' => '1K'),
+                '9',
+                array('max' => '8'),
                 'Hostingcheck_Result_Failure',
-                array('Byte size is to high, should be at most 1K.'),
+                array('Value should be at most 8.'),
             ),
 
             // Minimum & Maximum combined.
             array(
-                '500M',
-                array('min' => '500M', 'max' => '500M'),
+                '5',
+                array('min' => '4', 'max' => '6'),
                 'Hostingcheck_Result_Success',
                 array(),
             ),
             array(
-                '399K',
-                array('min' => '500B', 'max' => '500M'),
-                'Hostingcheck_Result_Success',
-                array(),
-            ),
-            array(
-                '50M',
-                array('min' => '6T', 'max' => '4M'),
+                '5',
+                array('min' => '6', 'max' => '4'),
                 'Hostingcheck_Result_Failure',
                 array(
-                    'Byte size is to low, should be at least 6T.',
-                    'Byte size is to high, should be at most 4M.',
+                    'Value should be at least 6.',
+                    'Value should be at most 4.',
                 ),
             ),
             array(
-                '4M',
-                array('min' => '5M', 'max' => '8M'),
+                '4',
+                array('min' => '5', 'max' => '6'),
                 'Hostingcheck_Result_Failure',
-                array('Byte size is to low, should be at least 5M.'),
+                array('Value should be at least 5.'),
             ),
             array(
-                '8.1M',
-                array('min' => '4M', 'max' => '8M'),
+                '7',
+                array('min' => 5, 'max' => 6),
                 'Hostingcheck_Result_Failure',
-                array('Byte size is to high, should be at most 8M.'),
+                array('Value should be at most 6.'),
             ),
         );
     }
