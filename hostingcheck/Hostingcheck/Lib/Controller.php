@@ -88,25 +88,37 @@ class Hostingcheck_Controller
      */
     public function run()
     {
-        // check if logged in
+        // Check if logged in.
         if(!$this->auth->isAuthenticated()) {
             echo $this->actionLogin();
             return;
         }
 
-        switch($this->getRequest()) {
+        // Dispatch the request.
+        $this->dispatch($this->getRequest());
+    }
+
+    /**
+     * Helper to dispatch the request.
+     *
+     * @param string $request
+     *     The request name.
+     */
+    protected function dispatch($request)
+    {
+        switch($request) {
             case self::ACTION_LOGOUT:
                 $this->actionLogout();
                 return;
-                
+
             case self::ACTION_DOWNLOAD_REPORT:
                 $this->actionDownloadReport();
                 return;
-              
+
             case self::ACTION_DOWNLOAD_PHPINFO:
                 $this->actionDownloadPhpInfo();
                 return;
-              
+
             default:
                 echo $this->actionReport();
                 return;
