@@ -33,28 +33,50 @@ class Hostingcheck_Autoloader {
         $path = explode('_', $className);
         $file = null;
 
-        // List of class "namespaces" we support.
-        $whitelist = array(
-            'Hostingcheck' => 'Lib',
-            'Check' => null,
-        );
+        switch ($path[0]) {
+            case 'Hostingcheck':
+                $file = $this->hostingcheckFile($path);
+                break;
 
-        // Autoload Hostingcheck classes.
-        if ($path[0] === 'Hostingcheck') {
-            // Construct the file path.
-            $path[0] .= DIRECTORY_SEPARATOR . 'Lib';
-            $file = implode(DIRECTORY_SEPARATOR, $path) . '.php';
-        }
+            case 'Check':
+                $file = $this->checkFile($path);
+                break;
 
-        // Autoload Check classes.
-        if ($path[0] === 'Check') {
-            $path[-1] = 'Hostingcheck';
-            ksort($path);
-            $file = implode(DIRECTORY_SEPARATOR, $path) . '.php';
         }
 
         if ($file) {
             include HOSTINGCHECK_BASEPATH . $file;
         }
+    }
+
+    /**
+     * Create the file path for Hostingcheck classes.
+     *
+     * @param array $path
+     *     The class name split by the underscore.
+     *
+     * @return string
+     *     The path to the file.
+     */
+    protected function hostingcheckFile($path)
+    {
+        $path[0] .= DIRECTORY_SEPARATOR . 'Lib';
+        return implode(DIRECTORY_SEPARATOR, $path) . '.php';
+    }
+
+    /**
+     * Create the file path for Check classes.
+     *
+     * @param array $path
+     *     The class name split by the underscore.
+     *
+     * @return string
+     *     The path to the file.
+     */
+    protected function checkFile($path)
+    {
+        $path[-1] = 'Hostingcheck';
+        ksort($path);
+        return implode(DIRECTORY_SEPARATOR, $path) . '.php';
     }
 }
