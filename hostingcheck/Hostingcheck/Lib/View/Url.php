@@ -26,11 +26,29 @@ class Hostingcheck_View_Url
      */
     public function url($arguments)
     {
+        $url = htmlentities(strip_tags($_SERVER['SCRIPT_NAME']));
+
+        $args = $this->extractArgs($arguments);
+        if ($args) {
+            $url .= '?' . implode('&', $args);
+        }
+
+        return $url;
+    }
+
+    /**
+     * Get the args from the arguments.
+     *
+     * @param array $arguments
+     *
+     * @return array
+     *     Array of GET args (if any).
+     */
+    protected function extractArgs($arguments)
+    {
+        $args = array();
         $action = array_shift($arguments);
         $parameters = array_shift($arguments);
-
-        $url = htmlentities(strip_tags($_SERVER['SCRIPT_NAME']));
-        $args = array();
 
         if ($action) {
             $args[] = 'do=' . $action;
@@ -41,10 +59,6 @@ class Hostingcheck_View_Url
             }
         }
 
-        if ($args) {
-            $url .= '?' . implode('&', $args);
-        }
-
-        return $url;
+        return $args;
     }
 }
