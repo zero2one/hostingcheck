@@ -18,50 +18,50 @@
 class Hostingcheck_Validate_ByteSize extends Hostingcheck_Validate_Compare
 {
     /**
-     * Helper to validate if the given byte is the same as the expected..
+     * Messages when the validator fails.
      *
-     * {@inheritDoc}
+     * @var array
      */
-    protected function isEqual(Hostingcheck_Value_Interface $value)
+    protected $messages = array(
+        'equal' => 'Byte size is not equal to {value}.',
+        'min' => 'Byte size is to low, should be at least {min}.',
+        'max' => 'Byte size is to high, should be at most {max}.',
+    );
+
+
+    /**
+     * Get the equal argument.
+     *
+     * @return Hostingcheck_Value_Byte
+     */
+    protected function getArgumentEqual()
     {
-        $equal = new Hostingcheck_Value_Byte($this->getArgumentEqual());
-        if (!$value->equals($equal)) {
-            return new Hostingcheck_Message(
-                'Byte size is not equal to {size}.',
-                array('size' => $equal)
-            );
-        }
+        return new Hostingcheck_Value_Byte(
+            $this->arguments['equal']
+        );
     }
 
     /**
-     * Helper to validate the minimal byte size.
+     * Get the minimum argument.
      *
-     * {@inheritDoc}
+     * @return Hostingcheck_Value_Byte
      */
-    protected function isMin(Hostingcheck_Value_Interface $value)
+    protected function getArgumentMinimum()
     {
-        $min = new Hostingcheck_Value_Byte($this->getArgumentMinimum());
-        if (!$value->greaterThanOrEqual($min)) {
-            return new Hostingcheck_Message(
-                'Byte size is to low, should be at least {min}.',
-                array('min' => $min)
-            );
-        }
+        return new Hostingcheck_Value_Byte(
+            $this->arguments['min']
+        );
     }
 
     /**
-     * Helper to validate the maximum byte size.
+     * Get the minimum argument.
      *
-     * {@inheritDoc}
+     * @return Hostingcheck_Value_Byte
      */
-    protected function isMax(Hostingcheck_Value_Interface $value)
+    protected function getArgumentMaximum()
     {
-        $max = new Hostingcheck_Value_Byte($this->getArgumentMaximum());
-        if (!$value->lessThanOrEqual($max)) {
-            return new Hostingcheck_Message(
-                'Byte size is to high, should be at most {max}.',
-                array('max' => $max)
-            );
-        }
+        return new Hostingcheck_Value_Byte(
+            $this->arguments['max']
+        );
     }
 }

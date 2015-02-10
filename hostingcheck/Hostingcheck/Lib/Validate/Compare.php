@@ -15,7 +15,9 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Validate_Compare extends Hostingcheck_Validate_Abstract
+class Hostingcheck_Validate_Compare
+    extends Hostingcheck_Validate_Abstract
+    implements Hostingcheck_Validate_Compare_Interface
 {
     /**
      * Arguments to use during the validation.
@@ -26,6 +28,17 @@ class Hostingcheck_Validate_Compare extends Hostingcheck_Validate_Abstract
         'equal' => null,
         'min' => null,
         'max' => null,
+    );
+
+    /**
+     * Messages when the validator fails.
+     *
+     * @var array
+     */
+    protected $messages = array(
+        'equal' => 'Value is not equal to {value}.',
+        'min' => 'Value should be at least {min}.',
+        'max' => 'Value should be at most {max}.',
     );
 
 
@@ -56,57 +69,42 @@ class Hostingcheck_Validate_Compare extends Hostingcheck_Validate_Abstract
     }
 
     /**
-     * Helper to validate if the given value is the same as the expected value.
-     *
-     * @param Hostingcheck_Value_Interface $value
-     *
-     * @return null|Hostingcheck_Message
-     *      Error message if the validation is not ok.
+     * {@inheritDoc}
      */
-    protected function isEqual(Hostingcheck_Value_Interface $value)
+    public function isEqual(Hostingcheck_Value_Interface $value)
     {
         $equal = $this->getArgumentEqual();
-        if ($value->getValue() != $equal) {
+        if (!$equal->equals($value)) {
             return new Hostingcheck_Message(
-                'Value is not equal to {size}.',
-                array('size' => $equal)
+                $this->messages['equal'],
+                array('value' => $equal)
             );
         }
     }
 
     /**
-     * Validate if value is greater then or equal to min in the arguments.
-     *
-     * @param Hostingcheck_Value_Interface $value
-     *
-     * @return null|Hostingcheck_Message
-     *      Error message if the validation is not ok.
+     * {@inheritDoc}
      */
-    protected function isMin(Hostingcheck_Value_Interface $value)
+    public function isMin(Hostingcheck_Value_Interface $value)
     {
         $min = $this->getArgumentMinimum();
-        if ($value->getValue() < $min) {
+        if (!$min->lessThanOrEqual($value)) {
             return new Hostingcheck_Message(
-                'Value should be at least {min}.',
+                $this->messages['min'],
                 array('min' => $min)
             );
         }
     }
 
     /**
-     * Validate if value is less then or equal to max in the arguments.
-     *
-     * @param Hostingcheck_Value_Interface $value
-     *
-     * @return null|Hostingcheck_Message
-     *      Error message if the validation is not ok.
+     * {@inheritDoc}
      */
-    protected function isMax(Hostingcheck_Value_Interface $value)
+    public function isMax(Hostingcheck_Value_Interface $value)
     {
         $max = $this->getArgumentMaximum();
-        if ($value->getValue() > $max) {
+        if (!$max->greaterThanOrEqual($value)) {
             return new Hostingcheck_Message(
-                'Value should be at most {max}.',
+                $this->messages['max'],
                 array('max' => $max)
             );
         }
@@ -125,11 +123,13 @@ class Hostingcheck_Validate_Compare extends Hostingcheck_Validate_Abstract
     /**
      * Get the equal argument.
      *
-     * @return mixed
+     * @return Hostingcheck_Value_Comparable
      */
     protected function getArgumentEqual()
     {
-        return $this->arguments['equal'];
+        return new Hostingcheck_Value_Comparable(
+            $this->arguments['equal']
+        );
     }
 
     /**
@@ -145,11 +145,13 @@ class Hostingcheck_Validate_Compare extends Hostingcheck_Validate_Abstract
     /**
      * Get the minimum argument.
      *
-     * @return mixed
+     * @return Hostingcheck_Value_Comparable
      */
     protected function getArgumentMinimum()
     {
-        return $this->arguments['min'];
+        return new Hostingcheck_Value_Comparable(
+            $this->arguments['min']
+        );
     }
 
     /**
@@ -165,10 +167,12 @@ class Hostingcheck_Validate_Compare extends Hostingcheck_Validate_Abstract
     /**
      * Get the minimum argument.
      *
-     * @return mixed
+     * @return Hostingcheck_Value_Comparable
      */
     protected function getArgumentMaximum()
     {
-        return $this->arguments['max'];
+        return new Hostingcheck_Value_Comparable(
+            $this->arguments['max']
+        );
     }
 }

@@ -18,50 +18,50 @@
 class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Compare
 {
     /**
-     * Helper to validate if the given version is the same as the expected..
+     * Messages when the validator fails.
      *
-     * {@inheritDoc}
+     * @var array
      */
-    protected function isEqual(Hostingcheck_Value_Interface $value)
+    protected $messages = array(
+        'equal' => 'Version is not equal to {value}.',
+        'min' => 'Version is to low, should be at least {min}.',
+        'max' => 'Version is to high, should be at most {max}.',
+    );
+
+
+    /**
+     * Get the equal argument.
+     *
+     * @return Hostingcheck_Value_Version
+     */
+    protected function getArgumentEqual()
     {
-        $equal = new Hostingcheck_Value_Version($this->getArgumentEqual());
-        if (!$value->equals($equal)) {
-            return new Hostingcheck_Message(
-                'Version is not equal to {value}.',
-                array('value' => $equal)
-            );
-        }
+        return new Hostingcheck_Value_Version(
+            $this->arguments['equal']
+        );
     }
 
     /**
-     * Helper to validate te minimal version number.
+     * Get the minimum argument.
      *
-     * {@inheritDoc}
+     * @return Hostingcheck_Value_Version
      */
-    protected function isMin(Hostingcheck_Value_Interface $value)
+    protected function getArgumentMinimum()
     {
-        $min = new Hostingcheck_Value_Version($this->getArgumentMinimum());
-        if (!$value->greaterThanOrEqual($min)) {
-            return new Hostingcheck_Message(
-                'Version is to low, should be at least {min}.',
-                array('min' => $min)
-            );
-        }
+        return new Hostingcheck_Value_Version(
+            $this->arguments['min']
+        );
     }
 
     /**
-     * Helper to validate the maximum version number.
+     * Get the minimum argument.
      *
-     * {@inheritDoc}
+     * @return Hostingcheck_Value_Version
      */
-    protected function isMax(Hostingcheck_Value_Interface $value)
+    protected function getArgumentMaximum()
     {
-        $max = new Hostingcheck_Value_Version($this->getArgumentMaximum());
-        if (!$value->lessThanOrEqual($max)) {
-            return new Hostingcheck_Message(
-                'Version is to high, should be at most {max}.',
-                array('max' => $max)
-            );
-        }
+        return new Hostingcheck_Value_Version(
+            $this->arguments['max']
+        );
     }
 }
