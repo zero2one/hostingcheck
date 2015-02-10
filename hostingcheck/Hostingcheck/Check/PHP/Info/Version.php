@@ -9,48 +9,28 @@
 
 
 /**
- * Retrieve the version number of a given extension.
+ * Retrieve the PHP version number.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Info_PHP_Extension extends Hostingcheck_Info_Abstract
+class Check_PHP_Info_Version extends Hostingcheck_Info_Abstract
 {
-    /**
-     * The name of the extension.
-     *
-     * @var string
-     */
-    protected $name;
-
-
     /**
      * {@inheritDoc}
      *
      * Supported arguments:
-     * - name : the name of the extension.
+     * - None
      */
     public function __construct($arguments = array())
-    {
-        if (empty($arguments['name'])) {
-            $this->value = new Hostingcheck_Value_NotSupported();
-            return;
-        }
-
-        $this->name = $arguments['name'];
-    }
+    {}
 
     /**
      * {@inheritDoc}
      */
     protected function collectValue()
     {
-        if (!extension_loaded($this->name)) {
-            $this->value = new Hostingcheck_Value_NotSupported();
-            return;
-        }
-
         $this->value = new Hostingcheck_Value_Version(
-            phpversion($this->name)
+            phpversion()
         );
     }
 }

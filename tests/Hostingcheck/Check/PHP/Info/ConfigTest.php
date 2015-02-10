@@ -13,7 +13,7 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Info_PHP_Config_TestCase extends PHPUnit_Framework_TestCase
+class Check_PHP_Info_Config_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Check get value method.
@@ -31,7 +31,7 @@ class Hostingcheck_Info_PHP_Config_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testGetValue($config, $expected_instance, $expected_value)
     {
-        $info = new Hostingcheck_Info_PHP_Config($config);
+        $info = new Check_PHP_Info_Config($config);
         $this->assertInstanceOf($expected_instance, $info->getValue());
         $this->assertSame($expected_value, $info->getValue()->getValue());
     }

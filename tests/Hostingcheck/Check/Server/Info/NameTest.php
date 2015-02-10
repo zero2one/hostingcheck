@@ -9,21 +9,25 @@
 
 
 /**
- * Tests for Hostingcheck_Value_DateTime.
+ * Tests for Check_Server_Info_Name.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Info_Apache_Version_TestCase extends PHPUnit_Framework_TestCase
+class Check_Server_Info_Name_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Check get value method.
      */
     public function testGetValue()
     {
-        $version = new Hostingcheck_Info_Apache_Version();
+        $name = gethostname();
+
+        $info = new Check_Server_Info_Name();
         $this->assertInstanceOf(
-            'Hostingcheck_Value_NotSupported',
-            $version->getValue()
+            'Hostingcheck_Value_Text',
+            $info->getValue()
         );
+
+        $this->assertEquals($name, $info->getValue()->getValue());
     }
 }

@@ -74,25 +74,24 @@ $info[] = array(
 
 $server[] = array(
     'title'      => 'Operating System',
-    'info'       => 'Hostingcheck_Info_Server_OS',
+    'info'       => 'Check_Server_Info_OS',
 );
 $server[] = array(
     'title'      => 'Hostname',
-    'info'       => 'Hostingcheck_Info_Server_Name',
+    'info'       => 'Check_Server_Info_Name',
 );
-
 $server[] = array(
     'title'      => 'Total disk space',
-    'info'       => 'Hostingcheck_Info_Server_Disk',
+    'info'       => 'Check_Server_Info_Disk',
 );
 $server[] = array(
     'title'      => 'Used disk space',
-    'info'       => 'Hostingcheck_Info_Server_Disk',
+    'info'       => 'Check_Server_Info_Disk',
     'info args'  => array('name' => 'used'),
 );
 $server[] = array(
     'title'      => 'Free disk space',
-    'info'       => 'Hostingcheck_Info_Server_Disk',
+    'info'       => 'Check_Server_Info_Disk',
     'info args'  => array('name' => 'free'),
     'validators' => array(
         array(
@@ -104,14 +103,14 @@ $server[] = array(
 );
 $server[] = array(
     'title'      => 'Free disk space of root disk (/)',
-    'info'       => 'Hostingcheck_Info_Server_Disk',
+    'info'       => 'Check_Server_Info_Disk',
     'info args'  => array('name' => 'free', 'path' => '/'),
 );
 
 
 $php[] = array(
     'title'      => 'PHP Version',
-    'info'       => 'Hostingcheck_Info_PHP_Version',
+    'info'       => 'Check_PHP_Info_Version',
     'validators' => array(
         array(
             'validator' => 'Hostingcheck_Validate_Version',
@@ -122,7 +121,7 @@ $php[] = array(
 );
 $php[] = array(
     'title'      => 'Extension : JSON',
-    'info'       => 'Hostingcheck_Info_PHP_Extension',
+    'info'       => 'Check_PHP_Info_Extension',
     'info args'  => array('name' => 'json'),
     'validators' => array(
         array(
@@ -133,7 +132,7 @@ $php[] = array(
 );
 $php[] = array(
     'title'      => 'Extension : FooBar',
-    'info'       => 'Hostingcheck_Info_PHP_Extension',
+    'info'       => 'Check_PHP_Info_Extension',
     'info args'  => array('name' => 'foobar'),
     'validators' => array(
         array(
@@ -144,7 +143,7 @@ $php[] = array(
 );
 $php[] = array(
     'title'      => 'Memory limit',
-    'info'       => 'Hostingcheck_Info_PHP_Config',
+    'info'       => 'Check_PHP_Info_Config',
     'info args'  => array(
         'name'   => 'memory_limit',
         'format' => 'Hostingcheck_Value_Byte'

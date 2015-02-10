@@ -13,7 +13,7 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Info_Server_Disk extends Hostingcheck_Info_Abstract
+class Check_Server_Info_Disk extends Hostingcheck_Info_Abstract
 {
     /**
      * Type of disk information that will be collected.

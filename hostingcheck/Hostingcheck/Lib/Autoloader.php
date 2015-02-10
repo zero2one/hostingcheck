@@ -31,14 +31,52 @@ class Hostingcheck_Autoloader {
      */
     private function loader($className) {
         $path = explode('_', $className);
+        $file = null;
 
-        if ($path[0] === 'Hostingcheck') {
-            // Construct the file path.
-            $base = HOSTINGCHECK_BASEPATH;
-            $path[0] .= DIRECTORY_SEPARATOR . 'Lib';
-            $file = $base . implode(DIRECTORY_SEPARATOR, $path) . '.php';
+        switch ($path[0]) {
+            case 'Hostingcheck':
+                $file = $this->hostingcheckFile($path);
+                break;
 
-            include $file;
+            case 'Check':
+                $file = $this->checkFile($path);
+                break;
+
         }
+
+        if ($file) {
+            include HOSTINGCHECK_BASEPATH . $file;
+        }
+    }
+
+    /**
+     * Create the file path for Hostingcheck classes.
+     *
+     * @param array $path
+     *     The class name split by the underscore.
+     *
+     * @return string
+     *     The path to the file.
+     */
+    protected function hostingcheckFile($path)
+    {
+        $path[0] .= DIRECTORY_SEPARATOR . 'Lib';
+        return implode(DIRECTORY_SEPARATOR, $path) . '.php';
+    }
+
+    /**
+     * Create the file path for Check classes.
+     *
+     * @param array $path
+     *     The class name split by the underscore.
+     *
+     * @return string
+     *     The path to the file.
+     */
+    protected function checkFile($path)
+    {
+        $path[-1] = 'Hostingcheck';
+        ksort($path);
+        return implode(DIRECTORY_SEPARATOR, $path) . '.php';
     }
 }

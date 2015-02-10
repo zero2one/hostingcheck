@@ -9,11 +9,11 @@
 
 
 /**
- * Retrieve the Server OS information.
+ * Retrieve the Apache version number.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Info_Server_OS extends Hostingcheck_Info_Abstract
+class Check_Apache_Info_Version extends Hostingcheck_Info_Abstract
 {
     /**
      * {@inheritDoc}
@@ -29,8 +29,12 @@ class Hostingcheck_Info_Server_OS extends Hostingcheck_Info_Abstract
      */
     protected function collectValue()
     {
-        $this->value = new Hostingcheck_Value_Text(
-            php_uname()
-        );
+        if (function_exists('apache_get_version')) {
+            preg_match('#Apache\/([0-9\.]*)#', apache_get_version(), $found);
+            $this->value = new Hostingcheck_Value_Version($found[1]);
+        }
+        else {
+            $this->value = new Hostingcheck_Value_NotSupported();
+        }
     }
 }
