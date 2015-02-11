@@ -48,13 +48,6 @@ class Hostingcheck_Controller
     const ACTION_DOWNLOAD_REPORT  = 'download_report';
     const ACTION_DOWNLOAD_PHPINFO = 'download_phpinfo';
 
-    /**
-     * Array of vars to use in the view.
-     *
-     * @var array
-     */
-    protected $vars = array();
-
 
     /**
      * Constructor.
@@ -75,23 +68,6 @@ class Hostingcheck_Controller
         $this->config = $config;
         $this->auth = $auth;
         $this->view = $view;
-
-        // Set up the base variables in the view.
-        $vars = array(
-            'page_title' => $config->get('title', 'Hostingcheck'),
-            'show_logout' => false,
-            'show_actions' => false
-        );
-
-        // Do not show the actions when downloading report.
-        if (!preg_match('/^download_/', $this->getRequest())
-            && $this->auth->isAuthenticated()
-        ) {
-            $vars['show_logout'] = true;
-            $vars['show_actions'] = true;
-        }
-
-        $this->vars = $vars;
     }
   
     /**
@@ -152,7 +128,7 @@ class Hostingcheck_Controller
             }
         }
 
-        $vars = $this->vars;
+        $vars = $this->defaultVars();
         $vars['urlLogin'] = self::getUrl();
         return $this->view->renderTemplate('login', $vars);
     }
@@ -216,7 +192,7 @@ class Hostingcheck_Controller
         $runner = new Hostingcheck_Runner($scenario);
         $results = $runner->run();
 
-        $vars = $this->vars;
+        $vars = $this->defaultVars();
         $vars['results'] = $results;
         return $this->view->renderTemplate('results', $vars);
     }
@@ -283,5 +259,30 @@ class Hostingcheck_Controller
     protected function redirect($action = NULL)
     {
         header('Location: ' . Hostingcheck_Controller::getUrl($action));
+    }
+
+    /**
+     * Define the default variables.
+     *
+     * @return array
+     */
+    protected function defaultVars()
+    {
+        // Set up the base variables in the view.
+        $vars = array(
+            'page_title' => $this->config->get('title', 'Hostingcheck'),
+            'show_logout' => false,
+            'show_actions' => false
+        );
+
+        // Do not show the actions when downloading report.
+        if (!preg_match('/^download_/', $this->getRequest())
+            && $this->auth->isAuthenticated()
+        ) {
+            $vars['show_logout'] = true;
+            $vars['show_actions'] = true;
+        }
+
+        return $vars;
     }
 }
