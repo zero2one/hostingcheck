@@ -48,6 +48,13 @@ class Hostingcheck_Controller
     const ACTION_DOWNLOAD_REPORT  = 'download_report';
     const ACTION_DOWNLOAD_PHPINFO = 'download_phpinfo';
 
+    /**
+     * Array of vars to use in the view.
+     *
+     * @var array
+     */
+    protected $vars = array();
+
 
     /**
      * Constructor.
@@ -67,20 +74,24 @@ class Hostingcheck_Controller
     {
         $this->config = $config;
         $this->auth = $auth;
+        $this->view = $view;
 
         // Set up the base variables in the view.
-        $view->page_title  = $config->get('title', 'Hostingcheck');
-        $view->show_logout = false;
-        $view->show_actions = false;
-        $this->view = $view;
+        $vars = array(
+            'page_title' => $config->get('title', 'Hostingcheck'),
+            'show_logout' => false,
+            'show_actions' => false
+        );
 
         // Do not show the actions when downloading report.
         if (!preg_match('/^download_/', $this->getRequest())
             && $this->auth->isAuthenticated()
         ) {
-            $this->view->show_actions = true;
-            $this->view->show_logout = true;
+            $vars['show_logout'] = true;
+            $vars['show_actions'] = true;
         }
+
+        $this->vars = $vars;
     }
   
     /**
@@ -130,8 +141,6 @@ class Hostingcheck_Controller
      */
     public function actionLogin()
     {
-        $this->view->urlLogin = self::getUrl();
-        
         if(!empty($_POST)) {
             $login = $this->auth->login(
                 $_POST['username'], 
@@ -143,7 +152,9 @@ class Hostingcheck_Controller
             }
         }
 
-        return $this->view->renderTemplate('login');
+        $vars = $this->vars;
+        $vars['urlLogin'] = self::getUrl();
+        return $this->view->renderTemplate('login', $vars);
     }
     
     /**
@@ -169,7 +180,6 @@ class Hostingcheck_Controller
             . '.html';
 
         $report = $this->actionReport();
-
         $this->download($filename, $report);
     }
     
@@ -204,9 +214,11 @@ class Hostingcheck_Controller
         $parser = new Hostingcheck_Scenario_Parser();
         $scenario = $parser->scenario($scenario);
         $runner = new Hostingcheck_Runner($scenario);
-        $this->view->results = $runner->run();
+        $results = $runner->run();
 
-        return $this->view->renderTemplate('results');
+        $vars = $this->vars;
+        $vars['results'] = $results;
+        return $this->view->renderTemplate('results', $vars);
     }
 
     /**
