@@ -219,7 +219,7 @@ class Hostingcheck_Controller
      * 
      * @param void
      * 
-     * @return array
+     * @return string|null
      */
     protected function getRequest()
     {
