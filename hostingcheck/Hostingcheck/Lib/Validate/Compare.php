@@ -49,19 +49,35 @@ class Hostingcheck_Validate_Compare
     {
         $messages = array();
 
+        // If we have an equal value, don't bother validating min/max.
         if ($this->hasArgumentEqual()) {
             $messages[] = $this->isEqual($value);
-        }
-        else {
-            if ($this->hasArgumentMinimum()) {
-                $messages[] = $this->isMin($value);
-            }
-            if ($this->hasArgumentMaximum()) {
-                $messages[] = $this->isMax($value);
-            }
+            return $this->createResult($messages);
         }
 
-        // If there are messages, the byte is not valid.
+        if ($this->hasArgumentMinimum()) {
+            $messages[] = $this->isMin($value);
+        }
+        if ($this->hasArgumentMaximum()) {
+            $messages[] = $this->isMax($value);
+        }
+
+        return $this->createResult($messages);
+    }
+
+    /**
+     * Create the result based on the number of messages.
+     *
+     * If no messages => success.
+     * If messages => failure.
+     *
+     * @param array $messages
+     *     Array of all collected messages.
+     *
+     * @return Hostingcheck_Result_Interface
+     */
+    protected function createResult($messages)
+    {
         $messages = array_values(array_filter($messages));
         return (count($messages))
             ? new Hostingcheck_Result_Failure($messages)

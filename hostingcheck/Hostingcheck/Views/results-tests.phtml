@@ -18,7 +18,7 @@
                 <tbody>
                 <?php foreach ($group->tests() as $test): ?>
                     <?php $this->test = $test; ?>
-                    <?php echo $this->render('results-test'); ?>
+                    <?php echo $this->render('results-test', array('test' => $test)); ?>
                 <?php endforeach; ?>
                 </tbody>
             </table>

@@ -50,12 +50,21 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Comparable
      */
     protected $kilo = 1024;
 
+    /**
+     * Pattern to identify the value and the format out of a given string.
+     *
+     * @var string
+     */
+    protected $pattern;
+
 
     /**
      * {@inheritDoc}
      */
     public function __construct($value = null)
     {
+        $this->createPattern();
+
         if (is_null($value)) {
             $value = 0;
         }
@@ -260,14 +269,8 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Comparable
         // Prepare value.
         $value = trim(strtoupper($value));
 
-        // Build the pattern.
-        $mapping = $this->getMapping();
-        $pattern = '/^([0-9]+\.?[0-9]*|\.?[0-9]+)\s?(['
-            . implode('|', array_keys($mapping))
-            . ']?)$/';
-
         // Extract info.
-        preg_match_all($pattern, $value, $found);
+        preg_match_all($this->pattern, $value, $found);
 
         // Validate info.
         if (empty($found[0])) {
@@ -279,23 +282,64 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Comparable
             );
         }
 
-        // Properly format the value.
-        $value = $found[1][0];
-        $format = $found[2][0];
+        // Return the result.
+        return array(
+            'value' => $this->cleanValue($found[1][0]),
+            'format' => $this->cleanFormat($found[2][0]),
+        );
+    }
+
+    /**
+     * Get the clean version of the value.
+     *
+     * @param string $value
+     *     The value as extracted from teh raw string.
+     *
+     * @return string
+     *     The cleaned up version of the value.
+     *
+     * @throws Exception
+     *     If the given value is not valid.
+     */
+    protected function cleanValue($value)
+    {
+        // Format decimal number.
         if (isset($value[0]) && $value[0] === '.') {
             $value = '0' . $value;
         }
-        $value = trim($value, '.');
 
-        // If no format, format = B.
+        // Make sure we remove trailing ".".
+        return trim($value, '.');
+    }
+
+    /**
+     * Get the clean version of the format.
+     *
+     * @param string $format
+     *     The format as extracted from the raw string.
+     *
+     * @return string
+     *     The format string.
+     */
+    protected function cleanFormat($format)
+    {
         if (empty($format)) {
             $format = 'B';
         }
 
-        // Return the result.
-        return array(
-            'value' => $value,
-            'format' => $format,
-        );
+        return $format;
+    }
+
+    /**
+     * Create the pattern to identify the value and the format.
+     */
+    protected function createPattern()
+    {
+        if (!$this->pattern) {
+            $mapping = $this->getMapping();
+            $this->pattern = '/^([0-9]+\.?[0-9]*|\.?[0-9]+)\s?(['
+                . implode('|', array_keys($mapping))
+                . ']?)$/';
+        }
     }
 }

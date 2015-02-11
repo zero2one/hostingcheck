@@ -34,8 +34,8 @@ class Hostingcheck_View_TestCase extends PHPUnit_Framework_TestCase
         $path = __DIR__ . '/../Views';
         $view = new Hostingcheck_View($path);
 
-        $view->foo = 'TEST 123';
-        $output = $view->render('script');
+        $vars = array('foo' => 'TEST 123');
+        $output = $view->render('script', $vars);
         $this->assertEquals('<p>TEST 123</p>', $output);
     }
 
@@ -47,11 +47,11 @@ class Hostingcheck_View_TestCase extends PHPUnit_Framework_TestCase
         $path = __DIR__ . '/../Views';
         $view = new Hostingcheck_View($path, 'template');
 
-        $view->foo = 'TEST 123';
-        $output = $view->renderTemplate('script');
+        $vars = array('foo' => 'TEST 123');
+        $output = $view->renderTemplate('script', $vars);
         $this->assertEquals('<div><p>TEST 123</p></div>', $output);
 
-        $output = $view->renderTemplate('script', 'template-custom');
+        $output = $view->renderTemplate('script', $vars, 'template-custom');
         $this->assertEquals('<section><p>TEST 123</p></section>', $output);
     }
 

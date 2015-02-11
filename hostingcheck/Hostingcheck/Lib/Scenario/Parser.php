@@ -15,21 +15,21 @@
  */
 class Hostingcheck_Scenario_Parser {
     /**
-     * Parse classname object out of configuration parameters.
+     * Parse className object out of configuration parameters.
      *
-     * @param string $classname
+     * @param string $className
      *     The class name to use to collect the information.
      * @param array $arguments
      *     The arguments to use to collect the information.
      *
      * @return Hostingcheck_Info_Interface
      */
-    public function info($classname, $arguments = array()) {
+    public function info($className, $arguments = array()) {
         if (empty($arguments) || !is_array($arguments)) {
             $arguments = array();
         }
 
-        $info = new $classname($arguments);
+        $info = new $className($arguments);
         return $info;
     }
 
@@ -39,16 +39,18 @@ class Hostingcheck_Scenario_Parser {
      * @param array $config
      *     A validate config array.
      *     The array should contain:
-     *     - validator : the classname to use as validator.
+     *     - validator : the className to use as validator.
      *     - args      : the arguments to use in the validator.
      *
      * @return Hostingcheck_Validate_Interface
      */
     public function validate($config) {
         $className = $config['validator'];
-        $arguments = (empty($config['args']) || !is_array($config['args']))
-            ? array()
-            : $config['args'];
+        $arguments = array();
+
+        if (!empty($config['args']) && is_array($config['args'])) {
+            $arguments = $config['args'];
+        }
 
         $validator = new $className($arguments);
         return $validator;
@@ -68,33 +70,56 @@ class Hostingcheck_Scenario_Parser {
      */
     public function test($config)
     {
+        $testScenario = new Hostingcheck_Scenario_Test(
+            $config['title'],
+            $this->testInfo($config),
+            $this->testValidators($config)
+        );
+
+        return $testScenario;
+    }
+
+    /**
+     * Parse the test::info out of the test config array.
+     *
+     * @param array $config
+     *
+     * @return Hostingcheck_Info_Interface
+     */
+    protected function testInfo($config)
+    {
         $infoClass = $config['info'];
-        $infoArgs  = (
-            empty($config['info args']) || !is_array($config['info args'])
-        )
-            ? array()
-            : $config['info args'];
-        $info = $this->info($infoClass, $infoArgs);
+        $infoArgs = array();
 
-        $validatorsConfig = (
-            empty($config['validators']) || !is_array($config['validators'])
-        )
-            ? array()
-            : $config['validators'];
+        if (!empty($config['info args']) && is_array($config['info args'])) {
+            $infoArgs = $config['info args'];
+        }
 
+        return $this->info($infoClass, $infoArgs);
+    }
+
+    /**
+     * Parse the test::validators out of the test config array.
+     *
+     * @param array $config
+     *
+     * @return Hostingcheck_Scenario_Validators
+     */
+    protected function testValidators($config)
+    {
         $validators = new Hostingcheck_Scenario_Validators();
+        $validatorsConfig = array();
+
+        if (!empty($config['validators']) && is_array($config['validators'])) {
+            $validatorsConfig = $config['validators'];
+        }
+
         foreach ($validatorsConfig as $validatorConfig) {
             $validator = $this->validate($validatorConfig);
             $validators->add($validator);
         }
 
-        $testScenario = new Hostingcheck_Scenario_Test(
-            $config['title'],
-            $info,
-            $validators
-        );
-
-        return $testScenario;
+        return $validators;
     }
 
     /**
@@ -112,9 +137,11 @@ class Hostingcheck_Scenario_Parser {
     public function group($name, $config)
     {
         $title = $config['title'];
-        $testsConfig = (empty($config['tests']) || !is_array($config['tests']))
-            ? array()
-            : $config['tests'];
+        $testsConfig = array();
+
+        if (!empty($config['tests']) && is_array($config['tests'])) {
+            $testsConfig = $config['tests'];
+        }
 
         $tests = new Hostingcheck_Scenario_Tests();
         foreach ($testsConfig as $testConfig) {
@@ -137,10 +164,11 @@ class Hostingcheck_Scenario_Parser {
     public function scenario($config)
     {
         $scenario = new Hostingcheck_Scenario();
+        $groupsConfig = array();
 
-        $groupsConfig = (empty($config) || !is_array($config))
-            ? array()
-            : $config;
+        if (!empty($config) && is_array($config)) {
+            $groupsConfig = $config;
+        }
 
         foreach ($groupsConfig as $groupName => $groupConfig) {
             $scenario->add($this->group($groupName, $groupConfig));

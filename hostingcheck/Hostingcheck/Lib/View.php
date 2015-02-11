@@ -32,12 +32,6 @@ class Hostingcheck_View
      */
     protected $template;
 
-    /**
-     * View variables
-     * 
-     * @var array
-     */
-    protected $vars = array();
 
     /**
      * Class constructor.
@@ -71,22 +65,25 @@ class Hostingcheck_View
      * @param string $script
      *      The filename (without the .phtml extention) of the view script to
      *      render.
+     * @param array $vars
+     *     The variables to use in the template.
+     *     The variable key will be used as the variable name in the template.
      *
      * @return string
      *      The rendered output.
      */
-    public function render($script)
+    public function render($script, $vars = array())
     {
         // Create full path to the view script.
         $file = $this->path . DIRECTORY_SEPARATOR . $script . '.phtml';
 
         // Extract the set script variables so we can use them.
-        extract($this->vars);
+        extract($vars);
 
         // Render and capture the output.
         ob_start();
-        include($file);
-        $output = ob_get_contents();
+            include($file);
+            $output = ob_get_contents();
         ob_end_clean();
 
         return $output;
@@ -98,6 +95,9 @@ class Hostingcheck_View
      * @param string $script
      *      The filename (without the .phtml extention) of the view script to
      *      render.
+     * @param array $vars
+     *     The variables to use in the template.
+     *     The variable key will be used as the variable name in the template.
      * @param string $template
      *      (optional) template to use. If no template is provided, the view
      *      template (if any) will be used.
@@ -105,35 +105,21 @@ class Hostingcheck_View
      * @return string
      *      The rendered output.
      */
-    public function renderTemplate($script, $template = null)
+    public function renderTemplate($script, $vars = array(), $template = null)
     {
         // Render the content first.
-        $output = $this->render($script);
+        $output = $this->render($script, $vars);
 
         // Render the content within the template (if any).
         if (empty($template)) {
             $template = $this->template;
         }
         if (!empty($template)) {
-            $this->vars['content'] = $output;
-            $output = $this->render($template);
+            $vars['content'] = $output;
+            $output = $this->render($template, $vars);
         }
 
         return $output;
-    }
-
-    /**
-     * Magic function to capture the set variables as variables to render in the
-     * view script.
-     * 
-     * @param string $name
-     *      The name of the variable.
-     * @param $value
-     *      The value of the variable.
-     */
-    public function __set($name, $value)
-    {
-        $this->vars[$name] = $value;
     }
 
     /**

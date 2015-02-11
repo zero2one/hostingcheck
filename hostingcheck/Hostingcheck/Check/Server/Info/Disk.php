@@ -64,26 +64,56 @@ class Check_Server_Info_Disk extends Hostingcheck_Info_Abstract
         }
 
         switch ($this->type) {
+            case 'total':
+                $this->value = $this->spaceTotal();
+                return;
+
             case 'free':
-                $size = disk_free_space($this->path);
-                $this->value = new Hostingcheck_Value_Byte($size);
+                $this->value = $this->spaceFree();
                 return;
 
             case 'used':
-                $total = disk_total_space($this->path);
-                $free = disk_free_space($this->path);
-                $size = $total - $free;
-                $this->value = new Hostingcheck_Value_Byte($size);
-                return;
-
-            case 'total':
-                $size = disk_total_space($this->path);
-                $this->value = new Hostingcheck_Value_Byte($size);
+                $this->value = $this->spaceUsed();
                 return;
 
             default:
                 $this->value = new Hostingcheck_Value_NotSupported();
                 return;
         }
+    }
+
+    /**
+     * Get the total disk size.
+     *
+     * @return Hostingcheck_Value_Byte
+     */
+    protected function spaceTotal()
+    {
+        $size = disk_total_space($this->path);
+        return new Hostingcheck_Value_Byte($size);
+    }
+
+    /**
+     * Get the free disk space.
+     *
+     * @return Hostingcheck_Value_Byte
+     */
+    protected function spaceFree()
+    {
+        $size = disk_free_space($this->path);
+        return new Hostingcheck_Value_Byte($size);
+    }
+
+    /**
+     * Get the used disk space.
+     *
+     * @return Hostingcheck_Value_Byte
+     */
+    protected function spaceUsed()
+    {
+        $total = $this->spaceTotal();
+        $free = $this->spaceFree();
+        $used = $total->getValue() - $free->getValue();
+        return new Hostingcheck_Value_Byte($used);
     }
 }
