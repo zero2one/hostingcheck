@@ -41,7 +41,7 @@ class Hostingcheck_Runner_Tests
      */
     public function run()
     {
-        $result = new Hostingcheck_Results_Tests($this->scenario);
+        $result = new Hostingcheck_Results_Tests();
 
         foreach ($this->scenario as $testScenario) {
             $testRunner = new Hostingcheck_Runner_Test($testScenario);
