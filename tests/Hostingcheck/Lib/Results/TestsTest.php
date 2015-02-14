@@ -137,7 +137,8 @@ class Hostingcheck_Results_Tests_TestCase extends PHPUnit_Framework_TestCase
         $scenario = new Hostingcheck_Scenario_Test(
             $name,
             new Hostingcheck_Info_Text(),
-            new Hostingcheck_Scenario_Validators()
+            new Hostingcheck_Scenario_Validators(),
+            new Hostingcheck_Scenario_Tests()
         );
 
         switch ($resultType) {

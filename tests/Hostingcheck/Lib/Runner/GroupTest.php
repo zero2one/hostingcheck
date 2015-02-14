@@ -24,12 +24,14 @@ class Hostingcheck_Runner_Group_TestCase extends PHPUnit_Framework_TestCase
         $tests->add(new Hostingcheck_Scenario_Test(
             'Info text',
             new Hostingcheck_Info_Text(),
-            new Hostingcheck_Scenario_Validators()
+            new Hostingcheck_Scenario_Validators(),
+            new Hostingcheck_Scenario_Tests()
         ));
         $tests->add(new Hostingcheck_Scenario_Test(
             'Report Date',
             new Hostingcheck_Info_DateTime(),
-            new Hostingcheck_Scenario_Validators()
+            new Hostingcheck_Scenario_Validators(),
+            new Hostingcheck_Scenario_Tests()
         ));
 
         $scenario = new Hostingcheck_Scenario_Group('group1', 'Group 1', $tests);

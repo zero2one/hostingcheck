@@ -23,7 +23,8 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
         $scenario = new Hostingcheck_Scenario_Test(
             'Test info',
             new Hostingcheck_Info_Text(array('text' => 'Test text info')),
-            new Hostingcheck_Scenario_Validators()
+            new Hostingcheck_Scenario_Validators(),
+            new Hostingcheck_Scenario_Tests()
         );
 
         $runner = new Hostingcheck_Runner_Test($scenario);
@@ -44,7 +45,8 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
         $scenario = new Hostingcheck_Scenario_Test(
             'Test info',
             new Hostingcheck_Info_Text(array('text' => 2)),
-            $validators
+            $validators,
+            new Hostingcheck_Scenario_Tests()
         );
 
         $runner = new Hostingcheck_Runner_Test($scenario);
@@ -65,7 +67,8 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
         $scenario = new Hostingcheck_Scenario_Test(
             'Test info',
             new Hostingcheck_Info_Text(),
-            $validators
+            $validators,
+            new Hostingcheck_Scenario_Tests()
         );
 
         $runner = new Hostingcheck_Runner_Test($scenario);

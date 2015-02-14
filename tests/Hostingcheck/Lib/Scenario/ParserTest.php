@@ -66,6 +66,8 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
             'Hostingcheck_Scenario_Validators',
             $test->validators());
         $this->assertCount(0, $test->validators());
+        $this->assertInstanceOf('Hostingcheck_Scenario_Tests', $test->tests());
+        $this->assertCount(0, $test->tests());
     }
 
     /**
@@ -101,6 +103,78 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
             'Hostingcheck_Validate_ByteSize',
             $validators->seek(0)
         );
+    }
+
+    /**
+     * Test the test parser with nested tests.
+     */
+    public function testTestParserWithNestedTests()
+    {
+        $parser = new Hostingcheck_Scenario_Parser();
+
+        $config = array(
+            'title' => 'Test parser',
+            'info' => 'Hostingcheck_Info_Text',
+            'tests' => array(
+                array(
+                    'title' => 'subtest 1',
+                    'info' => 'Hostingcheck_Info_Text',
+                ),
+                array(
+                    'title' => 'subtest 2',
+                    'info' => 'Hostingcheck_Info_Text',
+                ),
+            ),
+        );
+
+        $test = $parser->test($config);
+        $this->assertCount(2, $test->tests());
+    }
+
+    /**
+     * Test the tests collection parser without tests set.
+     */
+    public function testTestsParserWithoutTests()
+    {
+        $parser = new Hostingcheck_Scenario_Parser();
+
+        // Tests not in the config.
+        $config = array();
+        $tests = $parser->tests($config);
+        $this->assertInstanceOf('Hostingcheck_Scenario_Tests', $tests);
+        $this->assertCount(0, $tests);
+
+        // Empty tests array.
+        $config = array(
+            'tests' => array()
+        );
+        $tests = $parser->tests($config);
+        $this->assertInstanceOf('Hostingcheck_Scenario_Tests', $tests);
+        $this->assertCount(0, $tests);
+    }
+
+    /**
+     * Test the tests collection parser with tests.
+     */
+    public function testTestsParserWithTests()
+    {
+        $parser = new Hostingcheck_Scenario_Parser();
+
+        $config = array(
+            'tests' => array(
+                array(
+                    'title' => 'subtest 1',
+                    'info' => 'Hostingcheck_Info_Text',
+                ),
+                array(
+                    'title' => 'subtest 2',
+                    'info' => 'Hostingcheck_Info_Text',
+                ),
+            )
+        );
+        $tests = $parser->tests($config);
+        $this->assertInstanceOf('Hostingcheck_Scenario_Tests', $tests);
+        $this->assertCount(2, $tests);
     }
 
     /**

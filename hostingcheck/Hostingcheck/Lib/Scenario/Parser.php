@@ -65,6 +65,8 @@ class Hostingcheck_Scenario_Parser {
      *     - info       : The info class name to use to retrieve the info.
      *     - info args  : Optional arguments to retrieve the info data.
      *     - validators : Optional array of validator config arrays.
+     *     - tests      : Optional array of child tests. These tests will only
+     *                    be run if the test did not failed or is not supported.
      *
      * @return Hostingcheck_Scenario_Test
      */
@@ -73,7 +75,8 @@ class Hostingcheck_Scenario_Parser {
         $testScenario = new Hostingcheck_Scenario_Test(
             $config['title'],
             $this->testInfo($config),
-            $this->testValidators($config)
+            $this->testValidators($config),
+            $this->tests($config)
         );
 
         return $testScenario;
@@ -83,6 +86,9 @@ class Hostingcheck_Scenario_Parser {
      * Parse the test::info out of the test config array.
      *
      * @param array $config
+     *     Config containing:
+     *     - info      : The type of info that needs to be collected.
+     *     - info args : Optional arguments needed to collect the info.
      *
      * @return Hostingcheck_Info_Interface
      */
@@ -102,6 +108,8 @@ class Hostingcheck_Scenario_Parser {
      * Parse the test::validators out of the test config array.
      *
      * @param array $config
+     *     Config containing:
+     *     - validators : An optional array of validator configurations.
      *
      * @return Hostingcheck_Scenario_Validators
      */
@@ -123,6 +131,32 @@ class Hostingcheck_Scenario_Parser {
     }
 
     /**
+     * Create a tests scenario from a config where one of the params is tests.
+     *
+     * @param array $config
+     *     The config for a group or test with:
+     *     - tests : an optional array of test configs.
+     *
+     * @return Hostingcheck_Scenario_Tests
+     */
+    public function tests($config)
+    {
+        $tests = new Hostingcheck_Scenario_Tests();
+
+        if (empty($config['tests']) || !is_array($config['tests'])) {
+            return $tests;
+        }
+
+        // Add the tests to the collection.
+        foreach ($config['tests'] as $testConfig) {
+            $test = $this->test($testConfig);
+            $tests->add($test);
+        }
+
+        return $tests;
+    }
+
+    /**
      * Parse a Group scenario out of a test config.
      *
      * @param string $name
@@ -130,26 +164,17 @@ class Hostingcheck_Scenario_Parser {
      * @param array $config
      *     The config for a group, this contains:
      *     - title : The human name for the group.
-     *     - tests : An array of group test configs.
+     *     - tests : An optional array of group test configs.
      *
      * @return Hostingcheck_Scenario_Group
      */
     public function group($name, $config)
     {
-        $title = $config['title'];
-        $testsConfig = array();
-
-        if (!empty($config['tests']) && is_array($config['tests'])) {
-            $testsConfig = $config['tests'];
-        }
-
-        $tests = new Hostingcheck_Scenario_Tests();
-        foreach ($testsConfig as $testConfig) {
-            $test = $this->test($testConfig);
-            $tests->add($test);
-        }
-
-        $group = new Hostingcheck_Scenario_Group($name, $title, $tests);
+        $group = new Hostingcheck_Scenario_Group(
+            $name,
+            $config['title'],
+            $this->tests($config)
+        );
         return $group;
     }
 
@@ -158,6 +183,7 @@ class Hostingcheck_Scenario_Parser {
      *
      * @param array $config
      *     An array containing an array of group config arrays.
+     *     Each array item key is the machine name of the group.
      *
      * @return Hostingcheck_Scenario
      */
