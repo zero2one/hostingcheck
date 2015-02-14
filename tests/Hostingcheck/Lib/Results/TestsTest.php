@@ -38,6 +38,22 @@ class Hostingcheck_Results_Tests_TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test adding a collection of tests.
+     */
+    public function testAddMultiple()
+    {
+        $tests = new Hostingcheck_Results_Tests();
+
+        $multiple = new Hostingcheck_Results_Tests();
+        $multiple->add($this->createTestResult());
+        $multiple->add($this->createTestResult());
+        $multiple->add($this->createTestResult());
+
+        $tests->addMultiple($multiple);
+        $this->assertCount(3, $multiple);
+    }
+
+    /**
      * Test the iterator functionality.
      */
     public function testSeekable()
@@ -137,7 +153,8 @@ class Hostingcheck_Results_Tests_TestCase extends PHPUnit_Framework_TestCase
         $scenario = new Hostingcheck_Scenario_Test(
             $name,
             new Hostingcheck_Info_Text(),
-            new Hostingcheck_Scenario_Validators()
+            new Hostingcheck_Scenario_Validators(),
+            new Hostingcheck_Scenario_Tests()
         );
 
         switch ($resultType) {

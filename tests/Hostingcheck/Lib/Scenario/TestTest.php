@@ -23,15 +23,18 @@ class Hostingcheck_Scenario_Test_TestCase extends PHPUnit_Framework_TestCase
         $title = 'Info test';
         $info = new Hostingcheck_Info_Text();
         $validators = new Hostingcheck_Scenario_Validators();
+        $tests = new Hostingcheck_Scenario_tests();
 
         $test = new Hostingcheck_Scenario_Test(
             $title,
             $info,
-            $validators
+            $validators,
+            $tests
         );
 
         $this->assertEquals($title, $test->title());
         $this->assertEquals($info, $test->info());
         $this->assertEquals($validators, $test->validators());
+        $this->assertEquals($tests, $test->tests());
     }
 }

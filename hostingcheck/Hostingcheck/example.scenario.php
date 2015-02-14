@@ -120,6 +120,32 @@ $php[] = array(
     'required'   => true,
 );
 $php[] = array(
+    'title'      => 'Extension : Date',
+    'info'       => 'Check_PHP_Info_Extension',
+    'info args'  => array('name' => 'date'),
+    'validators' => array(
+        array(
+            'validator'       => 'Hostingcheck_Validate_NotEmpty',
+        ),
+    ),
+    'required'   => true,
+    'tests' => array(
+        array(
+            'title'      => 'Timezone',
+            'info'       => 'Check_PHP_Info_Config',
+            'info args'  => array(
+                'name' => 'date.timezone',
+            ),
+            'validators' => array(
+                array(
+                    'validator' => 'Hostingcheck_Validate_Compare',
+                    'args'      => array('equal', 'Antarctica/Troll'),
+                ),
+            ),
+        ),
+    )
+);
+$php[] = array(
     'title'      => 'Extension : JSON',
     'info'       => 'Check_PHP_Info_Extension',
     'info args'  => array('name' => 'json'),
@@ -140,6 +166,15 @@ $php[] = array(
         ),
     ),
     'required'   => true,
+    'tests' => array(
+        array(
+            'title' => 'FooBar fake value test',
+            'info'  => 'Check_PHP_Info_Config',
+            'info args' => array(
+                'name' => 'foobar.bizbaz',
+            ),
+        )
+    )
 );
 $php[] = array(
     'title'      => 'Memory limit',

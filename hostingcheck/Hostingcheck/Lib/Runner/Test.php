@@ -37,9 +37,29 @@ class Hostingcheck_Runner_Test
     /**
      * Run the test.
      *
-     * @return Hostingcheck_Results_Test
+     * @return Hostingcheck_Results_Tests
+     *     A collection with the result of its own and optional sub tests.
      */
     public function run()
+    {
+        $result = new Hostingcheck_Results_Tests();
+
+        // Validate the test first.
+        $testResult = $this->runTest();
+        $result->add($testResult);
+
+        // Run the sub tests.
+        $result->addMultiple($this->runTests($testResult));
+
+        return $result;
+    }
+
+    /**
+     * Run a single test.
+     *
+     * @return Hostingcheck_Results_Test
+     */
+    protected function runTest()
     {
         $info = $this->scenario->info();
         $result = new Hostingcheck_Result_Info();
@@ -61,5 +81,34 @@ class Hostingcheck_Runner_Test
         );
 
         return $testResult;
+    }
+
+    /**
+     * Run all the sub tests.
+     *
+     * Will only be run if the given result is
+     * - supported
+     * - not a failure
+     *
+     * @param Hostingcheck_Results_Test $testResult
+     *     The single test result.
+     *
+     * @return Hostingcheck_Results_Tests
+     */
+    protected function runTests(Hostingcheck_Results_Test $testResult)
+    {
+        // Run the sub tests only if the test is valid.
+        if (
+            !($testResult->info()->getValue() instanceof Hostingcheck_Value_NotSupported)
+            && !($testResult->result() instanceof Hostingcheck_Result_Failure)
+        ) {
+            $testsRunner = new Hostingcheck_Runner_Tests($this->scenario->tests());
+            $result = $testsRunner->run();
+        }
+        else {
+            $result = new Hostingcheck_Results_Tests();
+        }
+
+        return $result;
     }
 }

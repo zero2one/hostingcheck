@@ -36,6 +36,14 @@ class Hostingcheck_Scenario_Test
      */
     protected $validators;
 
+    /**
+     * Optional set of nested tests that will only run if the parent test is
+     * not failed.
+     *
+     * @var Hostingcheck_Scenario_Tests
+     */
+    protected $tests;
+
 
     /**
      * Class constructor.
@@ -44,18 +52,23 @@ class Hostingcheck_Scenario_Test
      *     The human title for the test.
      * @param Hostingcheck_Info_Interface $info
      *     The info object.
-     * @param Hostingcheck_Scenario_Validators
+     * @param Hostingcheck_Scenario_Validators $validators
      *     The validators to use in the test.
+     * @param Hostingcheck_Scenario_Tests $tests
+     *     A test can have a nested set of tests.
+     *     These tests are only run if this test is failed.
      */
     public function __construct(
         $title,
         Hostingcheck_Info_Interface $info,
-        Hostingcheck_Scenario_Validators $validators
+        Hostingcheck_Scenario_Validators $validators,
+        Hostingcheck_Scenario_Tests $tests
     )
     {
         $this->title = $title;
         $this->info = $info;
         $this->validators = $validators;
+        $this->tests = $tests;
     }
 
     /**
@@ -86,5 +99,15 @@ class Hostingcheck_Scenario_Test
     public function validators()
     {
         return $this->validators;
+    }
+
+    /**
+     * Get the tests that are nested within the test.
+     *
+     * @return Hostingcheck_Scenario_Tests
+     */
+    public function tests()
+    {
+        return $this->tests;
     }
 }
