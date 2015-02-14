@@ -13,12 +13,12 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Runner_Group
+class Hostingcheck_Runner_Tests
 {
     /**
      * The scenario to use in the test runner.
      *
-     * @var Hostingcheck_Scenario_Group
+     * @var Hostingcheck_Scenario_Tests
      */
     protected $scenario;
 
@@ -26,10 +26,10 @@ class Hostingcheck_Runner_Group
     /**
      * Constructor.
      *
-     * @param Hostingcheck_Scenario_Group $scenario
-     *     The scenario for the group.
+     * @param Hostingcheck_Scenario_Tests $scenario
+     *     The scenario for the tests.
      */
-    public function __construct(Hostingcheck_Scenario_Group $scenario)
+    public function __construct(Hostingcheck_Scenario_Tests $scenario)
     {
         $this->scenario = $scenario;
     }
@@ -37,14 +37,16 @@ class Hostingcheck_Runner_Group
     /**
      * Run the test.
      *
-     * @return Hostingcheck_Results_Group
+     * @return Hostingcheck_Results_Tests
      */
     public function run()
     {
-        $result = new Hostingcheck_Results_Group($this->scenario);
+        $result = new Hostingcheck_Results_Tests($this->scenario);
 
-        $testsRunner = new Hostingcheck_Runner_Tests($this->scenario->tests());
-        $result->tests()->addMultiple($testsRunner->run());
+        foreach ($this->scenario as $testScenario) {
+            $testRunner = new Hostingcheck_Runner_Test($testScenario);
+            $result->addMultiple($testRunner->run());
+        }
 
         return $result;
     }

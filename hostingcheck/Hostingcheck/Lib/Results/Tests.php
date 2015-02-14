@@ -38,6 +38,18 @@ class Hostingcheck_Results_Tests extends Hostingcheck_Collection_Abstract
     }
 
     /**
+     * Add multiple test results at once by passing them in a
+     * Hostingcheck_Results_Tests collection.
+     *
+     * @param Hostingcheck_Results_Tests $tests
+     */
+    public function addMultiple(Hostingcheck_Results_Tests $tests) {
+        foreach ($tests as $test) {
+            $this->add($test);
+        }
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @return Hostingcheck_Results_Test
