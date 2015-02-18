@@ -120,6 +120,11 @@ class Hostingcheck_Results_Tests extends Hostingcheck_Collection_Abstract
                 $this->count['failure']++;
                 break;
         }
+
+        // Add the sub test counts.
+        $this->count['info'] += $result->tests()->countInfo();
+        $this->count['success'] += $result->tests()->countSuccess();
+        $this->count['failure'] += $result->tests()->countFailure();
     }
 
     /**

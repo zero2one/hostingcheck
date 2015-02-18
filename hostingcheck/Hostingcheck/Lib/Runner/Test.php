@@ -37,7 +37,7 @@ class Hostingcheck_Runner_Test
     /**
      * Run the test.
      *
-     * @return Hostingcheck_Results_Tests
+     * @return Hostingcheck_Results_Test
      *     A collection with the result of its own and optional sub tests.
      */
     public function run()
@@ -49,9 +49,9 @@ class Hostingcheck_Runner_Test
         $result->add($testResult);
 
         // Run the sub tests.
-        $result->addMultiple($this->runTests($testResult));
+        $testResult->tests()->addMultiple($this->runTests($testResult));
 
-        return $result;
+        return $testResult;
     }
 
     /**
@@ -77,7 +77,8 @@ class Hostingcheck_Runner_Test
         $testResult = new Hostingcheck_Results_Test(
             $this->scenario,
             $info,
-            $result
+            $result,
+            new Hostingcheck_Results_Tests()
         );
 
         return $testResult;

@@ -29,12 +29,10 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
 
         $runner = new Hostingcheck_Runner_Test($scenario);
         $result = $runner->run();
-        $this->assertInstanceOf('Hostingcheck_Results_Tests', $result);
-
-        $testResult = $result->current();
-        $this->assertInstanceOf('Hostingcheck_Results_Test', $testResult);
-        $this->assertInstanceOf('Hostingcheck_Info_Text', $testResult->info());
-        $this->assertInstanceOf('Hostingcheck_Result_Info', $testResult->result());
+        $this->assertInstanceOf('Hostingcheck_Results_Test', $result);
+        $this->assertInstanceOf('Hostingcheck_Info_Text', $result->info());
+        $this->assertInstanceOf('Hostingcheck_Result_Info', $result->result());
+        $this->assertInstanceOf('Hostingcheck_Results_Tests', $result->tests());
     }
 
     /**
@@ -53,10 +51,11 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
         );
 
         $runner = new Hostingcheck_Runner_Test($scenario);
-        $result = $runner->run()->current();
+        $result = $runner->run();
         $this->assertInstanceOf('Hostingcheck_Results_Test', $result);
         $this->assertInstanceOf('Hostingcheck_Info_Text', $result->info());
         $this->assertInstanceOf('Hostingcheck_Result_Success', $result->result());
+        $this->assertInstanceOf('Hostingcheck_Results_Tests', $result->tests());
     }
 
     /**
@@ -75,10 +74,11 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
         );
 
         $runner = new Hostingcheck_Runner_Test($scenario);
-        $result = $runner->run()->current();
+        $result = $runner->run();
         $this->assertInstanceOf('Hostingcheck_Results_Test', $result);
         $this->assertInstanceOf('Hostingcheck_Info_Text', $result->info());
         $this->assertInstanceOf('Hostingcheck_Result_Failure', $result->result());
+        $this->assertInstanceOf('Hostingcheck_Results_Tests', $result->tests());
     }
 
     /**
@@ -86,7 +86,7 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
      *
      * The sub tests should not run when the test info value is Not Supported.
      */
-    public function testRunWithInfoNotSupported()
+    public function testRunWithSubTestsInfoNotSupported()
     {
         // Create a Info Text mock object that has a NotSupported value.
         $info = $this->getMockBuilder('Hostingcheck_Info_Text')
@@ -114,7 +114,7 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
 
         $runner = new Hostingcheck_Runner_Test($scenario);
         $result = $runner->run();
-        $this->assertCount(1, $result);
+        $this->assertCount(0, $result->tests());
     }
 
     /**
@@ -122,7 +122,7 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
      *
      * The sub tests should not run when the test result is not success full.
      */
-    public function testRunWithInvalidValidators()
+    public function testRunWithSubTestsInvalidValidators()
     {
         $subTests = new Hostingcheck_Scenario_Tests();
         $subTests->add(new Hostingcheck_Scenario_Test(
@@ -144,7 +144,7 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
 
         $runner = new Hostingcheck_Runner_Test($scenario);
         $result = $runner->run();
-        $this->assertCount(1, $result);
+        $this->assertCount(0, $result->tests());
     }
 
     /**
@@ -154,7 +154,13 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
     {
         $subTests = new Hostingcheck_Scenario_Tests();
         $subTests->add(new Hostingcheck_Scenario_Test(
-            'Test sub test',
+            'Test sub test 1',
+            new Hostingcheck_Info_Text(),
+            new Hostingcheck_Scenario_Validators(),
+            new Hostingcheck_Scenario_Tests()
+        ));
+        $subTests->add(new Hostingcheck_Scenario_Test(
+            'Test sub test 2',
             new Hostingcheck_Info_Text(),
             new Hostingcheck_Scenario_Validators(),
             new Hostingcheck_Scenario_Tests()
@@ -169,6 +175,6 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
 
         $runner = new Hostingcheck_Runner_Test($scenario);
         $result = $runner->run();
-        $this->assertCount(2, $result);
+        $this->assertCount(2, $result->tests());
     }
 }
