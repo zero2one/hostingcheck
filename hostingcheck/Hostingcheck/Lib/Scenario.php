@@ -65,7 +65,7 @@ class Hostingcheck_Scenario extends Hostingcheck_Collection_Abstract
     /**
      * {@inheritdoc}
      */
-    function valid() {
+    public function valid() {
         return isset($this->keys[$this->position]);
     }
 
