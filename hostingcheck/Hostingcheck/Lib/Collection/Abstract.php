@@ -74,7 +74,7 @@ class Hostingcheck_Collection_Abstract implements Countable, SeekableIterator
     /**
      * {@inheritdoc}
      */
-    function valid() {
+    public function valid() {
         return isset($this->collection[$this->position]);
     }
 

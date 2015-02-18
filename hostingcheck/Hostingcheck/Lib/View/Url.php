@@ -29,7 +29,7 @@ class Hostingcheck_View_Url
         $url = htmlentities(strip_tags($_SERVER['SCRIPT_NAME']));
 
         $args = $this->extractArgs($arguments);
-        if ($args) {
+        if (!empty($args)) {
             $url .= '?' . implode('&', $args);
         }
 

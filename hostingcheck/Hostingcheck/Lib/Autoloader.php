@@ -27,9 +27,29 @@ class Hostingcheck_Autoloader {
      * The loader method.
      *
      * @param string $className
-     *      The name of the class that needs to be automatically loaded.
+     *     The name of the class that needs to be automatically loaded.
      */
     private function loader($className) {
+        $file = $this->filePath($className);
+
+        if (empty($file)) {
+            return;
+        }
+
+        require_once HOSTINGCHECK_BASEPATH . $file;
+    }
+
+    /**
+     * Get the proper path based on the class name.
+     *
+     * @param string $className
+     *     The name of the class that needs to be automatically loaded.
+     *
+     * @return string|null
+     *     The path (relative to root of project) to the file to include.
+     *     Only if the class is supported by this auto loader.
+     */
+    protected function filePath($className) {
         $path = explode('_', $className);
         $file = null;
 
@@ -44,10 +64,9 @@ class Hostingcheck_Autoloader {
 
         }
 
-        if ($file) {
-            require_once HOSTINGCHECK_BASEPATH . $file;
-        }
+        return $file;
     }
+
 
     /**
      * Create the file path for Hostingcheck classes.
