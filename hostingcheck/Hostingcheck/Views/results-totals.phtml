@@ -1,3 +1,14 @@
+<?php
+/**
+ * Prints out the summary of the results: total result and counts.
+ *
+ * @var $this Hostingcheck_View
+ *     The view object.
+ *
+ * @var $results Hostingcheck_Results
+ *     The collection of Groups results.
+ */
+?>
 
 <div id="totals" class="container">
     <?php if ($results->countTestsFailure()): ?>
