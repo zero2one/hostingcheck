@@ -1,3 +1,14 @@
+<?php
+/**
+ * Prints out a collection of group results.
+ *
+ * @var $this Hostingcheck_View
+ *     The view object.
+ *
+ * @var $results Hostingcheck_Results
+ *     The collection of Groups.
+ */
+?>
 
 <div id="results" class="container">
     <?php foreach ($results as $group): ?>
@@ -17,8 +28,7 @@
                 </thead>
                 <tbody>
                 <?php foreach ($group->tests() as $test): ?>
-                    <?php $this->test = $test; ?>
-                    <?php echo $this->render('results-test', array('test' => $test)); ?>
+                    <?php echo $this->render('results-test', array('test' => $test, 'level' => 0)); ?>
                 <?php endforeach; ?>
                 </tbody>
             </table>

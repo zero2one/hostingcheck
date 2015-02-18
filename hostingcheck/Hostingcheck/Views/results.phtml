@@ -1,4 +1,15 @@
+<?php
+/**
+ * Prints out an overview of the total result set and the results for each test.
+ *
+ * @var $this Hostingcheck_View
+ *     The view object.
+ *
+ * @var $results Hostingcheck_Results
+ *     The collection of Groups results.
+ */
+?>
 
 <?php echo $this->render('results-totals', array('results' => $results)); ?>
 
-<?php echo $this->render('results-tests', array('results' => $results)); ?>
+<?php echo $this->render('results-results', array('results' => $results)); ?>

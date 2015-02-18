@@ -36,6 +36,13 @@ class Hostingcheck_Results_Test
      */
     protected $result;
 
+    /**
+     * The results of the subtests.
+     *
+     * @var Hostingcheck_Results_Tests
+     */
+    protected $tests;
+
 
     /**
      * Class constructor.
@@ -46,16 +53,20 @@ class Hostingcheck_Results_Test
      *     The info collected during running the test.
      * @param Hostingcheck_Result_Interface $result
      *     The result of running the test.
+     * @param Hostingcheck_Results_Tests $tests
+     *     The results of the subtests.
      */
     public function __construct(
         Hostingcheck_Scenario_Test $scenario,
         Hostingcheck_Info_Interface $info,
-        Hostingcheck_Result_Interface $result
+        Hostingcheck_Result_Interface $result,
+        Hostingcheck_Results_Tests $tests
     )
     {
         $this->scenario = $scenario;
         $this->info = $info;
         $this->result = $result;
+        $this->tests = $tests;
     }
 
     /**
@@ -86,5 +97,15 @@ class Hostingcheck_Results_Test
     public function result()
     {
         return $this->result;
+    }
+
+    /**
+     * Get the sub tests results.
+     *
+     * @return Hostingcheck_Results_Tests
+     */
+    public function tests()
+    {
+        return $this->tests;
     }
 }

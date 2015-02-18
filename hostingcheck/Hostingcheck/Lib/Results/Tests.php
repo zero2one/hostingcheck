@@ -35,6 +35,7 @@ class Hostingcheck_Results_Tests extends Hostingcheck_Collection_Abstract
     {
         $this->collection[] = $test;
         $this->updateCount($test);
+        $this->updateCountSubs($test);
     }
 
     /**
@@ -120,6 +121,19 @@ class Hostingcheck_Results_Tests extends Hostingcheck_Collection_Abstract
                 $this->count['failure']++;
                 break;
         }
+    }
+
+    /**
+     * Helper to update the counts from the subtests of the added test.
+     *
+     * @param Hostingcheck_Results_test $result
+     */
+    protected function updateCountSubs(Hostingcheck_Results_Test $result)
+    {
+        // Add the sub test counts.
+        $this->count['info']    += $result->tests()->countInfo();
+        $this->count['success'] += $result->tests()->countSuccess();
+        $this->count['failure'] += $result->tests()->countFailure();
     }
 
     /**

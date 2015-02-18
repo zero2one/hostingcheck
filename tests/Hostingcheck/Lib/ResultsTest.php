@@ -169,7 +169,8 @@ class Hostingcheck_Results_TestCase extends PHPUnit_Framework_TestCase
         $testResult = new Hostingcheck_Results_Test(
             $scenario,
             $scenario->info(),
-            $result
+            $result,
+            new Hostingcheck_Results_Tests()
         );
 
         return $testResult;

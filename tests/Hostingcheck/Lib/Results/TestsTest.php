@@ -136,6 +136,17 @@ class Hostingcheck_Results_Tests_TestCase extends PHPUnit_Framework_TestCase
         $this->assertEquals(2, $collection->countSuccess());
         $this->assertEquals(3, $collection->countFailure());
         $this->assertEquals(5, $collection->countValidations());
+
+        // Put this collection is a test and add it to a parent collection.
+        $test = $this->createTestResult('success');
+        $test->tests()->addMultiple($collection);
+        $parent = new Hostingcheck_Results_Tests();
+        $parent->add($test);
+
+        $this->assertEquals(1, $parent->countInfo());
+        $this->assertEquals(3, $parent->countSuccess());
+        $this->assertEquals(3, $parent->countFailure());
+        $this->assertEquals(6, $parent->countValidations());
     }
 
     /**
@@ -174,7 +185,8 @@ class Hostingcheck_Results_Tests_TestCase extends PHPUnit_Framework_TestCase
         $testResult = new Hostingcheck_Results_Test(
             $scenario,
             $scenario->info(),
-            $result
+            $result,
+            new Hostingcheck_Results_Tests()
         );
 
         return $testResult;

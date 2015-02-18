@@ -1,5 +1,21 @@
+<?php
+/**
+ * Prints out a test and it optional sub tests results.
+ *
+ * @var $this Hostingcheck_View
+ *     The view object.
+ *
+ * @var $test Hostingcheck_Results_Test
+ *     The result object for the test.
+ * @var $level int
+ *     The level for nested test.
+ */
 
-<tr class="<?php echo $this->resultCssClass($test->result()); ?>">
+// The sublevel will have a higher number.
+$subLevel = $level + 1;
+?>
+
+<tr class="<?php echo $this->resultCssClass($test->result()); ?> level-<?php echo $level; ?>">
     <th class="title">
         <?php echo $test->scenario()->title(); ?>
     </th>
@@ -16,3 +32,7 @@
         <?php endif; ?>
     </td>
 </tr>
+
+<?php foreach ($test->tests() as $subTest): ?>
+    <?php echo $this->render('results-test', array('test' => $subTest, 'level' => $subLevel)); ?>
+<?php endforeach; ?>

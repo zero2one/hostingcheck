@@ -37,19 +37,16 @@ class Hostingcheck_Runner_Test
     /**
      * Run the test.
      *
-     * @return Hostingcheck_Results_Tests
+     * @return Hostingcheck_Results_Test
      *     A collection with the result of its own and optional sub tests.
      */
     public function run()
     {
-        $result = new Hostingcheck_Results_Tests();
-
         // Validate the test first.
-        $testResult = $this->runTest();
-        $result->add($testResult);
+        $result = $this->runTest();
 
         // Run the sub tests.
-        $result->addMultiple($this->runTests($testResult));
+        $result->tests()->addMultiple($this->runSubTests($result));
 
         return $result;
     }
@@ -61,12 +58,30 @@ class Hostingcheck_Runner_Test
      */
     protected function runTest()
     {
-        $info = $this->scenario->info();
+        $testResult = new Hostingcheck_Results_Test(
+            $this->scenario,
+            $this->scenario->info(),
+            $this->runTestValidators(),
+            new Hostingcheck_Results_Tests()
+        );
+
+        return $testResult;
+    }
+
+    /**
+     * Run the test validators.
+     *
+     * @return Hostingcheck_Result_Interface
+     */
+    protected function runTestValidators()
+    {
         $result = new Hostingcheck_Result_Info();
 
         $validators = $this->scenario->validators();
         foreach ($validators as $validator) {
-            $result = $validator->validate($info->getValue());
+            $result = $validator->validate(
+                $this->scenario->info()->getValue()
+            );
 
             // Stop validating if there was an error.
             if ($result instanceof Hostingcheck_Result_Failure) {
@@ -74,13 +89,7 @@ class Hostingcheck_Runner_Test
             }
         }
 
-        $testResult = new Hostingcheck_Results_Test(
-            $this->scenario,
-            $info,
-            $result
-        );
-
-        return $testResult;
+        return $result;
     }
 
     /**
@@ -95,7 +104,7 @@ class Hostingcheck_Runner_Test
      *
      * @return Hostingcheck_Results_Tests
      */
-    protected function runTests(Hostingcheck_Results_Test $testResult)
+    protected function runSubTests(Hostingcheck_Results_Test $testResult)
     {
         // Run the sub tests only if the test is valid.
         if (

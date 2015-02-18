@@ -1,13 +1,16 @@
 <?php
 /**
  * Prints out the login form
+ *
+ * @var $this Hostingcheck_View
+ *     The view object.
  */
 ?>
 
 <div id="login" class="container"><div class="section">
   <h2>Login required</h2>
     
-  <form id="login" method="post" action="<?php print $urlLogin; ?>">
+  <form id="login" method="post" action="<?php echo $this->url('login'); ?>">
     <div class="form-item">
       <label for="username">Username</label>  
       <input type="text" id="username" name="username" />

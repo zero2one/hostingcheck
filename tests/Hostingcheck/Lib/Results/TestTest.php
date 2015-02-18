@@ -28,10 +28,17 @@ class Hostingcheck_Results_Test_TestCase extends PHPUnit_Framework_TestCase
         );
         $info = new Hostingcheck_Info_Text(array('text' => 'Test info'));
         $result = new Hostingcheck_Result_Info();
+        $tests = new Hostingcheck_Results_Tests();
 
-        $testResult = new Hostingcheck_Results_Test($scenario, $info, $result);
+        $testResult = new Hostingcheck_Results_Test(
+            $scenario,
+            $info,
+            $result,
+            $tests
+        );
         $this->assertEquals($scenario, $testResult->scenario());
         $this->assertEquals($info, $testResult->info());
         $this->assertEquals($result, $testResult->result());
+        $this->assertEquals($tests, $testResult->tests());
     }
 }

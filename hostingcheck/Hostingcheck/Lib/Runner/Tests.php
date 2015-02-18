@@ -45,7 +45,7 @@ class Hostingcheck_Runner_Tests
 
         foreach ($this->scenario as $testScenario) {
             $testRunner = new Hostingcheck_Runner_Test($testScenario);
-            $result->addMultiple($testRunner->run());
+            $result->add($testRunner->run());
         }
 
         return $result;
