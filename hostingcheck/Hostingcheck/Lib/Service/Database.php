@@ -22,22 +22,6 @@ class Hostingcheck_Service_Database extends Hostingcheck_Service_Abstract
      */
     protected $connection;
 
-    /**
-     * Get the last error message.
-     *
-     * @var string
-     */
-    protected $lastError;
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct(Hostingcheck_Config $config)
-    {
-        parent::__construct($config);
-        $this->resetError();
-    }
 
     /**
      * Checks if the service is available by trying to connect to it.
@@ -84,44 +68,5 @@ class Hostingcheck_Service_Database extends Hostingcheck_Service_Abstract
         }
 
         return $this->connection;
-    }
-
-    /**
-     * Check if there is a last error message.
-     *
-     * @return bool
-     */
-    public function hasError()
-    {
-        $error = $this->getError();
-        return !empty($error);
-    }
-
-    /**
-     * Get the last error.
-     *
-     * @return string
-     */
-    public function getError()
-    {
-        return $this->lastError;
-    }
-
-    /**
-     * Helper to set the last error message.
-     *
-     * @param Exception $exception
-     */
-    protected function setErrorFromException(Exception $exception)
-    {
-        $this->lastError = $exception->getMessage();
-    }
-
-    /**
-     * Helper to reset the last error message.
-     */
-    protected function resetError()
-    {
-        $this->lastError = null;
     }
 }

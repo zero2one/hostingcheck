@@ -39,4 +39,18 @@ interface Hostingcheck_Service_Interface
      *     Available true/false.
      */
     public function isAvailable();
+
+    /**
+     * Check if the service has an error.
+     *
+     * @return bool
+     */
+    public function hasError();
+
+    /**
+     * Get the error (if any).
+     *
+     * @return string
+     */
+    public function getError();
 }

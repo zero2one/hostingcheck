@@ -23,14 +23,65 @@ abstract class Hostingcheck_Service_Abstract
      */
     protected $config;
 
+    /**
+     * Get the error from the service.
+     *
+     * @var string
+     */
+    protected $error;
+
 
     /**
-     * The constructor accepts only one param: the configuration object.
-     *
-     * @param Hostingcheck_Config $config
+     * {@inheritdoc}
      */
     public function __construct(Hostingcheck_Config $config)
     {
         $this->config = $config;
+        $this->resetError();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasError()
+    {
+        $error = $this->getError();
+        return !empty($error);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * Set an error from an string.
+     *
+     * @param string $error
+     */
+    protected function setError($error)
+    {
+        $this->error = $error;
+    }
+
+    /**
+     * Helper to set the last error message.
+     *
+     * @param Exception $exception
+     */
+    protected function setErrorFromException(Exception $exception)
+    {
+        $this->error = $exception->getMessage();
+    }
+
+    /**
+     * Helper to reset the last error message.
+     */
+    protected function resetError()
+    {
+        $this->error = null;
     }
 }
