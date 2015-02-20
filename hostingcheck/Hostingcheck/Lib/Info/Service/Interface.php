@@ -9,20 +9,16 @@
 
 
 /**
- * Value that indicates that the requested value is not supported.
+ * Interface to extend the Info service with service support.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Value_NotSupported extends Hostingcheck_Value_Abstract
+interface Hostingcheck_Info_Service_Interface
 {
     /**
-     * {@inheritDoc}
+     * Get the service from the info object.
+     *
+     * @return Hostingcheck_Service_Interface
      */
-    public function __toString()
-    {
-        $value = $this->getValue();
-        return (empty($value))
-            ? 'Not Supported'
-            : (string) $this->getValue();
-    }
+    public function service();
 }
