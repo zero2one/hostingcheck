@@ -37,4 +37,16 @@ class Hostingcheck_Autoloader_TestCase extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($registred);
     }
+
+    /**
+     * Test the exception when the file does not exists.
+     *
+     * @expectedException Exception
+     * @expectedExceptionMessage Can't load class Hostingcheck_FooBar
+     */
+    public function testAutoLoadWithNonExistingClass()
+    {
+        new Hostingcheck_Autoloader();
+        new Hostingcheck_FooBar();
+    }
 }
