@@ -185,10 +185,7 @@ class Hostingcheck_Controller
      */
     public function actionReport()
     {
-        require_once HOSTINGCHECK_BASEPATH . 'Hostingcheck/scenario.php';
-        /* @var $scenario array */
-        $parser = new Hostingcheck_Scenario_Parser();
-        $scenario = $parser->scenario($scenario);
+        $scenario = $this->loadScenario();
         $runner = new Hostingcheck_Runner($scenario);
         $results = $runner->run();
 
@@ -284,5 +281,44 @@ class Hostingcheck_Controller
         }
 
         return $vars;
+    }
+
+    /**
+     * Helper to load the services.
+     *
+     * @return Hostingcheck_Services
+     */
+    protected function loadServices()
+    {
+        $services = array();
+
+        $file = HOSTINGCHECK_BASEPATH . 'Hostingcheck/services.php';
+        if (file_exists($file)) {
+            require_once $file;
+        }
+
+        // Parse the services.
+        $parser = new Hostingcheck_Services_Parser();
+        $collection = $parser->parse($services);
+        return $collection;
+    }
+
+    /**
+     * Load the scenario.
+     *
+     * @return Hostingcheck_Scenario
+     */
+    protected function loadScenario()
+    {
+        $scenario = array();
+
+        $file = HOSTINGCHECK_BASEPATH . 'Hostingcheck/scenario.php';
+        if (file_exists($file)) {
+            require_once HOSTINGCHECK_BASEPATH . 'Hostingcheck/scenario.php';
+        }
+
+        $parser = new Hostingcheck_Scenario_Parser($this->loadServices());
+        $collection = $parser->scenario($scenario);
+        return $collection;
     }
 }

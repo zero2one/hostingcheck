@@ -72,6 +72,10 @@ $info[] = array(
 );
 
 
+
+/**
+ * Example how to collect and validate information about the server hardware.
+ */
 $server[] = array(
     'title'      => 'Operating System',
     'info'       => 'Check_Server_Info_OS',
@@ -108,6 +112,10 @@ $server[] = array(
 );
 
 
+
+/**
+ * Example how to collect and validate PHP configuration.
+ */
 $php[] = array(
     'title'      => 'PHP Version',
     'info'       => 'Check_PHP_Info_Version',
@@ -187,6 +195,24 @@ $php[] = array(
         array(
             'validator' => 'Hostingcheck_Validate_ByteSize',
             'args'      => array('equal' => '128M'),
+        ),
+    ),
+);
+
+
+
+/**
+ * Example how to collect and validate information about the Database(s).
+ */
+$db[] = array(
+    'title' => 'MySQL service available',
+    'info' => 'Hostingcheck_Info_Service_Available',
+    'info args' => array(
+        'service' => 'db_mysql',
+    ),
+    'validators' => array(
+        array(
+            'validator' => 'Hostingcheck_Validate_NotEmpty',
         ),
     ),
 );
