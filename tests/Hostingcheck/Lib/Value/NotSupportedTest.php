@@ -24,7 +24,7 @@ class Hostingcheck_Value_NotSupported_TestCase extends PHPUnit_Framework_TestCas
         $this->assertNull($value->getValue());
 
         $value = new Hostingcheck_Value_NotSupported('foobar');
-        $this->assertNull($value->getValue());
+        $this->assertEquals('foobar', $value->getValue());
 
     }
 
@@ -34,6 +34,9 @@ class Hostingcheck_Value_NotSupported_TestCase extends PHPUnit_Framework_TestCas
     public function testToString()
     {
         $value = new Hostingcheck_Value_NotSupported();
-        $this->assertEquals('Not Supported.', (string) $value);
+        $this->assertEquals('Not Supported', (string) $value);
+
+        $value = new Hostingcheck_Value_NotSupported('foobar');
+        $this->assertEquals('foobar', (string) $value);
     }
 }

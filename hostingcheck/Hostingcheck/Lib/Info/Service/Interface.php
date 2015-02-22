@@ -9,22 +9,16 @@
 
 
 /**
- * The test scenario.
- *
- * The test scenario needs a scenario array.
+ * Interface to extend the Info service with service support.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Scenario extends Hostingcheck_Collection_Keyed
+interface Hostingcheck_Info_Service_Interface
 {
     /**
-     * Add a group to the scenario.
+     * Get the service from the info object.
      *
-     * @param Hostingcheck_Scenario_Group $group
+     * @return Hostingcheck_Service_Interface
      */
-    public function add(Hostingcheck_Scenario_Group $group)
-    {
-        $this->collection[$group->name()] = $group;
-        $this->updateKeys();
-    }
+    public function service();
 }

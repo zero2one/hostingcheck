@@ -20,7 +20,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testInfoParser()
     {
-        $parser = new Hostingcheck_Scenario_Parser();
+        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
 
         $text = 'Text text';
         $info = $parser->info(
@@ -33,11 +33,33 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test the parser to convert config into info object with service.
+     */
+    public function testInfoParserWithService()
+    {
+        $service = $this->getMockBuilder('Hostingcheck_Service_Interface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $services = $this->getServices();
+        $services->add('my_service', $service);
+
+        $parser = new Hostingcheck_Scenario_Parser($services);
+
+        $info = $info = $parser->info(
+            'Hostingcheck_Info_Service_Available',
+            array('service' => 'my_service')
+        );
+
+        $this->assertEquals($service, $info->service());
+    }
+
+    /**
      * Test the parser to convert validation config to validation object.
      */
     public function testValidateParser()
     {
-        $parser = new Hostingcheck_Scenario_Parser();
+        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
         $config = array(
             'validator' => 'Hostingcheck_Validate_ByteSize',
             'args' => array('min' => '15M'),
@@ -52,7 +74,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testTestParserWithSimpleConfig()
     {
-        $parser = new Hostingcheck_Scenario_Parser();
+        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
 
         $config = array(
             'title' => 'Test parser',
@@ -75,7 +97,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testTestParserWithFullConfig()
     {
-        $parser = new Hostingcheck_Scenario_Parser();
+        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
 
         $config = array(
             'title' => 'Test parser',
@@ -110,7 +132,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testTestParserWithNestedTests()
     {
-        $parser = new Hostingcheck_Scenario_Parser();
+        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
 
         $config = array(
             'title' => 'Test parser',
@@ -136,7 +158,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testTestsParserWithoutTests()
     {
-        $parser = new Hostingcheck_Scenario_Parser();
+        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
 
         // Tests not in the config.
         $config = array();
@@ -158,7 +180,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testTestsParserWithTests()
     {
-        $parser = new Hostingcheck_Scenario_Parser();
+        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
 
         $config = array(
             'tests' => array(
@@ -188,7 +210,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
             'title' => $title,
         );
 
-        $parser = new Hostingcheck_Scenario_Parser();
+        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
 
         $group = $parser->group($name, $config);
         $this->assertInstanceOf('Hostingcheck_Scenario_Group', $group);
@@ -221,7 +243,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
             )
         );
 
-        $parser = new Hostingcheck_Scenario_Parser();
+        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
 
         $group = $parser->group($name, $config);
         $this->assertEquals($name, $group->name());
@@ -236,7 +258,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
     {
         $config = array();
 
-        $parser = new Hostingcheck_Scenario_Parser();
+        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
 
         $scenario = $parser->scenario($config);
         $this->assertInstanceOf('Hostingcheck_Scenario', $scenario);
@@ -257,10 +279,19 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
             )
         );
 
-        $parser = new Hostingcheck_Scenario_Parser();
+        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
 
         $scenario = $parser->scenario($config);
         $this->assertInstanceOf('Hostingcheck_Scenario', $scenario);
         $this->assertCount(2, $scenario);
+    }
+
+    /**
+     * Create a services container.
+     */
+    protected function getServices()
+    {
+        $services = new Hostingcheck_Services();
+        return $services;
     }
 }

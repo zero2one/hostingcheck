@@ -1,6 +1,7 @@
 
 # No settings & scenario in repo.
 hostingcheck/Hostingcheck/scenario.php
+hostingcheck/Hostingcheck/services.php
 hostingcheck/Hostingcheck/settings.php
 
 # Do not include build folder.

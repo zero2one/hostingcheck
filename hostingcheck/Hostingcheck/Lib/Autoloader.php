@@ -36,7 +36,12 @@ class Hostingcheck_Autoloader {
             return;
         }
 
-        require_once HOSTINGCHECK_BASEPATH . $file;
+        $filePath = HOSTINGCHECK_BASEPATH . $file;
+
+        // Validate if the file exists.
+        $this->fileExists($filePath, $className);
+
+        require_once $filePath;
     }
 
     /**
@@ -67,7 +72,6 @@ class Hostingcheck_Autoloader {
         return $file;
     }
 
-
     /**
      * Create the file path for Hostingcheck classes.
      *
@@ -97,5 +101,29 @@ class Hostingcheck_Autoloader {
         $path[-1] = 'Hostingcheck';
         ksort($path);
         return implode(DIRECTORY_SEPARATOR, $path) . '.php';
+    }
+
+    /**
+     * Check if the given file exists.
+     *
+     * This will throw an exception if it does not exists.
+     *
+     * @param string $file
+     *     The full path of the file.
+     * @param string $className
+     *     The name of the class.
+     *
+     * @return bool
+     *     Success.
+     *
+     * @throws Exception.
+     */
+    protected function fileExists($file, $className)
+    {
+        if (file_exists($file)) {
+            return true;
+        }
+
+        throw new Exception(sprintf("Can't load class %s", $className));
     }
 }
