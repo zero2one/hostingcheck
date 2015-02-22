@@ -15,6 +15,24 @@
  */
 class Hostingcheck_Scenario_Parser {
     /**
+     * Services to use when creating the info objects.
+     *
+     * @var Hostingcheck_Services
+     */
+    protected $services;
+
+
+    /**
+     * Constructor.
+     *
+     * @param Hostingcheck_Services $services
+     */
+    public function __construct($services)
+    {
+        $this->services = $services;
+    }
+
+    /**
      * Parse className object out of configuration parameters.
      *
      * @param string $className
@@ -27,6 +45,13 @@ class Hostingcheck_Scenario_Parser {
     public function info($className, $arguments = array()) {
         if (empty($arguments) || !is_array($arguments)) {
             $arguments = array();
+        }
+
+        // Get the service from the services based on its collection named key.
+        if (!empty($arguments['service'])) {
+            $arguments['service'] = $this->services->seek(
+                $arguments['service']
+            );
         }
 
         $info = new $className($arguments);
