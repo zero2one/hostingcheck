@@ -215,4 +215,13 @@ $db[] = array(
             'validator' => 'Hostingcheck_Validate_NotEmpty',
         ),
     ),
+    'tests' => array(
+        array(
+            'title' => 'Version',
+            'info'  => 'Check_MySQL_Info_Version',
+            'info args' => array(
+                'service' => 'db_mysql',
+            ),
+        ),
+    ),
 );
