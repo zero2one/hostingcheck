@@ -35,7 +35,13 @@ class Check_MySQL_Info_Version
         $stmnt->execute();
         $row = $stmnt->fetch(PDO::FETCH_ASSOC);
 
-        preg_match('/^[0-9.]*/', $row['MYSQL_VERSION'], $matches);
-        $this->value = new Hostingcheck_Value_Version($matches[0]);
+        if ($row) {
+            preg_match('/^[0-9.]*/', $row['MYSQL_VERSION'], $matches);
+            $this->value = new Hostingcheck_Value_Version($matches[0]);
+        }
+        else {
+            $this->value = new Hostingcheck_Value_NotSupported();
+        }
+
     }
 }
