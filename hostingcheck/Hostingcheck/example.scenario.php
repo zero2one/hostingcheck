@@ -215,4 +215,30 @@ $db[] = array(
             'validator' => 'Hostingcheck_Validate_NotEmpty',
         ),
     ),
+    'tests' => array(
+        array(
+            'title' => 'Version',
+            'info'  => 'Check_MySQL_Info_Version',
+            'info args' => array(
+                'service' => 'db_mysql',
+            ),
+        ),
+        array(
+            'title' => 'query_cache_type',
+            'info'  => 'Check_MySQL_Info_Config',
+            'info args' => array(
+                'service' => 'db_mysql',
+                'name'    => 'query_cache_type',
+            ),
+        ),
+        array(
+            'title' => 'innodb_buffer_pool_size',
+            'info'  => 'Check_MySQL_Info_Config',
+            'info args' => array(
+                'service' => 'db_mysql',
+                'name' => 'innodb_buffer_pool_size',
+                'format' => 'Hostingcheck_Value_Byte',
+            ),
+        ),
+    ),
 );

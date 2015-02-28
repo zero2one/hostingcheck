@@ -24,6 +24,7 @@ class Hostingcheck_Validate_NotEmpty extends Hostingcheck_Validate_Abstract
     {
         $messages = array();
         $messages[] = $this->isNotSupported($value);
+        $messages[] = $this->isNotFound($value);
         $messages[] = $this->isEmpty($value);
 
         $messages = array_values(array_filter($messages));
@@ -47,6 +48,24 @@ class Hostingcheck_Validate_NotEmpty extends Hostingcheck_Validate_Abstract
             || $value->getValue() instanceof Hostingcheck_Value_NotSupported
         ) {
             return new Hostingcheck_Message('Value is not supported.');
+        }
+    }
+
+    /**
+     * Check if the value is not a NotFound value.
+     *
+     * @param Hostingcheck_Value_Interface $value
+     *      The value we need to validate.
+     *
+     * @return null|string
+     *      Message if not supported.
+     */
+    protected function isNotFound(Hostingcheck_Value_Interface $value)
+    {
+        if ($value instanceof Hostingcheck_Value_NotFound
+            || $value->getValue() instanceof Hostingcheck_Value_NotFound
+        ) {
+            return new Hostingcheck_Message('Value is not found.');
         }
     }
 
