@@ -49,7 +49,7 @@ class Check_MySQL_Info_Config_TestCase extends PHPUnit_Framework_TestCase
         ));
         $value = $version->getValue();
 
-        $this->assertInstanceOf('Hostingcheck_Value_NotSupported', $value);
+        $this->assertInstanceOf('Hostingcheck_Value_NotFound', $value);
     }
 
     /**

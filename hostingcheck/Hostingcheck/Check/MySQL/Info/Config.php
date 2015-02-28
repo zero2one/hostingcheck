@@ -77,7 +77,7 @@ class Check_MySQL_Info_Config
         $row = $stmnt->fetch(PDO::FETCH_ASSOC);
 
         if (!$row) {
-            $this->value = new Hostingcheck_Value_NotSupported();
+            $this->value = new Hostingcheck_Value_NotFound();
         }
         else {
             $value = $row['Value'];
