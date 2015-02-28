@@ -17,10 +17,14 @@ class Check_MySQL_Info_Version
     extends Hostingcheck_Info_Service_Abstract
 {
     /**
-     * Helper to extract and create the value.
+     * Database service.
      *
-     * Will get "available" if the service is available.
-     * Wil use the error message from the service if it is not available.
+     * @var Hostingcheck_Service_Database
+     */
+    protected $service;
+
+    /**
+     * Helper to extract and create the value.
      */
     protected function collectValue()
     {

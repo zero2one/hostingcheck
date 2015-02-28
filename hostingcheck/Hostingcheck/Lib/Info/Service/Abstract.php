@@ -33,7 +33,7 @@ abstract class Hostingcheck_Info_Service_Abstract
      */
     public function __construct($arguments = array())
     {
-        // Create the value.
+        // Set the service we need to collect the information.
         if (!empty($arguments['service'])) {
             $this->service = $arguments['service'];
         }
