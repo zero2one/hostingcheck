@@ -84,4 +84,14 @@ class Check_MySQL_Info_Config
             $this->value = new $this->format($value);
         }
     }
+
+    /**
+     * Get the service from the info object.
+     *
+     * @return Hostingcheck_Service_Database
+     */
+    public function service()
+    {
+        return $this->service;
+    }
 }

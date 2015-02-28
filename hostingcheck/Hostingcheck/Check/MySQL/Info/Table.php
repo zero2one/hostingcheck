@@ -69,4 +69,14 @@ class Check_MySQL_Info_Table
             $this->value = new Hostingcheck_Value_NotFound();
         }
     }
+
+    /**
+     * Get the service from the info object.
+     *
+     * @return Hostingcheck_Service_Database
+     */
+    public function service()
+    {
+        return $this->service;
+    }
 }

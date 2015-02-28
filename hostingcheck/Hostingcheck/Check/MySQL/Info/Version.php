@@ -17,13 +17,6 @@ class Check_MySQL_Info_Version
     extends Hostingcheck_Info_Service_Abstract
 {
     /**
-     * Database service.
-     *
-     * @var Hostingcheck_Service_Database
-     */
-    protected $service;
-
-    /**
      * Helper to extract and create the value.
      */
     protected function collectValue()
@@ -43,5 +36,15 @@ class Check_MySQL_Info_Version
             $this->value = new Hostingcheck_Value_NotSupported();
         }
 
+    }
+
+    /**
+     * Get the service from the info object.
+     *
+     * @return Hostingcheck_Service_Database
+     */
+    public function service()
+    {
+        return $this->service;
     }
 }
