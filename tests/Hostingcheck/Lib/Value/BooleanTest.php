@@ -91,6 +91,10 @@ class Hostingcheck_Value_Boolean_TestCase extends PHPUnit_Framework_TestCase
     public function getValueProvider()
     {
         return array(
+            // Empty
+            array('', false),
+            array(' ', false),
+
             // NULL.
             array( null,  false),
             array('null', false),
@@ -125,6 +129,9 @@ class Hostingcheck_Value_Boolean_TestCase extends PHPUnit_Framework_TestCase
             array( array(), false),
             array(array(1), true),
             array(new stdClass(), true),
+
+            // Non supported strings.
+            array('whatever', true),
         );
     }
 
