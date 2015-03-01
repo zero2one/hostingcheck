@@ -9,7 +9,7 @@
 
 
 /**
- * Tests for Hostingcheck_Value_NotSupported.
+ * Tests for Hostingcheck_Value_Text.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
