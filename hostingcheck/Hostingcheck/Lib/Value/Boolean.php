@@ -44,6 +44,22 @@ class Hostingcheck_Value_Boolean extends Hostingcheck_Value_Abstract
         self::ON_OFF,
     );
 
+    /**
+     * Mapping of predefined string representations of boolean values.
+     *
+     * @var array
+     */
+    protected $mapping = array(
+        ''      => false,
+        'null'  => false,
+        'false' => false,
+        'true'  => true,
+        'off'   => false,
+        'on'    => true,
+        'no'    => false,
+        'yes'   => true,
+    );
+
 
     /**
      * {@inheritDoc}
@@ -137,7 +153,6 @@ class Hostingcheck_Value_Boolean extends Hostingcheck_Value_Abstract
             default:
                 $string = $this->formatBoolean($value);
                 break;
-
         }
 
         return $string;
@@ -224,7 +239,7 @@ class Hostingcheck_Value_Boolean extends Hostingcheck_Value_Abstract
 
             case 'integer':
             case 'double':
-                $parsed = (bool) $value;
+                $parsed = $this->parseNumeric($value);
                 break;
 
             case 'NULL':
@@ -286,24 +301,12 @@ class Hostingcheck_Value_Boolean extends Hostingcheck_Value_Abstract
     protected function parsePredefined($value)
     {
         $value = trim(strtolower($value));
-        switch ($value) {
-            case '':
-            case 'false':
-            case 'null':
-            case 'off':
-            case 'no':
-                $parsed = false;
-                break;
 
-            case 'true':
-            case 'on':
-            case 'yes':
-                $parsed = true;
-                break;
-
-            default:
-                $parsed = (bool) $value;
-                break;
+        if (array_key_exists($value, $this->mapping)) {
+            $parsed = $this->mapping[$value];
+        }
+        else {
+            $parsed = (bool) $value;
         }
 
         return $parsed;
