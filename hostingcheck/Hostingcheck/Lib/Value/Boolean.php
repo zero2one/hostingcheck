@@ -78,6 +78,16 @@ class Hostingcheck_Value_Boolean extends Hostingcheck_Value_Abstract
     }
 
     /**
+     * Return the string version of the boolean.
+     */
+    public function __toString()
+    {
+        $value = $this->getValue();
+        $string = $this->format($value, $this->format);
+        return $string;
+    }
+
+    /**
      * Validate if the format is supported.
      *
      * @param string $format
@@ -88,9 +98,7 @@ class Hostingcheck_Value_Boolean extends Hostingcheck_Value_Abstract
      */
     protected function checkFormat($format)
     {
-        $mapping = $this->getMapping();
-
-        if (!in_array($format, array_keys($mapping))) {
+        if (!in_array($format, $this->formats)) {
             throw new Exception(
                 sprintf(
                     'Format %s is not supported.',
@@ -98,16 +106,6 @@ class Hostingcheck_Value_Boolean extends Hostingcheck_Value_Abstract
                 )
             );
         }
-    }
-
-    /**
-     * Return the string version of the boolean.
-     */
-    public function __toString()
-    {
-        $value = $this->getValue();
-        $string = $this->format($value, $this->format);
-        return $string;
     }
 
     /**
@@ -122,7 +120,91 @@ class Hostingcheck_Value_Boolean extends Hostingcheck_Value_Abstract
      */
     protected function format($value, $format)
     {
-        return $value;
+        switch($format) {
+            case self::INTEGER:
+                $string = $this->formatInteger($value);
+                break;
+
+            case self::ON_OFF:
+                $string = $this->formatOnOff($value);
+                break;
+
+            case self::YES_NO:
+                $string = $this->formatYesNo($value);
+                break;
+
+            case self::BOOLEAN:
+            default:
+                $string = $this->formatBoolean($value);
+                break;
+
+        }
+
+        return $string;
+    }
+
+    /**
+     * Format the string as a boolean value.
+     *
+     * @param bool $value
+     *     The boolean value
+     *
+     * @return string
+     *     "false" or "true".
+     */
+    protected function formatBoolean($value)
+    {
+        return ($value)
+            ? 'true'
+            : 'false';
+    }
+
+    /**
+     * Format the string as an integer value.
+     *
+     * @param bool $value
+     *     The boolean value
+     *
+     * @return string
+     *     "0" or "1".
+     */
+    protected function formatInteger($value)
+    {
+        return ($value)
+            ? '1'
+            : '0';
+    }
+
+    /**
+     * Format the string as on/off value.
+     *
+     * @param bool $value
+     *     The boolean value
+     *
+     * @return string
+     *     "off" or "on".
+     */
+    protected function formatOnOff($value)
+    {
+        return ($value)
+            ? 'on'
+            : 'off';
+    }
+
+    /**
+     * Format the string as a yes/no value.
+     *
+     * @param bool $value
+     *     The boolean value
+     *
+     * @return string
+     *     "no" or "yes".
+     */
+    protected function formatYesNo($value)
+    {
+        return ($value)
+            ? 'yes'
+            : 'no';
     }
 
     /**

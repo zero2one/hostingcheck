@@ -30,7 +30,7 @@ class Hostingcheck_Value_Boolean_TestCase extends PHPUnit_Framework_TestCase
      * @param mixed $value
      *     The value to test.
      * @param bool $expected
-     *     The expected boolean value
+     *     The expected boolean value.
      *
      * @dataProvider getValueProvider
      */
@@ -41,16 +41,45 @@ class Hostingcheck_Value_Boolean_TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check get string.
+     * Test exception when setting non supported format.
+     *
+     * @expectedException Exception
      */
-    public function _testToString()
+    public function testFormatException()
     {
-        $value = new Hostingcheck_Value_Text();
-        $this->assertEquals('', (string) $value);
+        $boolean = new Hostingcheck_Value_Boolean(false);
+        $boolean->setFormat('fooBar');
+    }
 
-        $text = 'foobar';
-        $value = new Hostingcheck_Value_Text($text);
-        $this->assertEquals($text, (string) $value);
+    /**
+     * Test to string when no format is set.
+     */
+    public function testToStringWithoutFormatSet()
+    {
+        $boolean = new Hostingcheck_Value_Boolean(false);
+        $this->assertEquals('false', (string) $boolean);
+
+        $boolean = new Hostingcheck_Value_Boolean(true);
+        $this->assertEquals('true', (string) $boolean);
+    }
+
+    /**
+     * Check get string.
+     *
+     * @param mixed $value
+     *     The value to test.
+     * @param string $format
+     *     The expected format.
+     * @param string $expected
+     *     The expected output value.
+     *
+     * @dataProvider getToStringProvider
+     */
+    public function testToString($value, $format, $expected)
+    {
+        $boolean = new Hostingcheck_Value_Boolean($value);
+        $boolean->setFormat($format);
+        $this->assertEquals($expected, (string) $boolean);
     }
 
 
@@ -63,39 +92,70 @@ class Hostingcheck_Value_Boolean_TestCase extends PHPUnit_Framework_TestCase
     {
         return array(
             // NULL.
-            array(null, false),
+            array( null,  false),
             array('null', false),
 
             // True/False.
-            array(false, false),
+            array( false,  false),
             array('false', false),
-            array(true, true),
-            array('true', true),
+            array( true,   true),
+            array('true',  true),
 
             // Integer.
-            array(0, false),
+            array( 0,  false),
             array('0', false),
-            array(1, true),
+            array( 1,  true),
             array('1', true),
 
             // Float
-            array(0.0, false),
+            array( 0.0,  false),
             array('0.0', false),
-            array(0.1, true),
+            array( 0.1,  true),
             array('0.1', true),
 
             // On/Off.
-            array('on', true),
+            array( 'on', true),
             array('off', false),
 
             // Yes/No.
             array('yes', true),
-            array('no', false),
-            
+            array( 'no', false),
+
             // Special.
-            array(array(), false),
+            array( array(), false),
             array(array(1), true),
             array(new stdClass(), true),
+        );
+    }
+
+    /**
+     * dataProvider for testToString().
+     *
+     * @return array
+     */
+    public function getToStringProvider()
+    {
+        $boolean = Hostingcheck_Value_Boolean::BOOLEAN;
+        $integer = Hostingcheck_Value_Boolean::INTEGER;
+        $on_off  = Hostingcheck_Value_Boolean::ON_OFF;
+        $yes_no  = Hostingcheck_Value_Boolean::YES_NO;
+
+        return array(
+            // Boolean.
+            array(false, $boolean, 'false'),
+            array(true,  $boolean, 'true'),
+
+            // Integer.
+            array(false, $integer, '0'),
+            array(true,  $integer, '1'),
+
+            // On/Off.
+            array(false, $on_off, 'off'),
+            array(true,  $on_off, 'on'),
+
+            // Yes/No.
+            array(false, $yes_no, 'no'),
+            array(true,  $yes_no, 'yes'),
         );
     }
 }
