@@ -16,7 +16,7 @@
 class Hostingcheck_Value_Byte_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Check success method.
+     * Check getValue method.
      *
      * @param mixed $value
      *     The value to test.
