@@ -232,6 +232,20 @@ $db[] = array(
             ),
         ),
         array(
+            'title' => 'innodb_file_per_table',
+            'info'  => 'Check_MySQL_Info_Config',
+            'info args' => array(
+                'service' => 'db_mysql',
+                'name' => 'innodb_file_per_table',
+                'format' => 'Hostingcheck_Value_Boolean',
+            ),
+            'validators' => array(
+                array(
+                    'validator' => 'Hostingcheck_Validate_True',
+                ),
+            ),
+        ),
+        array(
             'title' => 'innodb_buffer_pool_size',
             'info'  => 'Check_MySQL_Info_Config',
             'info args' => array(
