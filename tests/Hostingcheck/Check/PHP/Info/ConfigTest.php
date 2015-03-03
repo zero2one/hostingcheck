@@ -42,6 +42,7 @@ class Check_PHP_Info_Config_TestCase extends PHPUnit_Framework_TestCase
     public function getProviderGetValue()
     {
         $notSupported = new Hostingcheck_Value_NotSupported();
+        $notFound = new Hostingcheck_Value_NotFound();
         $memoryLimit = new Hostingcheck_Value_Byte(ini_get('memory_limit'));
 
         return array(
@@ -52,8 +53,8 @@ class Check_PHP_Info_Config_TestCase extends PHPUnit_Framework_TestCase
             ),
             array(
                 array('name' => 'fooBar.buzBaz'),
-                'Hostingcheck_Value_NotSupported',
-                $notSupported->getValue(),
+                'Hostingcheck_Value_NotFound',
+                $notFound->getValue(),
             ),
             array(
                 array('name' => 'memory_limit'),

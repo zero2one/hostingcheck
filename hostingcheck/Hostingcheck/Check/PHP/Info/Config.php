@@ -56,7 +56,7 @@ class Check_PHP_Info_Config extends Hostingcheck_Info_Abstract
     {
         $value = ini_get($this->key);
         if ($value === false) {
-            $this->value = new Hostingcheck_Value_NotSupported();
+            $this->value = new Hostingcheck_Value_NotFound();
             return;
         }
 
