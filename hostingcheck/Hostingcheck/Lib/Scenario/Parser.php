@@ -122,8 +122,8 @@ class Hostingcheck_Scenario_Parser {
      *
      * @param array $config
      *     Config containing:
-     *     - info      : The type of info that needs to be collected.
-     *     - info args : Optional arguments needed to collect the info.
+     *     - info : The type of info that needs to be collected.
+     *     - args : Optional arguments needed to collect the info.
      *
      * @return Hostingcheck_Info_Interface
      */
@@ -132,8 +132,8 @@ class Hostingcheck_Scenario_Parser {
         $infoClass = $config['info'];
         $infoArgs = array();
 
-        if (!empty($config['info args']) && is_array($config['info args'])) {
-            $infoArgs = $config['info args'];
+        if (!empty($config['args']) && is_array($config['args'])) {
+            $infoArgs = $config['args'];
         }
 
         return $this->info($infoClass, $infoArgs);

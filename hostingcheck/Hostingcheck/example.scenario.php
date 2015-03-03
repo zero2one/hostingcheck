@@ -62,13 +62,13 @@ $scenario = array(
  ******************************************************************************/
 
 $info[] = array(
-    'title'      => 'Info text',
-    'info'       => 'Text',
-    'info args'  => array('text' => 'Some smalltalk info text'),
+    'title' => 'Info text',
+    'info' => 'Text',
+    'args' => array('text' => 'Some smalltalk info text'),
 );
 $info[] = array(
-    'title'      => 'Report Date',
-    'info'       => 'DateTime',
+    'title' => 'Report Date',
+    'info' => 'DateTime',
 );
 
 
@@ -77,38 +77,38 @@ $info[] = array(
  * Example how to collect and validate information about the server hardware.
  */
 $server[] = array(
-    'title'      => 'Operating System',
-    'info'       => 'Server_OS',
+    'title' => 'Operating System',
+    'info' => 'Server_OS',
 );
 $server[] = array(
-    'title'      => 'Hostname',
-    'info'       => 'Server_Name',
+    'title' => 'Hostname',
+    'info' => 'Server_Name',
 );
 $server[] = array(
-    'title'      => 'Total disk space',
-    'info'       => 'Server_Disk',
+    'title' => 'Total disk space',
+    'info' => 'Server_Disk',
 );
 $server[] = array(
-    'title'      => 'Used disk space',
-    'info'       => 'Server_Disk',
-    'info args'  => array('name' => 'used'),
+    'title' => 'Used disk space',
+    'info' => 'Server_Disk',
+    'args' => array('name' => 'used'),
 );
 $server[] = array(
-    'title'      => 'Free disk space',
-    'info'       => 'Server_Disk',
-    'info args'  => array('name' => 'free'),
+    'title' => 'Free disk space',
+    'info' => 'Server_Disk',
+    'args' => array('name' => 'free'),
     'validators' => array(
         array(
             'validator' => 'ByteSize',
-            'args'      => array('min' => '1G', 'max' => '1P'),
+            'args' => array('min' => '1G', 'max' => '1P'),
         ),
     )
 
 );
 $server[] = array(
-    'title'      => 'Free disk space of root disk (/)',
-    'info'       => 'Server_Disk',
-    'info args'  => array('name' => 'free', 'path' => '/'),
+    'title' => 'Free disk space of root disk (/)',
+    'info' => 'Server_Disk',
+    'args' => array('name' => 'free', 'path' => '/'),
 );
 
 
@@ -118,7 +118,7 @@ $server[] = array(
  */
 $web[] = array(
     'title' => 'Apache version',
-    'info'  => 'Apache_Version',
+    'info' => 'Apache_Version',
 );
 
 
@@ -127,84 +127,84 @@ $web[] = array(
  * Example how to collect and validate PHP configuration.
  */
 $php[] = array(
-    'title'      => 'PHP Version',
-    'info'       => 'PHP_Version',
+    'title' => 'PHP Version',
+    'info' => 'PHP_Version',
     'validators' => array(
         array(
             'validator' => 'Version',
-            'args'      => array('min' => '5', 'max' => '6'),
+            'args'=> array('min' => '5', 'max' => '6'),
         ),
     ),
-    'required'   => true,
+    'required' => true,
 );
 $php[] = array(
-    'title'      => 'Extension : Date',
-    'info'       => 'PHP_Extension',
-    'info args'  => array('name' => 'date'),
+    'title' => 'Extension : Date',
+    'info' => 'PHP_Extension',
+    'args' => array('name' => 'date'),
     'validators' => array(
         array(
-            'validator'       => 'NotEmpty',
+            'validator' => 'NotEmpty',
         ),
     ),
     'required'   => true,
     'tests' => array(
         array(
-            'title'      => 'Timezone',
-            'info'       => 'PHP_Config',
-            'info args'  => array(
+            'title' => 'Timezone',
+            'info' => 'PHP_Config',
+            'args' => array(
                 'name' => 'date.timezone',
             ),
             'validators' => array(
                 array(
                     'validator' => 'Compare',
-                    'args'      => array('equal', 'Antarctica/Troll'),
+                    'args' => array('equal', 'Antarctica/Troll'),
                 ),
             ),
         ),
     )
 );
 $php[] = array(
-    'title'      => 'Extension : JSON',
-    'info'       => 'PHP_Extension',
-    'info args'  => array('name' => 'json'),
+    'title' => 'Extension : JSON',
+    'info' => 'PHP_Extension',
+    'args'  => array('name' => 'json'),
     'validators' => array(
         array(
-            'validator'       => 'NotEmpty',
+            'validator' => 'NotEmpty',
         ),
     ),
     'required'   => true,
 );
 $php[] = array(
-    'title'      => 'Extension : FooBar',
-    'info'       => 'PHP_Extension',
-    'info args'  => array('name' => 'foobar'),
+    'title' => 'Extension : FooBar',
+    'info' => 'PHP_Extension',
+    'args' => array('name' => 'foobar'),
     'validators' => array(
         array(
-            'validator'       => 'NotEmpty',
+            'validator' => 'NotEmpty',
         ),
     ),
-    'required'   => true,
+    'required' => true,
     'tests' => array(
         array(
             'title' => 'FooBar fake value test',
-            'info'  => 'PHP_Config',
-            'info args' => array(
+            'info' => 'PHP_Config',
+            'args' => array(
                 'name' => 'foobar.bizbaz',
             ),
         )
     )
 );
 $php[] = array(
-    'title'      => 'Memory limit',
-    'info'       => 'PHP_Config',
-    'info args'  => array(
-        'name'   => 'memory_limit',
+    'title' => 'Memory limit',
+    'info' => 'PHP_Config',
+    'args' => array(
+        'name' => 'memory_limit',
         'format' => 'Byte'
     ),
     'validators' => array(
         array(
             'validator' => 'ByteSize',
-            'args'      => array('equal' => '128M'),
+            'args' => array('equal' => '128M'),
         ),
     ),
 );
@@ -217,7 +217,7 @@ $php[] = array(
 $db[] = array(
     'title' => 'MySQL service available',
     'info' => 'Service_Available',
-    'info args' => array(
+    'args' => array(
         'service' => 'db_mysql',
     ),
     'validators' => array(
@@ -229,14 +229,14 @@ $db[] = array(
         array(
             'title' => 'Version',
             'info'  => 'MySQL_Version',
-            'info args' => array(
+            'args' => array(
                 'service' => 'db_mysql',
             ),
         ),
         array(
             'title' => 'query_cache_type',
             'info'  => 'MySQL_Config',
-            'info args' => array(
+            'args' => array(
                 'service' => 'db_mysql',
                 'name'    => 'query_cache_type',
             ),
@@ -244,7 +244,7 @@ $db[] = array(
         array(
             'title' => 'innodb_file_per_table',
             'info'  => 'MySQL_Config',
-            'info args' => array(
+            'args' => array(
                 'service' => 'db_mysql',
                 'name' => 'innodb_file_per_table',
                 'format' => 'Boolean',
@@ -258,7 +258,7 @@ $db[] = array(
         array(
             'title' => 'innodb_buffer_pool_size',
             'info'  => 'MySQL_Config',
-            'info args' => array(
+            'args' => array(
                 'service' => 'db_mysql',
                 'name' => 'innodb_buffer_pool_size',
                 'format' => 'Byte',

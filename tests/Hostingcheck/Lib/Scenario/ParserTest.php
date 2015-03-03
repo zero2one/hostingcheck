@@ -121,7 +121,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
         $config = array(
             'title' => 'Test parser',
             'info' => 'Text',
-            'info args' => array('text' => 'Test text'),
+            'args' => array('text' => 'Test text'),
             'validators' => array(
                 array(
                     'validator' => 'ByteSize',
@@ -251,7 +251,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
                 array(
                     'title' => 'Test parser',
                     'info' => 'Text',
-                    'info args' => array('text' => 'Test text'),
+                    'args' => array('text' => 'Test text'),
                     'validators' => array(
                         array(
                             'validator' => 'ByteSize',
