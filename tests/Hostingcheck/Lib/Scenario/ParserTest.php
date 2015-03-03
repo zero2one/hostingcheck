@@ -24,12 +24,31 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
 
         $text = 'Text text';
         $info = $parser->info(
-            'Hostingcheck_Info_Text',
+            'Text',
             array('text' => $text)
         );
 
         $this->assertInstanceOf('Hostingcheck_Info_Text', $info);
         $this->assertEquals($text, $info->getValue());
+    }
+
+    /**
+     * Test info parser with value format option.
+     */
+    public function testInfoParserWithCheckPrefixAndValueFormat()
+    {
+        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
+
+        $info = $parser->info(
+            'Server_Disk',
+            array(
+                'name' => 'total',
+                'format' => 'Byte',
+            )
+        );
+
+        $this->assertInstanceOf('Check_Server_Info_Disk', $info);
+        $this->assertInstanceOf('Hostingcheck_Value_Byte', $info->getValue());
     }
 
     /**
@@ -47,7 +66,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
         $parser = new Hostingcheck_Scenario_Parser($services);
 
         $info = $info = $parser->info(
-            'Hostingcheck_Info_Service_Available',
+            'Service_Available',
             array('service' => 'my_service')
         );
 
@@ -61,7 +80,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
     {
         $parser = new Hostingcheck_Scenario_Parser($this->getServices());
         $config = array(
-            'validator' => 'Hostingcheck_Validate_ByteSize',
+            'validator' => 'ByteSize',
             'args' => array('min' => '15M'),
         );
 
@@ -78,7 +97,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
 
         $config = array(
             'title' => 'Test parser',
-            'info' => 'Hostingcheck_Info_Text',
+            'info' => 'Text',
         );
 
         $test = $parser->test($config);
@@ -101,11 +120,11 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
 
         $config = array(
             'title' => 'Test parser',
-            'info' => 'Hostingcheck_Info_Text',
+            'info' => 'Text',
             'info args' => array('text' => 'Test text'),
             'validators' => array(
                 array(
-                    'validator' => 'Hostingcheck_Validate_ByteSize',
+                    'validator' => 'ByteSize',
                     'args' => array('min' => '15M'),
                 )
             ),
@@ -136,15 +155,15 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
 
         $config = array(
             'title' => 'Test parser',
-            'info' => 'Hostingcheck_Info_Text',
+            'info' => 'Text',
             'tests' => array(
                 array(
                     'title' => 'subtest 1',
-                    'info' => 'Hostingcheck_Info_Text',
+                    'info' => 'Text',
                 ),
                 array(
                     'title' => 'subtest 2',
-                    'info' => 'Hostingcheck_Info_Text',
+                    'info' => 'Text',
                 ),
             ),
         );
@@ -186,11 +205,11 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
             'tests' => array(
                 array(
                     'title' => 'subtest 1',
-                    'info' => 'Hostingcheck_Info_Text',
+                    'info' => 'Text',
                 ),
                 array(
                     'title' => 'subtest 2',
-                    'info' => 'Hostingcheck_Info_Text',
+                    'info' => 'Text',
                 ),
             )
         );
@@ -231,11 +250,11 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
             'tests' => array(
                 array(
                     'title' => 'Test parser',
-                    'info' => 'Hostingcheck_Info_Text',
+                    'info' => 'Text',
                     'info args' => array('text' => 'Test text'),
                     'validators' => array(
                         array(
-                            'validator' => 'Hostingcheck_Validate_ByteSize',
+                            'validator' => 'ByteSize',
                             'args' => array('min' => '15M'),
                         )
                     ),

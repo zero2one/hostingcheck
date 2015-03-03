@@ -63,12 +63,12 @@ $scenario = array(
 
 $info[] = array(
     'title'      => 'Info text',
-    'info'       => 'Hostingcheck_Info_Text',
+    'info'       => 'Text',
     'info args'  => array('text' => 'Some smalltalk info text'),
 );
 $info[] = array(
     'title'      => 'Report Date',
-    'info'       => 'Hostingcheck_Info_DateTime',
+    'info'       => 'DateTime',
 );
 
 
@@ -78,28 +78,28 @@ $info[] = array(
  */
 $server[] = array(
     'title'      => 'Operating System',
-    'info'       => 'Check_Server_Info_OS',
+    'info'       => 'Server_OS',
 );
 $server[] = array(
     'title'      => 'Hostname',
-    'info'       => 'Check_Server_Info_Name',
+    'info'       => 'Server_Name',
 );
 $server[] = array(
     'title'      => 'Total disk space',
-    'info'       => 'Check_Server_Info_Disk',
+    'info'       => 'Server_Disk',
 );
 $server[] = array(
     'title'      => 'Used disk space',
-    'info'       => 'Check_Server_Info_Disk',
+    'info'       => 'Server_Disk',
     'info args'  => array('name' => 'used'),
 );
 $server[] = array(
     'title'      => 'Free disk space',
-    'info'       => 'Check_Server_Info_Disk',
+    'info'       => 'Server_Disk',
     'info args'  => array('name' => 'free'),
     'validators' => array(
         array(
-            'validator' => 'Hostingcheck_Validate_ByteSize',
+            'validator' => 'ByteSize',
             'args'      => array('min' => '1G', 'max' => '1P'),
         ),
     )
@@ -107,8 +107,18 @@ $server[] = array(
 );
 $server[] = array(
     'title'      => 'Free disk space of root disk (/)',
-    'info'       => 'Check_Server_Info_Disk',
+    'info'       => 'Server_Disk',
     'info args'  => array('name' => 'free', 'path' => '/'),
+);
+
+
+
+/**
+ * Example how to collect and validate Apache configuration.
+ */
+$web[] = array(
+    'title' => 'Apache version',
+    'info'  => 'Apache_Version',
 );
 
 
@@ -118,10 +128,10 @@ $server[] = array(
  */
 $php[] = array(
     'title'      => 'PHP Version',
-    'info'       => 'Check_PHP_Info_Version',
+    'info'       => 'PHP_Version',
     'validators' => array(
         array(
-            'validator' => 'Hostingcheck_Validate_Version',
+            'validator' => 'Version',
             'args'      => array('min' => '5', 'max' => '6'),
         ),
     ),
@@ -129,24 +139,24 @@ $php[] = array(
 );
 $php[] = array(
     'title'      => 'Extension : Date',
-    'info'       => 'Check_PHP_Info_Extension',
+    'info'       => 'PHP_Extension',
     'info args'  => array('name' => 'date'),
     'validators' => array(
         array(
-            'validator'       => 'Hostingcheck_Validate_NotEmpty',
+            'validator'       => 'NotEmpty',
         ),
     ),
     'required'   => true,
     'tests' => array(
         array(
             'title'      => 'Timezone',
-            'info'       => 'Check_PHP_Info_Config',
+            'info'       => 'PHP_Config',
             'info args'  => array(
                 'name' => 'date.timezone',
             ),
             'validators' => array(
                 array(
-                    'validator' => 'Hostingcheck_Validate_Compare',
+                    'validator' => 'Compare',
                     'args'      => array('equal', 'Antarctica/Troll'),
                 ),
             ),
@@ -155,29 +165,29 @@ $php[] = array(
 );
 $php[] = array(
     'title'      => 'Extension : JSON',
-    'info'       => 'Check_PHP_Info_Extension',
+    'info'       => 'PHP_Extension',
     'info args'  => array('name' => 'json'),
     'validators' => array(
         array(
-            'validator'       => 'Hostingcheck_Validate_NotEmpty',
+            'validator'       => 'NotEmpty',
         ),
     ),
     'required'   => true,
 );
 $php[] = array(
     'title'      => 'Extension : FooBar',
-    'info'       => 'Check_PHP_Info_Extension',
+    'info'       => 'PHP_Extension',
     'info args'  => array('name' => 'foobar'),
     'validators' => array(
         array(
-            'validator'       => 'Hostingcheck_Validate_NotEmpty',
+            'validator'       => 'NotEmpty',
         ),
     ),
     'required'   => true,
     'tests' => array(
         array(
             'title' => 'FooBar fake value test',
-            'info'  => 'Check_PHP_Info_Config',
+            'info'  => 'PHP_Config',
             'info args' => array(
                 'name' => 'foobar.bizbaz',
             ),
@@ -186,14 +196,14 @@ $php[] = array(
 );
 $php[] = array(
     'title'      => 'Memory limit',
-    'info'       => 'Check_PHP_Info_Config',
+    'info'       => 'PHP_Config',
     'info args'  => array(
         'name'   => 'memory_limit',
-        'format' => 'Hostingcheck_Value_Byte'
+        'format' => 'Byte'
     ),
     'validators' => array(
         array(
-            'validator' => 'Hostingcheck_Validate_ByteSize',
+            'validator' => 'ByteSize',
             'args'      => array('equal' => '128M'),
         ),
     ),
@@ -206,26 +216,26 @@ $php[] = array(
  */
 $db[] = array(
     'title' => 'MySQL service available',
-    'info' => 'Hostingcheck_Info_Service_Available',
+    'info' => 'Service_Available',
     'info args' => array(
         'service' => 'db_mysql',
     ),
     'validators' => array(
         array(
-            'validator' => 'Hostingcheck_Validate_NotEmpty',
+            'validator' => 'NotEmpty',
         ),
     ),
     'tests' => array(
         array(
             'title' => 'Version',
-            'info'  => 'Check_MySQL_Info_Version',
+            'info'  => 'MySQL_Version',
             'info args' => array(
                 'service' => 'db_mysql',
             ),
         ),
         array(
             'title' => 'query_cache_type',
-            'info'  => 'Check_MySQL_Info_Config',
+            'info'  => 'MySQL_Config',
             'info args' => array(
                 'service' => 'db_mysql',
                 'name'    => 'query_cache_type',
@@ -233,25 +243,25 @@ $db[] = array(
         ),
         array(
             'title' => 'innodb_file_per_table',
-            'info'  => 'Check_MySQL_Info_Config',
+            'info'  => 'MySQL_Config',
             'info args' => array(
                 'service' => 'db_mysql',
                 'name' => 'innodb_file_per_table',
-                'format' => 'Hostingcheck_Value_Boolean',
+                'format' => 'Boolean',
             ),
             'validators' => array(
                 array(
-                    'validator' => 'Hostingcheck_Validate_True',
+                    'validator' => 'True',
                 ),
             ),
         ),
         array(
             'title' => 'innodb_buffer_pool_size',
-            'info'  => 'Check_MySQL_Info_Config',
+            'info'  => 'MySQL_Config',
             'info args' => array(
                 'service' => 'db_mysql',
                 'name' => 'innodb_buffer_pool_size',
-                'format' => 'Hostingcheck_Value_Byte',
+                'format' => 'Byte',
             ),
         ),
     ),

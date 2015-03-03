@@ -54,8 +54,17 @@ class Hostingcheck_Scenario_Parser {
             );
         }
 
-        $info = new $className($arguments);
-        return $info;
+        // Create the format class name (if any).
+        if (!empty($arguments['format'])) {
+            $arguments['format'] = $this->createClassName(
+                'Value',
+                $arguments['format']
+            );
+        }
+
+        // Create the info object.
+        $fullName = $this->createClassName('Info', $className);
+        return new $fullName($arguments);
     }
 
     /**
@@ -77,8 +86,9 @@ class Hostingcheck_Scenario_Parser {
             $arguments = $config['args'];
         }
 
-        $validator = new $className($arguments);
-        return $validator;
+        // Create the validate object.
+        $fullName = $this->createClassName('Validate', $className);
+        return new $fullName($arguments);
     }
 
     /**
@@ -226,5 +236,48 @@ class Hostingcheck_Scenario_Parser {
         }
 
         return $scenario;
+    }
+
+    /**
+     * Construct the full class name from the short name.
+     *
+     * @param string $type
+     *     The class type.
+     * @param string $className
+     *     The short version of the name.
+     *
+     * @return string
+     */
+    protected function createClassName($type, $className)
+    {
+        $type = ucfirst(strtolower($type));
+
+        // Default name.
+        $name = 'Hostingcheck_' . $type . '_' . $className;
+
+        // Check if there is one of the Check prefixes used.
+        $split = explode('_', $className);
+        if (1 < count($split) && $this->isCheckPrefix($split[0])) {
+            $prefix = array_shift($split);
+            $suffix = implode('_', $split);
+            $name = 'Check_' . $prefix . '_' . $type . '_' . $suffix;
+        }
+
+        return $name;
+    }
+
+    /**
+     * Check if the given first part of the class name is a check prefix.
+     *
+     * @param string $prefix
+     *     The prefix to test.
+     *
+     * @return bool
+     *     Prefix exists.
+     */
+    protected function isCheckPrefix($prefix)
+    {
+        $path = HOSTINGCHECK_BASEPATH . '/Hostingcheck/Check/' . $prefix;
+        return file_exists($path);
     }
 }
