@@ -211,12 +211,22 @@ class Hostingcheck_Scenario_Parser {
     {
         $tests = new Hostingcheck_Scenario_Tests();
 
+        // Check if there are (sub)tests.
         if (empty($config['tests']) || !is_array($config['tests'])) {
             return $tests;
         }
 
+        // Check if the parent has a service set.
+        $service = false;
+        if (!empty($config['args']['service'])) {
+            $service = $config['args']['service'];
+        }
+
         // Add the tests to the collection.
         foreach ($config['tests'] as $testConfig) {
+            if ($service && empty($testConfig['args']['service'])) {
+                $testConfig['args']['service'] = $service;
+            }
             $test = $this->test($testConfig);
             $tests->add($test);
         }

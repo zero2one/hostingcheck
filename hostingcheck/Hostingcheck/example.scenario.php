@@ -210,15 +210,11 @@ $db[] = array(
         array(
             'title' => 'Version',
             'info'  => 'MySQL_Version',
-            'args' => array(
-                'service' => 'db_mysql',
-            ),
         ),
         array(
             'title' => 'query_cache_type',
             'info'  => 'MySQL_Config',
             'args' => array(
-                'service' => 'db_mysql',
                 'name'    => 'query_cache_type',
             ),
         ),
@@ -226,7 +222,6 @@ $db[] = array(
             'title' => 'innodb_file_per_table',
             'info'  => 'MySQL_Config',
             'args' => array(
-                'service' => 'db_mysql',
                 'name' => 'innodb_file_per_table',
                 'format' => 'Boolean',
             ),
@@ -240,7 +235,6 @@ $db[] = array(
             'title' => 'innodb_buffer_pool_size',
             'info'  => 'MySQL_Config',
             'args' => array(
-                'service' => 'db_mysql',
                 'name' => 'innodb_buffer_pool_size',
                 'format' => 'Byte',
             ),

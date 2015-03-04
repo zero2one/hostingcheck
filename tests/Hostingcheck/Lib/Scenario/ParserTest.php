@@ -221,6 +221,80 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test the test parser with nested tests and parent has service.
+     */
+    public function testTestParserWithServiceAndNestedTests()
+    {
+        // Create a mock service and add it to the mocked services container.
+        $service = $this->getMockBuilder('Hostingcheck_Service_Interface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $services = $this->getServices();
+        $services->add('my_service', $service);
+
+        $parser = new Hostingcheck_Scenario_Parser($services);
+
+        $config = array(
+            'title' => 'Test parser',
+            'info' => 'Service_Available',
+            'args' => array(
+                'service' => 'my_service',
+            ),
+            'tests' => array(
+                array(
+                    'title' => 'Subtest without service set',
+                    'info' => 'Service_Available',
+                ),
+            ),
+        );
+
+        $test = $parser->test($config);
+        $subTest = $test->tests()->current()->info();
+        $this->assertEquals($service, $subTest->service());
+    }
+
+    /**
+     * Test the test parser with nested tests.
+     * Parent and child have different service.
+     */
+    public function testTestParserWithServiceAndNestedTestsHaveDifferentService()
+    {
+        // Create a mock service and add it to the mocked services container.
+        $service1 = $this->getMockBuilder('Hostingcheck_Service_Interface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $service2 = $this->getMockBuilder('Hostingcheck_Service_Interface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $services = $this->getServices();
+        $services->add('my_service1', $service1);
+        $services->add('my_service2', $service2);
+
+        $parser = new Hostingcheck_Scenario_Parser($services);
+
+        $config = array(
+            'title' => 'Test parser',
+            'info' => 'Service_Available',
+            'args' => array(
+                'service' => 'my_service1',
+            ),
+            'tests' => array(
+                array(
+                    'title' => 'Subtest without service set',
+                    'info' => 'Service_Available',
+                    'service' => 'my_service2',
+                ),
+            ),
+        );
+
+        $test = $parser->test($config);
+        $subTest = $test->tests()->current()->info();
+        $this->assertEquals($service2, $subTest->service());
+    }
+
+    /**
      * Test the tests collection parser without tests set.
      */
     public function testTestsParserWithoutTests()
