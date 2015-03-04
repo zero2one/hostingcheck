@@ -67,10 +67,11 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
 
         $info = $parser->info(
             'Service_Available',
-            array('service' => 'my_service')
+            array(),
+            'my_service'
         );
 
-        $this->assertEquals($service, $info->service());
+        $this->assertSame($service, $info->service());
     }
 
     /**
@@ -238,9 +239,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
         $config = array(
             'title' => 'Test parser',
             'info' => 'Service_Available',
-            'args' => array(
-                'service' => 'my_service',
-            ),
+            'service' => 'my_service',
             'tests' => array(
                 array(
                     'title' => 'Subtest without service set',
@@ -251,7 +250,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
 
         $test = $parser->test($config);
         $subTest = $test->tests()->current()->info();
-        $this->assertEquals($service, $subTest->service());
+        $this->assertSame($service, $subTest->service());
     }
 
     /**
@@ -277,9 +276,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
         $config = array(
             'title' => 'Test parser',
             'info' => 'Service_Available',
-            'args' => array(
-                'service' => 'my_service1',
-            ),
+            'service' => 'my_service1',
             'tests' => array(
                 array(
                     'title' => 'Subtest without service set',
@@ -290,8 +287,10 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
         );
 
         $test = $parser->test($config);
+        $this->assertSame($service1, $test->info()->service());
+
         $subTest = $test->tests()->current()->info();
-        $this->assertEquals($service2, $subTest->service());
+        $this->assertSame($service2, $subTest->service());
     }
 
     /**

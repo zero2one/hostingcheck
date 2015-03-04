@@ -39,18 +39,20 @@ class Hostingcheck_Scenario_Parser {
      *     The class name to use to collect the information.
      * @param array $arguments
      *     The arguments to use to collect the information.
+     * @param string $service
+     *     The name of the service to use in the info object.
      *
      * @return Hostingcheck_Info_Interface
      */
-    public function info($className, $arguments = array()) {
+    public function info($className, $arguments = array(), $service = null) {
         if (empty($arguments) || !is_array($arguments)) {
             $arguments = array();
         }
 
         // Get the service from the services based on its collection named key.
-        if (!empty($arguments['service'])) {
+        if (!empty($service)) {
             $arguments['service'] = $this->services->seek(
-                $arguments['service']
+                $service
             );
         }
 
@@ -124,6 +126,7 @@ class Hostingcheck_Scenario_Parser {
      *     Config containing:
      *     - info : The type of info that needs to be collected.
      *     - args : Optional arguments needed to collect the info.
+     *     - service : An optional service name to use in the info object.
      *
      * @return Hostingcheck_Info_Interface
      */
@@ -131,12 +134,16 @@ class Hostingcheck_Scenario_Parser {
     {
         $infoClass = $config['info'];
         $infoArgs = array();
+        $service = false;
 
         if (!empty($config['args']) && is_array($config['args'])) {
             $infoArgs = $config['args'];
         }
+        if (!empty($config['service'])) {
+            $service = $config['service'];
+        }
 
-        return $this->info($infoClass, $infoArgs);
+        return $this->info($infoClass, $infoArgs, $service);
     }
 
     /**
@@ -217,16 +224,14 @@ class Hostingcheck_Scenario_Parser {
         }
 
         // Check if the parent has a service set.
-        $service = false;
-        if (!empty($config['args']['service'])) {
-            $service = $config['args']['service'];
+        $defaults = array();
+        if (!empty($config['service'])) {
+            $defaults['service'] = $config['service'];
         }
 
         // Add the tests to the collection.
         foreach ($config['tests'] as $testConfig) {
-            if ($service && empty($testConfig['args']['service'])) {
-                $testConfig['args']['service'] = $service;
-            }
+            $testConfig = array_merge($defaults, $testConfig);
             $test = $this->test($testConfig);
             $tests->add($test);
         }

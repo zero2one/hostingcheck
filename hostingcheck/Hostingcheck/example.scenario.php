@@ -202,9 +202,7 @@ $php[] = array(
 $db[] = array(
     'title' => 'MySQL service available',
     'info' => 'Service_Available',
-    'args' => array(
-        'service' => 'db_mysql',
-    ),
+    'service' => 'db_mysql',
     'required' => true,
     'tests' => array(
         array(
