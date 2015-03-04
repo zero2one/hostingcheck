@@ -141,11 +141,6 @@ $php[] = array(
     'title' => 'Extension : Date',
     'info' => 'PHP_Extension',
     'args' => array('name' => 'date'),
-    'validators' => array(
-        array(
-            'validator' => 'NotEmpty',
-        ),
-    ),
     'required'   => true,
     'tests' => array(
         array(
@@ -167,22 +162,12 @@ $php[] = array(
     'title' => 'Extension : JSON',
     'info' => 'PHP_Extension',
     'args'  => array('name' => 'json'),
-    'validators' => array(
-        array(
-            'validator' => 'NotEmpty',
-        ),
-    ),
     'required'   => true,
 );
 $php[] = array(
     'title' => 'Extension : FooBar',
     'info' => 'PHP_Extension',
     'args' => array('name' => 'foobar'),
-    'validators' => array(
-        array(
-            'validator' => 'NotEmpty',
-        ),
-    ),
     'required' => true,
     'tests' => array(
         array(
@@ -220,11 +205,7 @@ $db[] = array(
     'args' => array(
         'service' => 'db_mysql',
     ),
-    'validators' => array(
-        array(
-            'validator' => 'NotEmpty',
-        ),
-    ),
+    'required' => true,
     'tests' => array(
         array(
             'title' => 'Version',

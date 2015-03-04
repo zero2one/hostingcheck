@@ -65,7 +65,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
 
         $parser = new Hostingcheck_Scenario_Parser($services);
 
-        $info = $info = $parser->info(
+        $info = $parser->info(
             'Service_Available',
             array('service' => 'my_service')
         );
@@ -110,6 +110,54 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Hostingcheck_Scenario_Tests', $test->tests());
         $this->assertCount(0, $test->tests());
     }
+
+    /**
+     * Test parser with required option.
+     */
+    public function testTestParserWithRequiredConfig()
+    {
+        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
+
+        $config = array(
+            'title' => 'Test parser',
+            'info' => 'Text',
+            'required' => true,
+        );
+
+        $test = $parser->test($config);
+        $this->assertCount(1, $test->validators());
+        $this->assertInstanceOf(
+            'Hostingcheck_Validate_NotEmpty',
+            $test->validators()->current()
+        );
+    }
+
+    /**
+     * Test parser with required switch and NotEmpty validator.
+     */
+    public function testTestParserWithRequiredAndNotEmptyValidator()
+    {
+        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
+
+        $config = array(
+            'title' => 'Test parser',
+            'info' => 'Text',
+            'required' => true,
+            'validators' => array(
+                array(
+                    'validator' => 'NotEmpty',
+                )
+            ),
+        );
+
+        $test = $parser->test($config);
+        $this->assertCount(1, $test->validators());
+        $this->assertInstanceOf(
+            'Hostingcheck_Validate_NotEmpty',
+            $test->validators()->current()
+        );
+    }
+
 
     /**
      * Test the parser to convert test config to test scenario object.

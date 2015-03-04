@@ -98,7 +98,7 @@ class Hostingcheck_Scenario_Parser {
      *     Config array containing:
      *     - title      : The title for the test.
      *     - info       : The info class name to use to retrieve the info.
-     *     - info args  : Optional arguments to retrieve the info data.
+     *     - args       : Optional arguments to retrieve the info data.
      *     - validators : Optional array of validator config arrays.
      *     - tests      : Optional array of child tests. These tests will only
      *                    be run if the test did not failed or is not supported.
@@ -145,6 +145,10 @@ class Hostingcheck_Scenario_Parser {
      * @param array $config
      *     Config containing:
      *     - validators : An optional array of validator configurations.
+     *     - required : Optional boolean if the info object should not return
+     *                  an optional value. By default false.
+     *                  If set to true, a Hostingcheck_Validate_NonEmpty will
+     *                  be added to the validators config.
      *
      * @return Hostingcheck_Scenario_Validators
      */
@@ -157,12 +161,41 @@ class Hostingcheck_Scenario_Parser {
             $validatorsConfig = $config['validators'];
         }
 
+        // Support the required switch.
+        $this->testRequired($config, $validatorsConfig);
+
+        // Convert the config array into validator objects.
         foreach ($validatorsConfig as $validatorConfig) {
             $validator = $this->validate($validatorConfig);
             $validators->add($validator);
         }
 
         return $validators;
+    }
+
+    /**
+     * Helper to add NonEmpty to the validators when the info is required.
+     *
+     * @param array $config
+     *     The config used to create the validators.
+     * @param array $validators
+     *     The array of validators config.
+     */
+    protected function testRequired($config, &$validators)
+    {
+        if (empty($config['required'])) {
+            return;
+        }
+
+        // Check if there is already a NonEmpty validator defined.
+        foreach ($validators as $validator) {
+            if ($validator['validator'] === 'NotEmpty') {
+                return;
+            }
+        }
+
+        // Add the NonEmpty validator.
+        $validators[] = array('validator' => 'NotEmpty');
     }
 
     /**
