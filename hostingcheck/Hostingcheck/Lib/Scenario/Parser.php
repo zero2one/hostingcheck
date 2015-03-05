@@ -211,6 +211,7 @@ class Hostingcheck_Scenario_Parser {
      * @param array $config
      *     The config for a group or test with:
      *     - tests : an optional array of test configs.
+     *     - service : the service to use in all tests.
      *
      * @return Hostingcheck_Scenario_Tests
      */
@@ -218,25 +219,54 @@ class Hostingcheck_Scenario_Parser {
     {
         $tests = new Hostingcheck_Scenario_Tests();
 
-        // Check if there are (sub)tests.
-        if (empty($config['tests']) || !is_array($config['tests'])) {
-            return $tests;
-        }
-
-        // Check if the parent has a service set.
-        $defaults = array();
-        if (!empty($config['service'])) {
-            $defaults['service'] = $config['service'];
-        }
+        $testsConfig = $this->testsExtract($config);
+        $defaultConfig = $this->testsDefaultConfig($config);
 
         // Add the tests to the collection.
-        foreach ($config['tests'] as $testConfig) {
-            $testConfig = array_merge($defaults, $testConfig);
+        foreach ($testsConfig as $testConfig) {
+            $testConfig = array_merge($defaultConfig, $testConfig);
             $test = $this->test($testConfig);
             $tests->add($test);
         }
 
         return $tests;
+    }
+
+    /**
+     * Get the tests array out of the config.
+     *
+     * @param array $config
+     *
+     * @return array
+     */
+    protected function testsExtract($config)
+    {
+        $tests = array();
+        if (!empty($config['tests']) && is_array($config['tests'])) {
+            $tests = $config['tests'];
+        }
+
+        return $tests;
+    }
+
+    /**
+     * Get the tests test default config array.
+     *
+     * @param array $config
+     *
+     * @return array
+     */
+    protected function testsDefaultConfig($config)
+    {
+        $defaults = array();
+
+        // Check if the parent has a service set, if so add it to the default
+        // config for the child tests.
+        if (!empty($config['service'])) {
+            $defaults['service'] = $config['service'];
+        }
+
+        return $defaults;
     }
 
     /**
