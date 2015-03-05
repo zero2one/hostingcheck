@@ -62,13 +62,13 @@ $scenario = array(
  ******************************************************************************/
 
 $info[] = array(
-    'title'      => 'Info text',
-    'info'       => 'Hostingcheck_Info_Text',
-    'info args'  => array('text' => 'Some smalltalk info text'),
+    'title' => 'Info text',
+    'info' => 'Text',
+    'args' => array('text' => 'Some smalltalk info text'),
 );
 $info[] = array(
-    'title'      => 'Report Date',
-    'info'       => 'Hostingcheck_Info_DateTime',
+    'title' => 'Report Date',
+    'info' => 'DateTime',
 );
 
 
@@ -77,38 +77,48 @@ $info[] = array(
  * Example how to collect and validate information about the server hardware.
  */
 $server[] = array(
-    'title'      => 'Operating System',
-    'info'       => 'Check_Server_Info_OS',
+    'title' => 'Operating System',
+    'info' => 'Server_OS',
 );
 $server[] = array(
-    'title'      => 'Hostname',
-    'info'       => 'Check_Server_Info_Name',
+    'title' => 'Hostname',
+    'info' => 'Server_Name',
 );
 $server[] = array(
-    'title'      => 'Total disk space',
-    'info'       => 'Check_Server_Info_Disk',
+    'title' => 'Total disk space',
+    'info' => 'Server_Disk',
 );
 $server[] = array(
-    'title'      => 'Used disk space',
-    'info'       => 'Check_Server_Info_Disk',
-    'info args'  => array('name' => 'used'),
+    'title' => 'Used disk space',
+    'info' => 'Server_Disk',
+    'args' => array('name' => 'used'),
 );
 $server[] = array(
-    'title'      => 'Free disk space',
-    'info'       => 'Check_Server_Info_Disk',
-    'info args'  => array('name' => 'free'),
+    'title' => 'Free disk space',
+    'info' => 'Server_Disk',
+    'args' => array('name' => 'free'),
     'validators' => array(
         array(
-            'validator' => 'Hostingcheck_Validate_ByteSize',
-            'args'      => array('min' => '1G', 'max' => '1P'),
+            'validator' => 'ByteSize',
+            'args' => array('min' => '1G', 'max' => '1P'),
         ),
     )
 
 );
 $server[] = array(
-    'title'      => 'Free disk space of root disk (/)',
-    'info'       => 'Check_Server_Info_Disk',
-    'info args'  => array('name' => 'free', 'path' => '/'),
+    'title' => 'Free disk space of root disk (/)',
+    'info' => 'Server_Disk',
+    'args' => array('name' => 'free', 'path' => '/'),
+);
+
+
+
+/**
+ * Example how to collect and validate Apache configuration.
+ */
+$web[] = array(
+    'title' => 'Apache version',
+    'info' => 'Apache_Version',
 );
 
 
@@ -117,84 +127,69 @@ $server[] = array(
  * Example how to collect and validate PHP configuration.
  */
 $php[] = array(
-    'title'      => 'PHP Version',
-    'info'       => 'Check_PHP_Info_Version',
+    'title' => 'PHP Version',
+    'info' => 'PHP_Version',
     'validators' => array(
         array(
-            'validator' => 'Hostingcheck_Validate_Version',
-            'args'      => array('min' => '5', 'max' => '6'),
+            'validator' => 'Version',
+            'args'=> array('min' => '5', 'max' => '6'),
         ),
     ),
-    'required'   => true,
+    'required' => true,
 );
 $php[] = array(
-    'title'      => 'Extension : Date',
-    'info'       => 'Check_PHP_Info_Extension',
-    'info args'  => array('name' => 'date'),
-    'validators' => array(
-        array(
-            'validator'       => 'Hostingcheck_Validate_NotEmpty',
-        ),
-    ),
+    'title' => 'Extension : Date',
+    'info' => 'PHP_Extension',
+    'args' => array('name' => 'date'),
     'required'   => true,
     'tests' => array(
         array(
-            'title'      => 'Timezone',
-            'info'       => 'Check_PHP_Info_Config',
-            'info args'  => array(
+            'title' => 'Timezone',
+            'info' => 'PHP_Config',
+            'args' => array(
                 'name' => 'date.timezone',
             ),
             'validators' => array(
                 array(
-                    'validator' => 'Hostingcheck_Validate_Compare',
-                    'args'      => array('equal', 'Antarctica/Troll'),
+                    'validator' => 'Compare',
+                    'args' => array('equal', 'Antarctica/Troll'),
                 ),
             ),
         ),
     )
 );
 $php[] = array(
-    'title'      => 'Extension : JSON',
-    'info'       => 'Check_PHP_Info_Extension',
-    'info args'  => array('name' => 'json'),
-    'validators' => array(
-        array(
-            'validator'       => 'Hostingcheck_Validate_NotEmpty',
-        ),
-    ),
+    'title' => 'Extension : JSON',
+    'info' => 'PHP_Extension',
+    'args'  => array('name' => 'json'),
     'required'   => true,
 );
 $php[] = array(
-    'title'      => 'Extension : FooBar',
-    'info'       => 'Check_PHP_Info_Extension',
-    'info args'  => array('name' => 'foobar'),
-    'validators' => array(
-        array(
-            'validator'       => 'Hostingcheck_Validate_NotEmpty',
-        ),
-    ),
-    'required'   => true,
+    'title' => 'Extension : FooBar',
+    'info' => 'PHP_Extension',
+    'args' => array('name' => 'foobar'),
+    'required' => true,
     'tests' => array(
         array(
             'title' => 'FooBar fake value test',
-            'info'  => 'Check_PHP_Info_Config',
-            'info args' => array(
+            'info' => 'PHP_Config',
+            'args' => array(
                 'name' => 'foobar.bizbaz',
             ),
         )
     )
 );
 $php[] = array(
-    'title'      => 'Memory limit',
-    'info'       => 'Check_PHP_Info_Config',
-    'info args'  => array(
-        'name'   => 'memory_limit',
-        'format' => 'Hostingcheck_Value_Byte'
+    'title' => 'Memory limit',
+    'info' => 'PHP_Config',
+    'args' => array(
+        'name' => 'memory_limit',
+        'format' => 'Byte'
     ),
     'validators' => array(
         array(
-            'validator' => 'Hostingcheck_Validate_ByteSize',
-            'args'      => array('equal' => '128M'),
+            'validator' => 'ByteSize',
+            'args' => array('equal' => '128M'),
         ),
     ),
 );
@@ -206,52 +201,40 @@ $php[] = array(
  */
 $db[] = array(
     'title' => 'MySQL service available',
-    'info' => 'Hostingcheck_Info_Service_Available',
-    'info args' => array(
-        'service' => 'db_mysql',
-    ),
-    'validators' => array(
-        array(
-            'validator' => 'Hostingcheck_Validate_NotEmpty',
-        ),
-    ),
+    'info' => 'Service_Available',
+    'service' => 'db_mysql',
+    'required' => true,
     'tests' => array(
         array(
             'title' => 'Version',
-            'info'  => 'Check_MySQL_Info_Version',
-            'info args' => array(
-                'service' => 'db_mysql',
-            ),
+            'info'  => 'MySQL_Version',
         ),
         array(
             'title' => 'query_cache_type',
-            'info'  => 'Check_MySQL_Info_Config',
-            'info args' => array(
-                'service' => 'db_mysql',
+            'info'  => 'MySQL_Config',
+            'args' => array(
                 'name'    => 'query_cache_type',
             ),
         ),
         array(
             'title' => 'innodb_file_per_table',
-            'info'  => 'Check_MySQL_Info_Config',
-            'info args' => array(
-                'service' => 'db_mysql',
+            'info'  => 'MySQL_Config',
+            'args' => array(
                 'name' => 'innodb_file_per_table',
-                'format' => 'Hostingcheck_Value_Boolean',
+                'format' => 'Boolean',
             ),
             'validators' => array(
                 array(
-                    'validator' => 'Hostingcheck_Validate_True',
+                    'validator' => 'True',
                 ),
             ),
         ),
         array(
             'title' => 'innodb_buffer_pool_size',
-            'info'  => 'Check_MySQL_Info_Config',
-            'info args' => array(
-                'service' => 'db_mysql',
+            'info'  => 'MySQL_Config',
+            'args' => array(
                 'name' => 'innodb_buffer_pool_size',
-                'format' => 'Hostingcheck_Value_Byte',
+                'format' => 'Byte',
             ),
         ),
     ),

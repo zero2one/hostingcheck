@@ -39,23 +39,34 @@ class Hostingcheck_Scenario_Parser {
      *     The class name to use to collect the information.
      * @param array $arguments
      *     The arguments to use to collect the information.
+     * @param string $service
+     *     The name of the service to use in the info object.
      *
      * @return Hostingcheck_Info_Interface
      */
-    public function info($className, $arguments = array()) {
+    public function info($className, $arguments = array(), $service = null) {
         if (empty($arguments) || !is_array($arguments)) {
             $arguments = array();
         }
 
         // Get the service from the services based on its collection named key.
-        if (!empty($arguments['service'])) {
+        if (!empty($service)) {
             $arguments['service'] = $this->services->seek(
-                $arguments['service']
+                $service
             );
         }
 
-        $info = new $className($arguments);
-        return $info;
+        // Create the format class name (if any).
+        if (!empty($arguments['format'])) {
+            $arguments['format'] = $this->createClassName(
+                'Value',
+                $arguments['format']
+            );
+        }
+
+        // Create the info object.
+        $fullName = $this->createClassName('Info', $className);
+        return new $fullName($arguments);
     }
 
     /**
@@ -77,8 +88,9 @@ class Hostingcheck_Scenario_Parser {
             $arguments = $config['args'];
         }
 
-        $validator = new $className($arguments);
-        return $validator;
+        // Create the validate object.
+        $fullName = $this->createClassName('Validate', $className);
+        return new $fullName($arguments);
     }
 
     /**
@@ -88,7 +100,7 @@ class Hostingcheck_Scenario_Parser {
      *     Config array containing:
      *     - title      : The title for the test.
      *     - info       : The info class name to use to retrieve the info.
-     *     - info args  : Optional arguments to retrieve the info data.
+     *     - args       : Optional arguments to retrieve the info data.
      *     - validators : Optional array of validator config arrays.
      *     - tests      : Optional array of child tests. These tests will only
      *                    be run if the test did not failed or is not supported.
@@ -112,8 +124,9 @@ class Hostingcheck_Scenario_Parser {
      *
      * @param array $config
      *     Config containing:
-     *     - info      : The type of info that needs to be collected.
-     *     - info args : Optional arguments needed to collect the info.
+     *     - info : The type of info that needs to be collected.
+     *     - args : Optional arguments needed to collect the info.
+     *     - service : An optional service name to use in the info object.
      *
      * @return Hostingcheck_Info_Interface
      */
@@ -121,12 +134,16 @@ class Hostingcheck_Scenario_Parser {
     {
         $infoClass = $config['info'];
         $infoArgs = array();
+        $service = false;
 
-        if (!empty($config['info args']) && is_array($config['info args'])) {
-            $infoArgs = $config['info args'];
+        if (!empty($config['args']) && is_array($config['args'])) {
+            $infoArgs = $config['args'];
+        }
+        if (!empty($config['service'])) {
+            $service = $config['service'];
         }
 
-        return $this->info($infoClass, $infoArgs);
+        return $this->info($infoClass, $infoArgs, $service);
     }
 
     /**
@@ -135,6 +152,10 @@ class Hostingcheck_Scenario_Parser {
      * @param array $config
      *     Config containing:
      *     - validators : An optional array of validator configurations.
+     *     - required : Optional boolean if the info object should not return
+     *                  an optional value. By default false.
+     *                  If set to true, a Hostingcheck_Validate_NonEmpty will
+     *                  be added to the validators config.
      *
      * @return Hostingcheck_Scenario_Validators
      */
@@ -147,6 +168,10 @@ class Hostingcheck_Scenario_Parser {
             $validatorsConfig = $config['validators'];
         }
 
+        // Support the required switch.
+        $this->testRequired($config, $validatorsConfig);
+
+        // Convert the config array into validator objects.
         foreach ($validatorsConfig as $validatorConfig) {
             $validator = $this->validate($validatorConfig);
             $validators->add($validator);
@@ -156,11 +181,37 @@ class Hostingcheck_Scenario_Parser {
     }
 
     /**
+     * Helper to add NonEmpty to the validators when the info is required.
+     *
+     * @param array $config
+     *     The config used to create the validators.
+     * @param array $validators
+     *     The array of validators config.
+     */
+    protected function testRequired($config, &$validators)
+    {
+        if (empty($config['required'])) {
+            return;
+        }
+
+        // Check if there is already a NonEmpty validator defined.
+        foreach ($validators as $validator) {
+            if ($validator['validator'] === 'NotEmpty') {
+                return;
+            }
+        }
+
+        // Add the NonEmpty validator.
+        $validators[] = array('validator' => 'NotEmpty');
+    }
+
+    /**
      * Create a tests scenario from a config where one of the params is tests.
      *
      * @param array $config
      *     The config for a group or test with:
      *     - tests : an optional array of test configs.
+     *     - service : the service to use in all tests.
      *
      * @return Hostingcheck_Scenario_Tests
      */
@@ -168,17 +219,54 @@ class Hostingcheck_Scenario_Parser {
     {
         $tests = new Hostingcheck_Scenario_Tests();
 
-        if (empty($config['tests']) || !is_array($config['tests'])) {
-            return $tests;
-        }
+        $testsConfig = $this->testsExtract($config);
+        $defaultConfig = $this->testsDefaultConfig($config);
 
         // Add the tests to the collection.
-        foreach ($config['tests'] as $testConfig) {
+        foreach ($testsConfig as $testConfig) {
+            $testConfig = array_merge($defaultConfig, $testConfig);
             $test = $this->test($testConfig);
             $tests->add($test);
         }
 
         return $tests;
+    }
+
+    /**
+     * Get the tests array out of the config.
+     *
+     * @param array $config
+     *
+     * @return array
+     */
+    protected function testsExtract($config)
+    {
+        $tests = array();
+        if (!empty($config['tests']) && is_array($config['tests'])) {
+            $tests = $config['tests'];
+        }
+
+        return $tests;
+    }
+
+    /**
+     * Get the tests test default config array.
+     *
+     * @param array $config
+     *
+     * @return array
+     */
+    protected function testsDefaultConfig($config)
+    {
+        $defaults = array();
+
+        // Check if the parent has a service set, if so add it to the default
+        // config for the child tests.
+        if (!empty($config['service'])) {
+            $defaults['service'] = $config['service'];
+        }
+
+        return $defaults;
     }
 
     /**
@@ -226,5 +314,48 @@ class Hostingcheck_Scenario_Parser {
         }
 
         return $scenario;
+    }
+
+    /**
+     * Construct the full class name from the short name.
+     *
+     * @param string $type
+     *     The class type.
+     * @param string $className
+     *     The short version of the name.
+     *
+     * @return string
+     */
+    protected function createClassName($type, $className)
+    {
+        $type = ucfirst(strtolower($type));
+
+        // Default name.
+        $name = 'Hostingcheck_' . $type . '_' . $className;
+
+        // Check if there is one of the Check prefixes used.
+        $split = explode('_', $className);
+        if (1 < count($split) && $this->isCheckPrefix($split[0])) {
+            $prefix = array_shift($split);
+            $suffix = implode('_', $split);
+            $name = 'Check_' . $prefix . '_' . $type . '_' . $suffix;
+        }
+
+        return $name;
+    }
+
+    /**
+     * Check if the given first part of the class name is a check prefix.
+     *
+     * @param string $prefix
+     *     The prefix to test.
+     *
+     * @return bool
+     *     Prefix exists.
+     */
+    protected function isCheckPrefix($prefix)
+    {
+        $path = HOSTINGCHECK_BASEPATH . '/Hostingcheck/Check/' . $prefix;
+        return file_exists($path);
     }
 }
