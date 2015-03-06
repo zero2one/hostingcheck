@@ -33,43 +33,6 @@ class Hostingcheck_Scenario_Parser {
     }
 
     /**
-     * Parse className object out of configuration parameters.
-     *
-     * @param string $className
-     *     The class name to use to collect the information.
-     * @param array $arguments
-     *     The arguments to use to collect the information.
-     * @param string $service
-     *     The name of the service to use in the info object.
-     *
-     * @return Hostingcheck_Info_Interface
-     */
-    public function info($className, $arguments = array(), $service = null) {
-        if (empty($arguments) || !is_array($arguments)) {
-            $arguments = array();
-        }
-
-        // Get the service from the services based on its collection named key.
-        if (!empty($service)) {
-            $arguments['service'] = $this->services->seek(
-                $service
-            );
-        }
-
-        // Create the format class name (if any).
-        if (!empty($arguments['format'])) {
-            $arguments['format'] = $this->createClassName(
-                'Value',
-                $arguments['format']
-            );
-        }
-
-        // Create the info object.
-        $fullName = $this->createClassName('Info', $className);
-        return new $fullName($arguments);
-    }
-
-    /**
      * Parse a Test Scenario out of a test config.
      *
      * @param array $config
@@ -108,18 +71,8 @@ class Hostingcheck_Scenario_Parser {
      */
     protected function testInfo($config)
     {
-        $infoClass = $config['info'];
-        $infoArgs = array();
-        $service = false;
-
-        if (!empty($config['args']) && is_array($config['args'])) {
-            $infoArgs = $config['args'];
-        }
-        if (!empty($config['service'])) {
-            $service = $config['service'];
-        }
-
-        return $this->info($infoClass, $infoArgs, $service);
+        $parser = new Hostingcheck_Scenario_Parser_Info($this->services);
+        return $parser->parse($config);
     }
 
     /**

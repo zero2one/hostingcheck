@@ -16,65 +16,6 @@
 class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Test the parser to convert config to info object.
-     */
-    public function testInfoParser()
-    {
-        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
-
-        $text = 'Text text';
-        $info = $parser->info(
-            'Text',
-            array('text' => $text)
-        );
-
-        $this->assertInstanceOf('Hostingcheck_Info_Text', $info);
-        $this->assertEquals($text, $info->getValue());
-    }
-
-    /**
-     * Test info parser with value format option.
-     */
-    public function testInfoParserWithCheckPrefixAndValueFormat()
-    {
-        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
-
-        $info = $parser->info(
-            'Server_Disk',
-            array(
-                'name' => 'total',
-                'format' => 'Byte',
-            )
-        );
-
-        $this->assertInstanceOf('Check_Server_Info_Disk', $info);
-        $this->assertInstanceOf('Hostingcheck_Value_Byte', $info->getValue());
-    }
-
-    /**
-     * Test the parser to convert config into info object with service.
-     */
-    public function testInfoParserWithService()
-    {
-        $service = $this->getMockBuilder('Hostingcheck_Service_Interface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $services = $this->getServices();
-        $services->add('my_service', $service);
-
-        $parser = new Hostingcheck_Scenario_Parser($services);
-
-        $info = $parser->info(
-            'Service_Available',
-            array(),
-            'my_service'
-        );
-
-        $this->assertSame($service, $info->service());
-    }
-
-    /**
      * Test parser with simple test config.
      */
     public function testTestParserWithSimpleConfig()
