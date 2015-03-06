@@ -328,34 +328,7 @@ class Hostingcheck_Scenario_Parser {
      */
     protected function createClassName($type, $className)
     {
-        $type = ucfirst(strtolower($type));
-
-        // Default name.
-        $name = 'Hostingcheck_' . $type . '_' . $className;
-
-        // Check if there is one of the Check prefixes used.
-        $split = explode('_', $className);
-        if (1 < count($split) && $this->isCheckPrefix($split[0])) {
-            $prefix = array_shift($split);
-            $suffix = implode('_', $split);
-            $name = 'Check_' . $prefix . '_' . $type . '_' . $suffix;
-        }
-
-        return $name;
-    }
-
-    /**
-     * Check if the given first part of the class name is a check prefix.
-     *
-     * @param string $prefix
-     *     The prefix to test.
-     *
-     * @return bool
-     *     Prefix exists.
-     */
-    protected function isCheckPrefix($prefix)
-    {
-        $path = HOSTINGCHECK_BASEPATH . '/Hostingcheck/Check/' . $prefix;
-        return file_exists($path);
+        $parser = new Hostingcheck_Scenario_Parser_ClassName($this->services);
+        return $parser->parse($type, $className);
     }
 }
