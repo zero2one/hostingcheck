@@ -81,16 +81,8 @@ class Hostingcheck_Scenario_Parser {
      * @return Hostingcheck_Validate_Interface
      */
     public function validate($config) {
-        $className = $config['validator'];
-        $arguments = array();
-
-        if (!empty($config['args']) && is_array($config['args'])) {
-            $arguments = $config['args'];
-        }
-
-        // Create the validate object.
-        $fullName = $this->createClassName('Validate', $className);
-        return new $fullName($arguments);
+        $parser = new Hostingcheck_Scenario_Parser_Validate($this->services);
+        return $parser->parse($config);
     }
 
     /**
