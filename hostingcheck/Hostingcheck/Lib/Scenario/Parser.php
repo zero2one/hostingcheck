@@ -70,22 +70,6 @@ class Hostingcheck_Scenario_Parser {
     }
 
     /**
-     * Parse validate object out of configuration parameters.
-     *
-     * @param array $config
-     *     A validate config array.
-     *     The array should contain:
-     *     - validator : the className to use as validator.
-     *     - args      : the arguments to use in the validator.
-     *
-     * @return Hostingcheck_Validate_Interface
-     */
-    public function validate($config) {
-        $parser = new Hostingcheck_Scenario_Parser_Validate($this->services);
-        return $parser->parse($config);
-    }
-
-    /**
      * Parse a Test Scenario out of a test config.
      *
      * @param array $config
@@ -153,48 +137,8 @@ class Hostingcheck_Scenario_Parser {
      */
     protected function testValidators($config)
     {
-        $validators = new Hostingcheck_Scenario_Validators();
-        $validatorsConfig = array();
-
-        if (!empty($config['validators']) && is_array($config['validators'])) {
-            $validatorsConfig = $config['validators'];
-        }
-
-        // Support the required switch.
-        $this->testRequired($config, $validatorsConfig);
-
-        // Convert the config array into validator objects.
-        foreach ($validatorsConfig as $validatorConfig) {
-            $validator = $this->validate($validatorConfig);
-            $validators->add($validator);
-        }
-
-        return $validators;
-    }
-
-    /**
-     * Helper to add NonEmpty to the validators when the info is required.
-     *
-     * @param array $config
-     *     The config used to create the validators.
-     * @param array $validators
-     *     The array of validators config.
-     */
-    protected function testRequired($config, &$validators)
-    {
-        if (empty($config['required'])) {
-            return;
-        }
-
-        // Check if there is already a NonEmpty validator defined.
-        foreach ($validators as $validator) {
-            if ($validator['validator'] === 'NotEmpty') {
-                return;
-            }
-        }
-
-        // Add the NonEmpty validator.
-        $validators[] = array('validator' => 'NotEmpty');
+        $parser = new Hostingcheck_Scenario_Parser_Validators($this->services);
+        return $parser->parse($config);
     }
 
     /**
@@ -320,7 +264,7 @@ class Hostingcheck_Scenario_Parser {
      */
     protected function createClassName($type, $className)
     {
-        $parser = new Hostingcheck_Scenario_Parser_ClassName($this->services);
+        $parser = new Hostingcheck_Scenario_Parser_ClassName();
         return $parser->parse($type, $className);
     }
 }

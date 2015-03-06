@@ -75,21 +75,6 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the parser to convert validation config to validation object.
-     */
-    public function testValidateParser()
-    {
-        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
-        $config = array(
-            'validator' => 'ByteSize',
-            'args' => array('min' => '15M'),
-        );
-
-        $validator = $parser->validate($config);
-        $this->assertInstanceOf('Hostingcheck_Validate_ByteSize', $validator);
-    }
-
-    /**
      * Test parser with simple test config.
      */
     public function testTestParserWithSimpleConfig()
