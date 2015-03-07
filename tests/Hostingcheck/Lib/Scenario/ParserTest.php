@@ -15,60 +15,6 @@
  */
 class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
 {
-
-
-    /**
-     * Test the group parser without tests.
-     */
-    public function testGroupParserWithoutTests()
-    {
-        $name = 'test-group';
-        $title = 'Test group';
-        $config = array(
-            'title' => $title,
-        );
-
-        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
-
-        $group = $parser->group($name, $config);
-        $this->assertInstanceOf('Hostingcheck_Scenario_Group', $group);
-        $this->assertEquals($name, $group->name());
-        $this->assertEquals($title, $group->title());
-        $this->assertCount(0, $group->tests());
-    }
-
-    /**
-     * Test the group parser without tests.
-     */
-    public function testGroupParserWithTests()
-    {
-        $name = 'test-group';
-        $title = 'Test group';
-        $config = array(
-            'title' => $title,
-            'tests' => array(
-                array(
-                    'title' => 'Test parser',
-                    'info' => 'Text',
-                    'args' => array('text' => 'Test text'),
-                    'validators' => array(
-                        array(
-                            'validator' => 'ByteSize',
-                            'args' => array('min' => '15M'),
-                        )
-                    ),
-                ),
-            )
-        );
-
-        $parser = new Hostingcheck_Scenario_Parser($this->getServices());
-
-        $group = $parser->group($name, $config);
-        $this->assertEquals($name, $group->name());
-        $this->assertEquals($title, $group->title());
-        $this->assertCount(1, $group->tests());
-    }
-
     /**
      * Test scenario without groups (empty).
      */

@@ -33,22 +33,6 @@ class Hostingcheck_Scenario_Parser {
     }
 
     /**
-     * Create a tests scenario from a config where one of the params is tests.
-     *
-     * @param array $config
-     *     The config for a group or test with:
-     *     - tests : an optional array of test configs.
-     *     - service : the service to use in all tests.
-     *
-     * @return Hostingcheck_Scenario_Tests
-     */
-    public function tests($config)
-    {
-        $parser = new Hostingcheck_Scenario_Parser_Tests($this->services);
-        return $parser->parse($config);
-    }
-
-    /**
      * Parse a Group scenario out of a test config.
      *
      * @param string $name
@@ -62,12 +46,8 @@ class Hostingcheck_Scenario_Parser {
      */
     public function group($name, $config)
     {
-        $group = new Hostingcheck_Scenario_Group(
-            $name,
-            $config['title'],
-            $this->tests($config)
-        );
-        return $group;
+        $parser = new Hostingcheck_Scenario_Parser_Group($this->services);
+        return $parser->parse($name, $config);
     }
 
     /**
