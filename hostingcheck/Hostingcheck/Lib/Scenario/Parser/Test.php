@@ -34,11 +34,34 @@ class Hostingcheck_Scenario_Parser_Test
      */
     public function parse($config)
     {
-        $infoParser = new Hostingcheck_Scenario_Parser_Info($this->services);
+        try {
+            $scenario = $this->test($config);
+        }
+        catch (Hostingcheck_Scenario_Parser_Exception $e) {
+            $scenario = $this->error($config, $e->getMessage());
+        }
+
+        return $scenario;
+    }
+
+    /**
+     * Try to parse the Test out of the config.
+     *
+     * @param array $config
+     *
+     * @return Hostingcheck_Scenario_Test
+     */
+    protected function test($config)
+    {
+        $infoParser = new Hostingcheck_Scenario_Parser_Info(
+            $this->services
+        );
         $validatorsParser = new Hostingcheck_Scenario_Parser_Validators(
             $this->services
         );
-        $testsParser = new Hostingcheck_Scenario_Parser_Tests($this->services);
+        $testsParser = new Hostingcheck_Scenario_Parser_Tests(
+            $this->services
+        );
 
         $scenario = new Hostingcheck_Scenario_Test(
             $config['title'],
@@ -49,4 +72,37 @@ class Hostingcheck_Scenario_Parser_Test
 
         return $scenario;
     }
+
+    /**
+     * Create a scenario with an error Info object.
+     *
+     * @param array $config
+     *     The config array.
+     * @param string $message
+     *     The error message.
+     *
+     * @return Hostingcheck_Scenario_Test
+     */
+    protected function error($config, $message)
+    {
+        $error = sprintf('[SCENARIO ERROR] : %s', $message);
+        $info = new Hostingcheck_Info_Error(array('error' => $error));
+
+        $validatorsParser = new Hostingcheck_Scenario_Parser_Validators(
+            $this->services
+        );
+        $testsParser = new Hostingcheck_Scenario_Parser_Tests(
+            $this->services
+        );
+
+        $scenario = new Hostingcheck_Scenario_Test(
+            $config['title'],
+            $info,
+            $validatorsParser->parse(array('required' => true)),
+            $testsParser->parse($config)
+        );
+
+        return $scenario;
+    }
+
 }

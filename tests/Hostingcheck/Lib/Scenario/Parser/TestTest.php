@@ -94,6 +94,57 @@ class Hostingcheck_Scenario_Parser_Test_TestCase extends PHPUnit_Framework_TestC
     }
 
     /**
+     * Test with invalid Info config.
+     */
+    public function testWithInvalidInfoConfig()
+    {
+        $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
+
+        $config = array(
+            'title' => 'Test parser with not supported info class name.',
+            'info' => 'FooBarBizBar',
+        );
+
+        $test = $parser->parse($config);
+        $this->assertInstanceOf('Hostingcheck_Info_Error', $test->info());
+        $this->assertInstanceOf(
+            'Hostingcheck_Validate_NotEmpty',
+            $test->validators()->current()
+        );
+        $this->assertEquals(
+            '[SCENARIO ERROR] : "FooBarBizBar" is not supported as "Info".',
+            $test->info()->getValue()->getValue()
+        );
+    }
+
+    /**
+     * Test with invalid Info config.
+     */
+    public function testWithInvalidValidatorsConfig()
+    {
+        $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
+
+        $config = array(
+            'title' => 'Test parser with not supported info class name.',
+            'info' => 'Text',
+            'validators' => array(
+                array('validator' => 'FooBarBizBaz'),
+            ),
+        );
+
+        $test = $parser->parse($config);
+        $this->assertInstanceOf('Hostingcheck_Info_Error', $test->info());
+        $this->assertInstanceOf(
+            'Hostingcheck_Validate_NotEmpty',
+            $test->validators()->current()
+        );
+        $this->assertEquals(
+            '[SCENARIO ERROR] : "FooBarBizBaz" is not supported as "Validate".',
+            $test->info()->getValue()->getValue()
+        );
+    }
+
+    /**
      * Create a services container.
      */
     protected function getServices()

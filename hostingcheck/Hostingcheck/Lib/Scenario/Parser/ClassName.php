@@ -116,7 +116,7 @@ class Hostingcheck_Scenario_Parser_ClassName
             class_exists($className);
         }
         catch (Exception $e) {
-            $message = sprintf('"%s" is not a supported "%s".', $name, $type);
+            $message = sprintf('"%s" is not supported as "%s".', $name, $type);
             throw new Hostingcheck_Scenario_Parser_Exception($message);
         }
     }
