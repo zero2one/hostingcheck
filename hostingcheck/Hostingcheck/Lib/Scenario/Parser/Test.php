@@ -85,11 +85,17 @@ class Hostingcheck_Scenario_Parser_Test
      */
     protected function error($config, $message)
     {
+        // Replace the Info class with a text one and a custom text.
         $info = new Hostingcheck_Info_Text(array('text' => '[SCENARIO ERROR]'));
 
-        $validatorsParser = new Hostingcheck_Scenario_Parser_Validators(
-            $this->services
+        // Add the Exception message to our custom
+        $errorValidator = new Hostingcheck_Validate_Error(
+            array('message' => $message)
         );
+        $validators = new Hostingcheck_Scenario_Validators();
+        $validators->add($errorValidator);
+
+        // We need the tests parser for nested tests.
         $testsParser = new Hostingcheck_Scenario_Parser_Tests(
             $this->services
         );
@@ -97,16 +103,7 @@ class Hostingcheck_Scenario_Parser_Test
         $scenario = new Hostingcheck_Scenario_Test(
             $config['title'],
             $info,
-            $validatorsParser->parse(
-                array(
-                    'validators' => array(
-                        array(
-                            'validator' => 'Error',
-                            'args' => array('message' => $message),
-                        )
-                    ),
-                )
-            ),
+            $validators,
             $testsParser->parse($config)
         );
 
