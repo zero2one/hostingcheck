@@ -318,7 +318,7 @@ class Hostingcheck_Controller
         }
 
         $parser = new Hostingcheck_Scenario_Parser($this->loadServices());
-        $collection = $parser->scenario($scenario);
+        $collection = $parser->parse($scenario);
         return $collection;
     }
 }
