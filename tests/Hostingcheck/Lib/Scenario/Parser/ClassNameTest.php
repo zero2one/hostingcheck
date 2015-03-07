@@ -48,4 +48,17 @@ class Hostingcheck_Scenario_Parser_ClassName_TestCase extends PHPUnit_Framework_
             $parser->parse('Info', 'PHP_Config')
         );
     }
+
+    /**
+     * Test the exception when a given class name does not exists.
+     *
+     * @expectedException Hostingcheck_Scenario_Parser_Exception
+     * @expectedExceptionMessage "FooBarBizBaz" is not supported as "Info".
+     */
+    public function testException()
+    {
+        $parser = new Hostingcheck_Scenario_Parser_ClassName();
+
+        $parser->parse('Info', 'FooBarBizBaz');
+    }
 }

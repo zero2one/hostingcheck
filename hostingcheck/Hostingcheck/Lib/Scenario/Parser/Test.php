@@ -34,16 +34,89 @@ class Hostingcheck_Scenario_Parser_Test
      */
     public function parse($config)
     {
-        $infoParser = new Hostingcheck_Scenario_Parser_Info($this->services);
+        try {
+            $scenario = $this->test($config);
+        }
+        catch (Hostingcheck_Scenario_Parser_Exception $e) {
+            $scenario = $this->error($config, $e->getMessage());
+        }
+
+        return $scenario;
+    }
+
+    /**
+     * Try to parse the Test out of the config.
+     *
+     * @param array $config
+     *
+     * @return Hostingcheck_Scenario_Test
+     */
+    protected function test($config)
+    {
+        $infoParser = new Hostingcheck_Scenario_Parser_Info(
+            $this->services
+        );
         $validatorsParser = new Hostingcheck_Scenario_Parser_Validators(
             $this->services
         );
-        $testsParser = new Hostingcheck_Scenario_Parser_Tests($this->services);
+
+        $info = $infoParser->parse($config);
+        $validators = $validatorsParser->parse($config);
+
+        return $this->scenario($config, $info, $validators);
+    }
+
+    /**
+     * Create a scenario with an error Info object.
+     *
+     * @param array $config
+     *     The config array.
+     * @param string $message
+     *     The error message.
+     *
+     * @return Hostingcheck_Scenario_Test
+     */
+    protected function error($config, $message)
+    {
+        // Replace the info object with a custom text value.
+        $info = new Hostingcheck_Info_Text(array('text' => '[SCENARIO ERROR]'));
+
+        // Add the Exception message to forced Error validator.
+        $errorValidator = new Hostingcheck_Validate_Error(
+            array('message' => $message)
+        );
+        $validators = new Hostingcheck_Scenario_Validators();
+        $validators->add($errorValidator);
+
+        return $this->scenario($config, $info, $validators);
+    }
+
+    /**
+     * Create a test scenario.
+     *
+     * @param array $config
+     *     The config array.
+     * @param Hostingcheck_Info_Interface $info
+     *     The info object to use in the scenario.
+     * @param Hostingcheck_Scenario_Validators $validators
+     *     The validators collection to use in the test scenario.
+     *
+     * @return Hostingcheck_Scenario_Test
+     */
+    protected function scenario($config, $info, $validators)
+    {
+        if (empty($config['title'])) {
+            $config['title'] = '[NO TITLE]';
+        }
+
+        $testsParser = new Hostingcheck_Scenario_Parser_Tests(
+            $this->services
+        );
 
         $scenario = new Hostingcheck_Scenario_Test(
             $config['title'],
-            $infoParser->parse($config),
-            $validatorsParser->parse($config),
+            $info,
+            $validators,
             $testsParser->parse($config)
         );
 

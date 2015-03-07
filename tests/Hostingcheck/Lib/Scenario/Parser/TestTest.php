@@ -20,14 +20,14 @@ class Hostingcheck_Scenario_Parser_Test_TestCase extends PHPUnit_Framework_TestC
      */
     public function testWithSimpleConfig()
     {
-        $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
-
         $config = array(
             'title' => 'Test parser',
             'info' => 'Text',
         );
 
+        $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
         $test = $parser->parse($config);
+
         $this->assertInstanceOf('Hostingcheck_Scenario_Test', $test);
         $this->assertInstanceOf('Hostingcheck_Info_Text', $test->info());
 
@@ -48,8 +48,6 @@ class Hostingcheck_Scenario_Parser_Test_TestCase extends PHPUnit_Framework_TestC
      */
     public function testWithValidators()
     {
-        $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
-
         $config = array(
             'title' => 'Test parser',
             'info' => 'Text',
@@ -61,6 +59,7 @@ class Hostingcheck_Scenario_Parser_Test_TestCase extends PHPUnit_Framework_TestC
             ),
         );
 
+        $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
         $test = $parser->parse($config);
 
         $validators = $test->validators();
@@ -72,8 +71,6 @@ class Hostingcheck_Scenario_Parser_Test_TestCase extends PHPUnit_Framework_TestC
      */
     public function testWithNestedTests()
     {
-        $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
-
         $config = array(
             'title' => 'Test parser',
             'info' => 'Text',
@@ -89,8 +86,128 @@ class Hostingcheck_Scenario_Parser_Test_TestCase extends PHPUnit_Framework_TestC
             ),
         );
 
+        $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
         $test = $parser->parse($config);
+
         $this->assertCount(2, $test->tests());
+    }
+
+    /**
+     * Test with missing title.
+     */
+    public function testWithMissingTitle()
+    {
+        $config = array(
+            'info' => 'Text',
+        );
+
+        $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
+        $test = $parser->parse($config);
+
+        $this->assertEquals('[NO TITLE]', $test->title());
+    }
+
+    /**
+     * Test with missing info class name.
+     */
+    public function testWithMissingInfoClassName()
+    {
+        $config = array();
+
+        $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
+        $test = $parser->parse($config);
+
+        $this->assertInstanceOf('Hostingcheck_Info_Text', $test->info());
+        $this->assertCount(1, $test->validators());
+        $this->assertInstanceOf(
+            'Hostingcheck_Validate_Error',
+            $test->validators()->current()
+        );
+        $this->assertEquals(
+            '[SCENARIO ERROR]',
+            $test->info()->getValue()->getValue()
+        );
+    }
+
+    /**
+     * Test with invalid Info config.
+     */
+    public function testWithInvalidInfoConfig()
+    {
+        $config = array(
+            'title' => 'Test parser with not supported info class name.',
+            'info' => 'FooBarBizBar',
+            'required' => true,
+        );
+
+        $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
+        $test = $parser->parse($config);
+
+        $this->assertInstanceOf('Hostingcheck_Info_Text', $test->info());
+        $this->assertCount(1, $test->validators());
+        $this->assertInstanceOf(
+            'Hostingcheck_Validate_Error',
+            $test->validators()->current()
+        );
+        $this->assertEquals(
+            '[SCENARIO ERROR]',
+            $test->info()->getValue()->getValue()
+        );
+    }
+
+    /**
+     * Test with invalid Info config.
+     */
+    public function testWithInvalidValidatorsConfig()
+    {
+        $config = array(
+            'title' => 'Test parser with not supported validator class name.',
+            'info' => 'Text',
+            'validators' => array(
+                array('validator' => 'FooBarBizBaz'),
+                array('validator' => 'NotEmpty'),
+            ),
+        );
+
+        $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
+        $test = $parser->parse($config);
+
+        $this->assertCount(1, $test->validators());
+        $this->assertInstanceOf(
+            'Hostingcheck_Validate_Error',
+            $test->validators()->current()
+        );
+        $this->assertEquals(
+            '[SCENARIO ERROR]',
+            $test->info()->getValue()->getValue()
+        );
+    }
+
+    /**
+     * Test with invalid format.
+     */
+    public function testWithInvalidFormat()
+    {
+        $config = array(
+            'title' => 'Test parser with not supported format class name.',
+            'info' => 'Text',
+            'args' => array(
+                'format' => 'FooBarBizBaz'
+            ),
+        );
+
+        $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
+        $test = $parser->parse($config);
+
+        $this->assertCount(1, $test->validators());
+        $this->assertInstanceOf(
+            'Hostingcheck_Validate_Error',
+            $test->validators()->current()
+        );
+        $this->assertEquals(
+            '[SCENARIO ERROR]',
+            $test->info()->getValue()->getValue()
+        );
     }
 
     /**

@@ -29,10 +29,14 @@ class Hostingcheck_Scenario_Parser_ClassName
     {
         $type = ucfirst(strtolower($type));
 
-        $checkClass = $this->getClassNameCheck($type, $name);
-        return (!is_null($checkClass))
-            ? $checkClass
-            : $this->getClassNameHostingcheck($type, $name);
+        $className = $this->getClassNameCheck($type, $name);
+        if (is_null($className)) {
+            $className = $this->getClassNameHostingcheck($type, $name);
+        }
+
+        $this->validateClassName($className, $type, $name);
+
+        return $className;
     }
 
     /**
@@ -90,5 +94,30 @@ class Hostingcheck_Scenario_Parser_ClassName
     {
         $path = HOSTINGCHECK_BASEPATH . '/Hostingcheck/Check/' . $prefix;
         return file_exists($path);
+    }
+
+    /**
+     * Validate of the class name is valid and the class exists.
+     *
+     * @param string $className
+     *     The full class name to validate.
+     * @param string $type
+     *     The class type.
+     *     Will be used in the Exception message if class does not exists.
+     * @param string $name
+     *     The short class name.
+     *     Will be used in the Exception message if class does not exists.
+     *
+     * @throws Hostingcheck_Scenario_Parser_Exception
+     */
+    protected function validateClassName($className, $type, $name)
+    {
+        try {
+            class_exists($className);
+        }
+        catch (Exception $e) {
+            $message = sprintf('"%s" is not supported as "%s".', $name, $type);
+            throw new Hostingcheck_Scenario_Parser_Exception($message);
+        }
     }
 }
