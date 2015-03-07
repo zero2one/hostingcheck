@@ -103,16 +103,18 @@ class Hostingcheck_Scenario_Parser_Test_TestCase extends PHPUnit_Framework_TestC
         $config = array(
             'title' => 'Test parser with not supported info class name.',
             'info' => 'FooBarBizBar',
+            'required' => true,
         );
 
         $test = $parser->parse($config);
-        $this->assertInstanceOf('Hostingcheck_Info_Error', $test->info());
+        $this->assertInstanceOf('Hostingcheck_Info_Text', $test->info());
+        $this->assertCount(1, $test->validators());
         $this->assertInstanceOf(
-            'Hostingcheck_Validate_NotEmpty',
+            'Hostingcheck_Validate_Error',
             $test->validators()->current()
         );
         $this->assertEquals(
-            '[SCENARIO ERROR] : "FooBarBizBar" is not supported as "Info".',
+            '[SCENARIO ERROR]',
             $test->info()->getValue()->getValue()
         );
     }
@@ -125,21 +127,49 @@ class Hostingcheck_Scenario_Parser_Test_TestCase extends PHPUnit_Framework_TestC
         $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
 
         $config = array(
-            'title' => 'Test parser with not supported info class name.',
+            'title' => 'Test parser with not supported validator class name.',
             'info' => 'Text',
             'validators' => array(
                 array('validator' => 'FooBarBizBaz'),
+                array('validator' => 'NotEmpty'),
             ),
         );
 
         $test = $parser->parse($config);
-        $this->assertInstanceOf('Hostingcheck_Info_Error', $test->info());
+        $this->assertCount(1, $test->validators());
         $this->assertInstanceOf(
-            'Hostingcheck_Validate_NotEmpty',
+            'Hostingcheck_Validate_Error',
             $test->validators()->current()
         );
         $this->assertEquals(
-            '[SCENARIO ERROR] : "FooBarBizBaz" is not supported as "Validate".',
+            '[SCENARIO ERROR]',
+            $test->info()->getValue()->getValue()
+        );
+    }
+
+    /**
+     * Test with invalid format.
+     */
+    public function testWithInvalidFormat()
+    {
+        $parser = new Hostingcheck_Scenario_Parser_Test($this->getServices());
+
+        $config = array(
+            'title' => 'Test parser with not supported format class name.',
+            'info' => 'Text',
+            'args' => array(
+                'format' => 'FooBarBizBaz'
+            ),
+        );
+
+        $test = $parser->parse($config);
+        $this->assertCount(1, $test->validators());
+        $this->assertInstanceOf(
+            'Hostingcheck_Validate_Error',
+            $test->validators()->current()
+        );
+        $this->assertEquals(
+            '[SCENARIO ERROR]',
             $test->info()->getValue()->getValue()
         );
     }

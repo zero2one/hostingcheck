@@ -23,7 +23,6 @@ class Hostingcheck_Validate_NotEmpty extends Hostingcheck_Validate_Abstract
     public function validate(hostingcheck_Value_Interface $value)
     {
         $messages = array();
-        $messages[] = $this->isError($value);
         $messages[] = $this->isNotSupported($value);
         $messages[] = $this->isNotFound($value);
         $messages[] = $this->isEmpty($value);
@@ -32,26 +31,6 @@ class Hostingcheck_Validate_NotEmpty extends Hostingcheck_Validate_Abstract
         return count($messages)
             ? new Hostingcheck_Result_Failure($messages)
             : new Hostingcheck_Result_Success();
-    }
-
-    /**
-     * Check if the value is not an Error value.
-     *
-     * @param Hostingcheck_Value_Interface $value
-     *      The value we need to validate.
-     *
-     * @return null|string
-     *      Message if is error.
-     */
-    protected function isError(Hostingcheck_Value_Interface $value)
-    {
-        if ($value instanceof Hostingcheck_Value_Error
-            || $value->getValue() instanceof Hostingcheck_Value_Error
-        ) {
-            return new Hostingcheck_Message(
-                'There was an error while retrieving the value.'
-            );
-        }
     }
 
     /**

@@ -85,8 +85,7 @@ class Hostingcheck_Scenario_Parser_Test
      */
     protected function error($config, $message)
     {
-        $error = sprintf('[SCENARIO ERROR] : %s', $message);
-        $info = new Hostingcheck_Info_Error(array('error' => $error));
+        $info = new Hostingcheck_Info_Text(array('text' => '[SCENARIO ERROR]'));
 
         $validatorsParser = new Hostingcheck_Scenario_Parser_Validators(
             $this->services
@@ -98,7 +97,16 @@ class Hostingcheck_Scenario_Parser_Test
         $scenario = new Hostingcheck_Scenario_Test(
             $config['title'],
             $info,
-            $validatorsParser->parse(array('required' => true)),
+            $validatorsParser->parse(
+                array(
+                    'validators' => array(
+                        array(
+                            'validator' => 'Error',
+                            'args' => array('message' => $message),
+                        )
+                    ),
+                )
+            ),
             $testsParser->parse($config)
         );
 
