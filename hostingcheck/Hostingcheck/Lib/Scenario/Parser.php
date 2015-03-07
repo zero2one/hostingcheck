@@ -48,49 +48,7 @@ class Hostingcheck_Scenario_Parser {
      */
     public function test($config)
     {
-        $testScenario = new Hostingcheck_Scenario_Test(
-            $config['title'],
-            $this->testInfo($config),
-            $this->testValidators($config),
-            $this->tests($config)
-        );
-
-        return $testScenario;
-    }
-
-    /**
-     * Parse the test::info out of the test config array.
-     *
-     * @param array $config
-     *     Config containing:
-     *     - info : The type of info that needs to be collected.
-     *     - args : Optional arguments needed to collect the info.
-     *     - service : An optional service name to use in the info object.
-     *
-     * @return Hostingcheck_Info_Interface
-     */
-    protected function testInfo($config)
-    {
-        $parser = new Hostingcheck_Scenario_Parser_Info($this->services);
-        return $parser->parse($config);
-    }
-
-    /**
-     * Parse the test::validators out of the test config array.
-     *
-     * @param array $config
-     *     Config containing:
-     *     - validators : An optional array of validator configurations.
-     *     - required : Optional boolean if the info object should not return
-     *                  an optional value. By default false.
-     *                  If set to true, a Hostingcheck_Validate_NonEmpty will
-     *                  be added to the validators config.
-     *
-     * @return Hostingcheck_Scenario_Validators
-     */
-    protected function testValidators($config)
-    {
-        $parser = new Hostingcheck_Scenario_Parser_Validators($this->services);
+        $parser = new Hostingcheck_Scenario_Parser_Test($this->services);
         return $parser->parse($config);
     }
 
