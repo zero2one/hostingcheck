@@ -13,43 +13,9 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Scenario_Parser {
-    /**
-     * Services to use when creating the info objects.
-     *
-     * @var Hostingcheck_Services
-     */
-    protected $services;
-
-
-    /**
-     * Constructor.
-     *
-     * @param Hostingcheck_Services $services
-     */
-    public function __construct($services)
-    {
-        $this->services = $services;
-    }
-
-    /**
-     * Parse a Group scenario out of a test config.
-     *
-     * @param string $name
-     *     The machine name for the group.
-     * @param array $config
-     *     The config for a group, this contains:
-     *     - title : The human name for the group.
-     *     - tests : An optional array of group test configs.
-     *
-     * @return Hostingcheck_Scenario_Group
-     */
-    public function group($name, $config)
-    {
-        $parser = new Hostingcheck_Scenario_Parser_Group($this->services);
-        return $parser->parse($name, $config);
-    }
-
+class Hostingcheck_Scenario_Parser
+    extends Hostingcheck_Scenario_Parser_Abstract
+{
     /**
      * Parse a scenario out of an scenario config.
      *
@@ -59,8 +25,10 @@ class Hostingcheck_Scenario_Parser {
      *
      * @return Hostingcheck_Scenario
      */
-    public function scenario($config)
+    public function parse($config)
     {
+        $parser = new Hostingcheck_Scenario_Parser_Group($this->services);
+
         $scenario = new Hostingcheck_Scenario();
         $groupsConfig = array();
 
@@ -69,25 +37,11 @@ class Hostingcheck_Scenario_Parser {
         }
 
         foreach ($groupsConfig as $groupName => $groupConfig) {
-            $scenario->add($this->group($groupName, $groupConfig));
+            $scenario->add(
+                $parser->parse($groupName, $groupConfig)
+            );
         }
 
         return $scenario;
-    }
-
-    /**
-     * Construct the full class name from the short name.
-     *
-     * @param string $type
-     *     The class type.
-     * @param string $className
-     *     The short version of the name.
-     *
-     * @return string
-     */
-    protected function createClassName($type, $className)
-    {
-        $parser = new Hostingcheck_Scenario_Parser_ClassName();
-        return $parser->parse($type, $className);
     }
 }

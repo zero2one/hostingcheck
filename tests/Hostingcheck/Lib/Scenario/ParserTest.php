@@ -24,7 +24,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
 
         $parser = new Hostingcheck_Scenario_Parser($this->getServices());
 
-        $scenario = $parser->scenario($config);
+        $scenario = $parser->parse($config);
         $this->assertInstanceOf('Hostingcheck_Scenario', $scenario);
         $this->assertCount(0, $scenario);
     }
@@ -45,7 +45,7 @@ class Hostingcheck_Scenario_Parser_TestCase extends PHPUnit_Framework_TestCase
 
         $parser = new Hostingcheck_Scenario_Parser($this->getServices());
 
-        $scenario = $parser->scenario($config);
+        $scenario = $parser->parse($config);
         $this->assertInstanceOf('Hostingcheck_Scenario', $scenario);
         $this->assertCount(2, $scenario);
     }
