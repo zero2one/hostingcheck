@@ -22,6 +22,15 @@ class Hostingcheck_Validate_NotEmpty_TestCase extends PHPUnit_Framework_TestCase
     {
         $validator = new Hostingcheck_Validate_NotEmpty();
 
+        $value = new Hostingcheck_Value_Error();
+        $result = $validator->validate($value);
+        $this->assertInstanceOf('Hostingcheck_Result_Failure', $result);
+        $messages = $result->messages();
+        $this->assertEquals(
+            'There was an error while retrieving the value.',
+            array_shift($messages)
+        );
+
         $value = new Hostingcheck_Value_NotSupported();
         $result = $validator->validate($value);
         $this->assertInstanceOf('Hostingcheck_Result_Failure', $result);
