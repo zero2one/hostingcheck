@@ -30,6 +30,10 @@ class Hostingcheck_Scenario_Parser_Group
      */
     public function parse($name, $config)
     {
+        if (empty($config['title'])) {
+            $config['title'] = '[NO TITLE]';
+        }
+
         $parser = new Hostingcheck_Scenario_Parser_Tests($this->services);
 
         $group = new Hostingcheck_Scenario_Group(

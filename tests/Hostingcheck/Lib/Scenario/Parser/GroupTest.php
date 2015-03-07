@@ -59,6 +59,20 @@ class Hostingcheck_Scenario_Parser_Group_TestCase extends PHPUnit_Framework_Test
     }
 
     /**
+     * Test without title.
+     */
+    public function testWithoutTitle()
+    {
+        $name = 'test-group';
+        $config = array();
+
+        $parser = new Hostingcheck_Scenario_Parser_Group($this->getServices());
+        $group = $parser->parse($name, $config);
+
+        $this->assertEquals('[NO TITLE]', $group->title());
+    }
+
+    /**
      * Create a services container.
      */
     protected function getServices()
