@@ -26,9 +26,17 @@ class Hostingcheck_Scenario_Parser_Info
      *     - service : An optional service name to use in the info object.
      *
      * @return Hostingcheck_Info_Interface
+     *
+     * @throws Hostingcheck_Scenario_Parser_Exception
      */
     public function parse($config)
     {
+        if (empty($config['info'])) {
+            throw new Hostingcheck_Scenario_Parser_Exception(
+                'Info name is missing.'
+            );
+        }
+
         $className = $this->getClassName('Info', $config['info']);
         $arguments = $this->arguments($config);
         return new $className($arguments);

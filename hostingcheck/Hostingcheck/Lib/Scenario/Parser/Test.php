@@ -59,18 +59,11 @@ class Hostingcheck_Scenario_Parser_Test
         $validatorsParser = new Hostingcheck_Scenario_Parser_Validators(
             $this->services
         );
-        $testsParser = new Hostingcheck_Scenario_Parser_Tests(
-            $this->services
-        );
 
-        $scenario = new Hostingcheck_Scenario_Test(
-            $config['title'],
-            $infoParser->parse($config),
-            $validatorsParser->parse($config),
-            $testsParser->parse($config)
-        );
+        $info = $infoParser->parse($config);
+        $validators = $validatorsParser->parse($config);
 
-        return $scenario;
+        return $this->scenario($config, $info, $validators);
     }
 
     /**
@@ -85,17 +78,37 @@ class Hostingcheck_Scenario_Parser_Test
      */
     protected function error($config, $message)
     {
-        // Replace the Info class with a text one and a custom text.
+        // Replace the info object with a custom text value.
         $info = new Hostingcheck_Info_Text(array('text' => '[SCENARIO ERROR]'));
 
-        // Add the Exception message to our custom
+        // Add the Exception message to forced Error validator.
         $errorValidator = new Hostingcheck_Validate_Error(
             array('message' => $message)
         );
         $validators = new Hostingcheck_Scenario_Validators();
         $validators->add($errorValidator);
 
-        // We need the tests parser for nested tests.
+        return $this->scenario($config, $info, $validators);
+    }
+
+    /**
+     * Create a test scenario.
+     *
+     * @param array $config
+     *     The config array.
+     * @param Hostingcheck_Info_Interface $info
+     *     The info object to use in the scenario.
+     * @param Hostingcheck_Scenario_Validators $validators
+     *     The validators collection to use in the test scenario.
+     *
+     * @return Hostingcheck_Scenario_Test
+     */
+    protected function scenario($config, $info, $validators)
+    {
+        if (empty($config['title'])) {
+            $config['title'] = '[NO TITLE]';
+        }
+
         $testsParser = new Hostingcheck_Scenario_Parser_Tests(
             $this->services
         );
@@ -109,5 +122,4 @@ class Hostingcheck_Scenario_Parser_Test
 
         return $scenario;
     }
-
 }
