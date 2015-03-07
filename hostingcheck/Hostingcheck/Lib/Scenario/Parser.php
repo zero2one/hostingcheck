@@ -37,9 +37,8 @@ class Hostingcheck_Scenario_Parser
         }
 
         foreach ($groupsConfig as $groupName => $groupConfig) {
-            $scenario->add(
-                $parser->parse($groupName, $groupConfig)
-            );
+            $group = $parser->parse($groupName, $groupConfig);
+            $scenario->add($group);
         }
 
         return $scenario;

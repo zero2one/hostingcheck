@@ -36,7 +36,7 @@ class Hostingcheck_Scenario_Parser_Validators_TestCase extends PHPUnit_Framework
     /**
      * Test parsing a config with defined validators.
      */
-    public function testParserWithValidators()
+    public function testParseWithValidators()
     {
         $parser = new Hostingcheck_Scenario_Parser_Validators(
             $this->getServices()
@@ -60,7 +60,7 @@ class Hostingcheck_Scenario_Parser_Validators_TestCase extends PHPUnit_Framework
     /**
      * Test parsing a config with required flag and no validators.
      */
-    public function testParserWithoutValidatorsAndIsRequired()
+    public function testParseWithoutValidatorsAndIsRequired()
     {
         $parser = new Hostingcheck_Scenario_Parser_Validators(
             $this->getServices()
@@ -80,7 +80,7 @@ class Hostingcheck_Scenario_Parser_Validators_TestCase extends PHPUnit_Framework
     /**
      * Test parsing a config that has already a NotEmpty validator.
      */
-    public function testParserWithNotEmptyValidatorAndIsRequired()
+    public function testParseWithNotEmptyValidatorAndIsRequired()
     {
         $parser = new Hostingcheck_Scenario_Parser_Validators(
             $this->getServices()
