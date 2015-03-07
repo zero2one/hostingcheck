@@ -35,14 +35,16 @@ class Hostingcheck_Scenario_Parser_Test
     public function parse($config)
     {
         $infoParser = new Hostingcheck_Scenario_Parser_Info($this->services);
-        $validatorsParser = new Hostingcheck_Scenario_Parser_Validators($this->services);
-        $testsParser = new Hostingcheck_Scenario_Parser($this->services);
+        $validatorsParser = new Hostingcheck_Scenario_Parser_Validators(
+            $this->services
+        );
+        $testsParser = new Hostingcheck_Scenario_Parser_Tests($this->services);
 
         $scenario = new Hostingcheck_Scenario_Test(
             $config['title'],
             $infoParser->parse($config),
             $validatorsParser->parse($config),
-            $testsParser->tests($config)
+            $testsParser->parse($config)
         );
 
         return $scenario;

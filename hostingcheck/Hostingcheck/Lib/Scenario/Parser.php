@@ -33,26 +33,6 @@ class Hostingcheck_Scenario_Parser {
     }
 
     /**
-     * Parse a Test Scenario out of a test config.
-     *
-     * @param array $config
-     *     Config array containing:
-     *     - title      : The title for the test.
-     *     - info       : The info class name to use to retrieve the info.
-     *     - args       : Optional arguments to retrieve the info data.
-     *     - validators : Optional array of validator config arrays.
-     *     - tests      : Optional array of child tests. These tests will only
-     *                    be run if the test did not failed or is not supported.
-     *
-     * @return Hostingcheck_Scenario_Test
-     */
-    public function test($config)
-    {
-        $parser = new Hostingcheck_Scenario_Parser_Test($this->services);
-        return $parser->parse($config);
-    }
-
-    /**
      * Create a tests scenario from a config where one of the params is tests.
      *
      * @param array $config
@@ -64,56 +44,8 @@ class Hostingcheck_Scenario_Parser {
      */
     public function tests($config)
     {
-        $tests = new Hostingcheck_Scenario_Tests();
-
-        $testsConfig = $this->testsExtract($config);
-        $defaultConfig = $this->testsDefaultConfig($config);
-
-        // Add the tests to the collection.
-        foreach ($testsConfig as $testConfig) {
-            $testConfig = array_merge($defaultConfig, $testConfig);
-            $test = $this->test($testConfig);
-            $tests->add($test);
-        }
-
-        return $tests;
-    }
-
-    /**
-     * Get the tests array out of the config.
-     *
-     * @param array $config
-     *
-     * @return array
-     */
-    protected function testsExtract($config)
-    {
-        $tests = array();
-        if (!empty($config['tests']) && is_array($config['tests'])) {
-            $tests = $config['tests'];
-        }
-
-        return $tests;
-    }
-
-    /**
-     * Get the tests test default config array.
-     *
-     * @param array $config
-     *
-     * @return array
-     */
-    protected function testsDefaultConfig($config)
-    {
-        $defaults = array();
-
-        // Check if the parent has a service set, if so add it to the default
-        // config for the child tests.
-        if (!empty($config['service'])) {
-            $defaults['service'] = $config['service'];
-        }
-
-        return $defaults;
+        $parser = new Hostingcheck_Scenario_Parser_Tests($this->services);
+        return $parser->parse($config);
     }
 
     /**

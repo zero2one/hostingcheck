@@ -9,7 +9,7 @@
 
 
 /**
- * Tests for Hostingcheck_Scenario_Test_Validate.
+ * Tests for Hostingcheck_Scenario_Parser_Test.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
