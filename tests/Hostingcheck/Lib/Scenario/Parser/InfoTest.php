@@ -16,9 +16,9 @@
 class Hostingcheck_Scenario_Parser_Info_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Test the parser to convert config to info object.
+     * Test parser with basic config array.
      */
-    public function testInfoParser()
+    public function testSimpleConfig()
     {
         $text = 'Text text';
         $config = array(
@@ -34,9 +34,9 @@ class Hostingcheck_Scenario_Parser_Info_TestCase extends PHPUnit_Framework_TestC
     }
 
     /**
-     * Test info parser with value format option.
+     * Test parser with value format option.
      */
-    public function testInfoParserWithCheckPrefixAndValueFormat()
+    public function testWithFormat()
     {
         $config = array(
             'info' => 'Server_Disk',
@@ -54,9 +54,9 @@ class Hostingcheck_Scenario_Parser_Info_TestCase extends PHPUnit_Framework_TestC
     }
 
     /**
-     * Test the parser to convert config into info object with service.
+     * Test parser with given service name.
      */
-    public function testInfoParserWithService()
+    public function testWithService()
     {
         $service = $this->getMockBuilder('Hostingcheck_Service_Interface')
             ->disableOriginalConstructor()

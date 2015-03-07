@@ -16,9 +16,9 @@
 class Hostingcheck_Scenario_Parser_Tests_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Test the parser without tests set.
+     * Test parser without tests set.
      */
-    public function testParserWithoutTests()
+    public function testWithoutTests()
     {
         $parser = new Hostingcheck_Scenario_Parser_Tests($this->getServices());
 
@@ -30,9 +30,9 @@ class Hostingcheck_Scenario_Parser_Tests_TestCase extends PHPUnit_Framework_Test
     }
 
     /**
-     * Test the parser with an empty tests array in the config.
+     * Test parser with an empty tests array in the config.
      */
-    public function testParserWithEmptyTestsConfig()
+    public function testWithEmptyTestsConfig()
     {
         $parser = new Hostingcheck_Scenario_Parser_Tests($this->getServices());
 
@@ -46,9 +46,9 @@ class Hostingcheck_Scenario_Parser_Tests_TestCase extends PHPUnit_Framework_Test
     }
 
     /**
-     * Test the parser with tests.
+     * Test parser with tests.
      */
-    public function testParserWithTests()
+    public function testWithTests()
     {
         $parser = new Hostingcheck_Scenario_Parser_Tests($this->getServices());
 
@@ -70,9 +70,9 @@ class Hostingcheck_Scenario_Parser_Tests_TestCase extends PHPUnit_Framework_Test
     }
 
     /**
-     * Test the parser with shared service.
+     * Test parser with shared service.
      */
-    public function testParserWithService()
+    public function testWithService()
     {
         // Create a mock service and add it to the mocked services container.
         $service = $this->getMockBuilder('Hostingcheck_Service_Interface')
@@ -100,10 +100,10 @@ class Hostingcheck_Scenario_Parser_Tests_TestCase extends PHPUnit_Framework_Test
     }
 
     /**
-     * Test the parser with shared service
-     * but one of the tests has its own service dependency.
+     * Test parser with shared service
+     * but one of the tests has its own (other) service config.
      */
-    public function testParserWithServiceAndTestHasDifferentService()
+    public function testWithServiceAndTestHasDifferentService()
     {
         // Create a mock service and add it to the mocked services container.
         $service1 = $this->getMockBuilder('Hostingcheck_Service_Interface')

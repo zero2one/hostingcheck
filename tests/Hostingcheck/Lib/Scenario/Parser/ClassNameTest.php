@@ -16,7 +16,7 @@
 class Hostingcheck_Scenario_Parser_ClassName_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Test the parser for Hostingcheck_ prefixed class names.
+     * Test for Hostingcheck_ prefixed class names.
      */
     public function testHostingcheckClassName()
     {
@@ -37,7 +37,7 @@ class Hostingcheck_Scenario_Parser_ClassName_TestCase extends PHPUnit_Framework_
     }
 
     /**
-     * Test the parser for Check_ prefixed class names.
+     * Test for Check_ prefixed class names.
      */
     public function testCheckClassName()
     {

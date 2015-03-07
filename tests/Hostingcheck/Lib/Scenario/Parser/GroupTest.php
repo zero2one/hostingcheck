@@ -16,9 +16,9 @@
 class Hostingcheck_Scenario_Parser_Group_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Test the group parser without tests.
+     * Test parser without tests.
      */
-    public function testGroupParserWithoutTests()
+    public function testWithoutTests()
     {
         $name = 'test-group';
         $title = 'Test group';
@@ -27,8 +27,8 @@ class Hostingcheck_Scenario_Parser_Group_TestCase extends PHPUnit_Framework_Test
         );
 
         $parser = new Hostingcheck_Scenario_Parser_Group($this->getServices());
-
         $group = $parser->parse($name, $config);
+
         $this->assertInstanceOf('Hostingcheck_Scenario_Group', $group);
         $this->assertEquals($name, $group->name());
         $this->assertEquals($title, $group->title());
@@ -36,9 +36,9 @@ class Hostingcheck_Scenario_Parser_Group_TestCase extends PHPUnit_Framework_Test
     }
 
     /**
-     * Test the group parser without tests.
+     * Test the parser with tests.
      */
-    public function testGroupParserWithTests()
+    public function testWithTests()
     {
         $name = 'test-group';
         $title = 'Test group';
@@ -53,10 +53,8 @@ class Hostingcheck_Scenario_Parser_Group_TestCase extends PHPUnit_Framework_Test
         );
 
         $parser = new Hostingcheck_Scenario_Parser_Group($this->getServices());
-
         $group = $parser->parse($name, $config);
-        $this->assertEquals($name, $group->name());
-        $this->assertEquals($title, $group->title());
+
         $this->assertCount(1, $group->tests());
     }
 
