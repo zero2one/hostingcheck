@@ -30,7 +30,7 @@ class Hostingcheck_Scenario_Parser_ClassName
         $type = ucfirst(strtolower($type));
 
         $className = $this->getClassNameCheck($type, $name);
-        if (!$className) {
+        if (is_null($className)) {
             $className = $this->getClassNameHostingcheck($type, $name);
         }
 
