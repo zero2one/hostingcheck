@@ -49,8 +49,6 @@ class Check_PHP_Info_Extension extends Hostingcheck_Info_Abstract
             return;
         }
 
-        $this->value = new Hostingcheck_Value_Version(
-            phpversion($this->name)
-        );
+        $this->value = new Hostingcheck_Value_Text('Enabled');
     }
 }
