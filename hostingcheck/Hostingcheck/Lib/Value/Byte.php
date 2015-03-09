@@ -269,7 +269,31 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Comparable
     /**
      * Split the given value in the value and the format.
      *
-     * @param $value
+     * @param string $value
+     *     The value to split.
+     *
+     * @return array
+     *      The splitted string containing:
+     *      - value
+     *      - format
+     */
+    protected function extract($value)
+    {
+        $value = trim(strtoupper($value));
+        $raw = $this->extractRaw($value);
+
+        $clean = array(
+            'value' => $this->cleanValue($raw['value']),
+            'format' => $this->cleanFormat($raw['format']),
+        );
+
+        return $clean;
+    }
+
+    /**
+     * Split the given string in a raw value and format part.
+     *
+     * @param string $value
      *     The value to split.
      *
      * @return array
@@ -280,11 +304,8 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Comparable
      * @throws Exception
      *     If the given value is not valid.
      */
-    protected function extract($value)
+    protected function extractRaw($value)
     {
-        // Prepare value.
-        $value = trim(strtoupper($value));
-
         // Extract info.
         preg_match_all($this->pattern, $value, $found);
 
@@ -298,11 +319,11 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Comparable
             );
         }
 
-        // Return the result.
-        return array(
-            'value' => $this->cleanValue($found[1][0]),
-            'format' => $this->cleanFormat($found[2][0]),
+        $result = array(
+            'value' => $found[1][0],
+            'format' => $found[2][0]
         );
+        return $result;
     }
 
     /**
