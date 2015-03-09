@@ -82,7 +82,7 @@ class Hostingcheck_Scenario_Parser_Test
         $info = new Hostingcheck_Info_Text(array('text' => '[SCENARIO ERROR]'));
 
         // Add the Exception message to forced Error validator.
-        $errorValidator = new Hostingcheck_Validate_Error(
+        $errorValidator = new Hostingcheck_Validator_Error(
             array('message' => $message)
         );
         $validators = new Hostingcheck_Scenario_Validators();

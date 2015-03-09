@@ -9,13 +9,13 @@
 
 
 /**
- * Validate a value number.
+ * Validate a byte size.
  *
  * {@inheritDoc}
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Compare
+class Hostingcheck_Validator_ByteSize extends Hostingcheck_Validator_Compare
 {
     /**
      * Messages when the validator fails.
@@ -23,20 +23,20 @@ class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Compare
      * @var array
      */
     protected $messages = array(
-        'equal' => 'Version is not equal to {value}.',
-        'min' => 'Version is to low, should be at least {min}.',
-        'max' => 'Version is to high, should be at most {max}.',
+        'equal' => 'Byte size is not equal to {value}.',
+        'min' => 'Byte size is to low, should be at least {min}.',
+        'max' => 'Byte size is to high, should be at most {max}.',
     );
 
 
     /**
      * Get the equal argument.
      *
-     * @return Hostingcheck_Value_Version
+     * @return Hostingcheck_Value_Byte
      */
     protected function getArgumentEqual()
     {
-        return new Hostingcheck_Value_Version(
+        return new Hostingcheck_Value_Byte(
             $this->arguments['equal']
         );
     }
@@ -44,11 +44,11 @@ class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Compare
     /**
      * Get the minimum argument.
      *
-     * @return Hostingcheck_Value_Version
+     * @return Hostingcheck_Value_Byte
      */
     protected function getArgumentMinimum()
     {
-        return new Hostingcheck_Value_Version(
+        return new Hostingcheck_Value_Byte(
             $this->arguments['min']
         );
     }
@@ -56,11 +56,11 @@ class Hostingcheck_Validate_Version extends Hostingcheck_Validate_Compare
     /**
      * Get the minimum argument.
      *
-     * @return Hostingcheck_Value_Version
+     * @return Hostingcheck_Value_Byte
      */
     protected function getArgumentMaximum()
     {
-        return new Hostingcheck_Value_Version(
+        return new Hostingcheck_Value_Byte(
             $this->arguments['max']
         );
     }

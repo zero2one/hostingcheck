@@ -9,21 +9,21 @@
 
 
 /**
- * Tests for Hostingcheck_Validate_Version.
+ * Tests for Hostingcheck_Validator_Version.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Validate_Version_TestCase extends PHPUnit_Framework_TestCase
+class Hostingcheck_Validator_Version_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Test the validate() method.
+     * Test the validator() method.
      *
      * @dataProvider validateProvider
      */
     public function testValidate($version, $arguments, $resultType, $messages)
     {
         $value = new Hostingcheck_Value_Version($version);
-        $validator = new Hostingcheck_Validate_Version($arguments);
+        $validator = new Hostingcheck_Validator_Version($arguments);
         $result = $validator->validate($value);
         $this->assertInstanceOf($resultType, $result);
 

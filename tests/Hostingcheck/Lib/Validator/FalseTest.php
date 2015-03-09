@@ -9,18 +9,18 @@
 
 
 /**
- * Tests for Hostingcheck_Validate_False.
+ * Tests for Hostingcheck_Validator_False.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Validate_False_TestCase extends PHPUnit_Framework_TestCase
+class Hostingcheck_Validator_False_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Test the validate() method.
+     * Test the validator() method.
      */
     public function testValidateFailure()
     {
-        $validator = new Hostingcheck_Validate_False();
+        $validator = new Hostingcheck_Validator_False();
 
         $value = new Hostingcheck_Value_Boolean(true);
         $result = $validator->validate($value);
@@ -30,11 +30,11 @@ class Hostingcheck_Validate_False_TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the validate() method.
+     * Test the validator() method.
      */
     public function testValidateSuccess()
     {
-        $validator = new Hostingcheck_Validate_False();
+        $validator = new Hostingcheck_Validator_False();
 
         $value = new Hostingcheck_Value_Boolean(false);
         $result = $validator->validate($value);

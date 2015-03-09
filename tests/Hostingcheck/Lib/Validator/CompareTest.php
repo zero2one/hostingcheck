@@ -9,21 +9,21 @@
 
 
 /**
- * Tests for Hostingcheck_Validate_Compare.
+ * Tests for Hostingcheck_Validator_Compare.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Validate_Compare_TestCase extends PHPUnit_Framework_TestCase
+class Hostingcheck_Validator_Compare_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Test the validate() method.
+     * Test the validator() method.
      *
      * @dataProvider validateProvider
      */
     public function testValidate($value, $arguments, $resultType, $messages)
     {
         $value = new Hostingcheck_Value_Text($value);
-        $validator = new Hostingcheck_Validate_Compare($arguments);
+        $validator = new Hostingcheck_Validator_Compare($arguments);
         $result = $validator->validate($value);
         $this->assertInstanceOf($resultType, $result);
 

@@ -24,7 +24,7 @@ class Hostingcheck_Scenario_Parser_Validators
      *     - validators : An optional array of validator configurations.
      *     - required : Optional boolean if the info object should not return
      *                  an optional value. By default false.
-     *                  If set to true, a Hostingcheck_Validate_NonEmpty will
+     *                  If set to true, a Hostingcheck_Validator_NonEmpty will
      *                  be added to the validators config.
      *
      * @return Hostingcheck_Scenario_Validators
@@ -43,7 +43,7 @@ class Hostingcheck_Scenario_Parser_Validators
 
         // Convert the config array into validator objects.
         foreach ($validatorsConfig as $validatorConfig) {
-            $validator = $this->validate($validatorConfig);
+            $validator = $this->validator($validatorConfig);
             $validators->add($validator);
         }
 
@@ -79,14 +79,14 @@ class Hostingcheck_Scenario_Parser_Validators
      * Parse a validator out of the given validator config array.
      *
      * @param array $config
-     *     The validate array.
-     *     @see Hostingcheck_Scenario_Parser_Validate::parse
+     *     The validator array.
+     *     @see Hostingcheck_Scenario_Parser_Validator::parse
      *
-     * @return Hostingcheck_Validate_Interface
+     * @return Hostingcheck_Validator_Interface
      */
-    protected function validate($config)
+    protected function validator($config)
     {
-        $parser = new Hostingcheck_Scenario_Parser_Validate($this->services);
+        $parser = new Hostingcheck_Scenario_Parser_Validator($this->services);
         return $parser->parse($config);
     }
 }

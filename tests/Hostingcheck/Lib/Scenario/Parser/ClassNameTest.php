@@ -27,8 +27,8 @@ class Hostingcheck_Scenario_Parser_ClassName_TestCase extends PHPUnit_Framework_
             $parser->parse('Info', 'Text')
         );
         $this->assertEquals(
-            'Hostingcheck_Validate_NotEmpty',
-            $parser->parse('Validate', 'NotEmpty')
+            'Hostingcheck_Validator_NotEmpty',
+            $parser->parse('Validator', 'NotEmpty')
         );
         $this->assertEquals(
             'Hostingcheck_Value_NotFound',

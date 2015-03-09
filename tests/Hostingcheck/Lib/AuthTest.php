@@ -16,7 +16,7 @@
 class Hostingcheck_Auth_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Test the method to validate if there is a valid session.
+     * Test the method to validator if there is a valid session.
      */
     public function testIsAuthenticated()
     {

@@ -51,10 +51,10 @@ class Hostingcheck_Auth
      * Constructor.
      *
      * @param string $username
-     *      The MD5 hash of the username that will be used to validate the
+     *      The MD5 hash of the username that will be used to validator the
      *      authentication.
      * @param string $password
-     *      The MD5 hash of the password that will be used to validate the
+     *      The MD5 hash of the password that will be used to validator the
      *      authentication.
      * @param array $session
      *      The session data (pass $_SESSION).

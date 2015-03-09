@@ -15,9 +15,9 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Validate_Compare
-    extends Hostingcheck_Validate_Abstract
-    implements Hostingcheck_Validate_Compare_Interface
+class Hostingcheck_Validator_Compare
+    extends Hostingcheck_Validator_Abstract
+    implements Hostingcheck_Validator_Compare_Interface
 {
     /**
      * Arguments to use during the validation.

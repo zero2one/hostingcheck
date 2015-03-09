@@ -41,7 +41,7 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
     public function testRunWithScenarioWithValidValidators()
     {
         $validators = new Hostingcheck_Scenario_Validators();
-        $validators->add(new Hostingcheck_Validate_NotEmpty());
+        $validators->add(new Hostingcheck_Validator_NotEmpty());
 
         $scenario = new Hostingcheck_Scenario_Test(
             'Test info',
@@ -64,7 +64,7 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
     public function testRunWithScenarioWithInvalidValidators()
     {
         $validators = new Hostingcheck_Scenario_Validators();
-        $validators->add(new Hostingcheck_Validate_NotEmpty());
+        $validators->add(new Hostingcheck_Validator_NotEmpty());
 
         $scenario = new Hostingcheck_Scenario_Test(
             'Test info',
@@ -133,7 +133,7 @@ class Hostingcheck_Runner_Test_TestCase extends PHPUnit_Framework_TestCase
         ));
 
         $validators = new Hostingcheck_Scenario_Validators();
-        $validators->add(new Hostingcheck_Validate_NotEmpty());
+        $validators->add(new Hostingcheck_Validator_NotEmpty());
 
         $scenario = new Hostingcheck_Scenario_Test(
             'Test info',

@@ -9,21 +9,21 @@
 
 
 /**
- * Tests for Hostingcheck_Validate_Byte size.
+ * Tests for Hostingcheck_Validator_Byte size.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Validate_ByteSize_TestCase extends PHPUnit_Framework_TestCase
+class Hostingcheck_Validator_ByteSize_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Test the validate() method.
+     * Test the validator() method.
      *
      * @dataProvider validateProvider
      */
     public function testValidate($byte, $arguments, $resultType, $messages)
     {
         $value = new Hostingcheck_Value_Byte($byte);
-        $validator = new Hostingcheck_Validate_ByteSize($arguments);
+        $validator = new Hostingcheck_Validator_ByteSize($arguments);
         $result = $validator->validate($value);
         $this->assertInstanceOf($resultType, $result);
 

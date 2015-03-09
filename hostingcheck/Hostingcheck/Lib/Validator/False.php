@@ -15,7 +15,7 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Validate_False extends Hostingcheck_Validate_Abstract
+class Hostingcheck_Validator_False extends Hostingcheck_Validator_Abstract
 {
     /**
      * {@inheritDoc}

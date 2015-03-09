@@ -16,13 +16,13 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-interface Hostingcheck_Validate_Interface
+interface Hostingcheck_Validator_Interface
 {
     /**
      * Constructor.
      *
      * @param array $arguments
-     *      The optional arguments needed to validate.
+     *      The optional arguments needed to validator.
      */
     public function __construct($arguments = array());
 
@@ -30,7 +30,7 @@ interface Hostingcheck_Validate_Interface
      * Validate a given value.
      *
      * @param Hostingcheck_Value_Interface $value
-     *      The value to validate.
+     *      The value to validator.
      *
      * @return Hostingcheck_Result_Interface
      */

@@ -74,7 +74,7 @@ $info[] = array(
 
 
 /**
- * Example how to collect and validate information about the server hardware.
+ * Example how to collect and validator information about the server hardware.
  */
 $server[] = array(
     'title' => 'Operating System',
@@ -114,7 +114,7 @@ $server[] = array(
 
 
 /**
- * Example how to collect and validate Apache configuration.
+ * Example how to collect and validator Apache configuration.
  */
 $web[] = array(
     'title' => 'Apache version',
@@ -124,7 +124,7 @@ $web[] = array(
 
 
 /**
- * Example how to collect and validate PHP configuration.
+ * Example how to collect and validator PHP configuration.
  */
 $php[] = array(
     'title' => 'PHP Version',
@@ -197,7 +197,7 @@ $php[] = array(
 
 
 /**
- * Example how to collect and validate information about the Database(s).
+ * Example how to collect and validator information about the Database(s).
  */
 $db[] = array(
     'title' => 'MySQL service available',
