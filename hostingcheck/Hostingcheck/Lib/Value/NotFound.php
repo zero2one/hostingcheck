@@ -20,9 +20,13 @@ class Hostingcheck_Value_NotFound extends Hostingcheck_Value_Abstract
      */
     public function __toString()
     {
-        $value = $this->getValue();
-        return (empty($value))
-            ? 'Not Found'
-            : (string) $this->getValue();
+        $string = 'Not Found';
+
+        $value = (string) $this->getValue();
+        if (!empty($value)) {
+            $string = $value;
+        }
+
+        return $string;
     }
 }

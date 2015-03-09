@@ -20,9 +20,13 @@ class Hostingcheck_Value_NotSupported extends Hostingcheck_Value_Abstract
      */
     public function __toString()
     {
-        $value = $this->getValue();
-        return (empty($value))
-            ? 'Not Supported'
-            : (string) $this->getValue();
+        $string = 'Not Supported';
+
+        $value = (string) $this->getValue();
+        if (!empty($value)) {
+            $string = $value;
+        }
+
+        return $string;
     }
 }

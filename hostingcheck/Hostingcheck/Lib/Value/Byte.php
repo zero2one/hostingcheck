@@ -93,6 +93,7 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Comparable
      *      - M : MegaBytes
      *      - G : GigaBytes
      *      - T : TeraBytes
+     *      - P : PetaBytes
      *      - AUTO : Auto round to nearest value smaller then 1024.
      * @param int precision
      *      Number of digits in the resulting formatted value.
@@ -200,17 +201,32 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Comparable
      */
     protected function formatAuto($value, $precision)
     {
+        $format = $this->getAutoFormat($value);
+        return $this->format($value, $format, $precision);
+    }
+
+    /**
+     * Get format that results in the smallest number and the largest format.
+     *
+     * @param int $value
+     *     The value in bytes
+     *
+     * @return string
+     *     The format to use.
+     */
+    protected function getAutoFormat($value)
+    {
         $mapping = $this->getMapping();
         $format = 'B';
 
         foreach ($mapping as $format => $divider) {
             // Check if the value is still greather or equal as the divider.
             if ($value < ($divider * $this->kilo)) {
-                break;
+                return $format;
             }
         }
 
-        return $this->format($value, $format, $precision);
+        return $format;
     }
 
     /**
