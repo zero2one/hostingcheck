@@ -9,34 +9,32 @@
 
 
 /**
- * Retrieve the version number of a given extension.
+ * Retrieve Disk size information.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Check_PHP_Info_Extension extends Hostingcheck_Info_Abstract
+abstract class Check_Server_Info_DiskSize_Abstract
+    extends Hostingcheck_Info_Abstract
 {
     /**
-     * The name of the extension.
+     * File path the information should be collected about.
      *
      * @var string
      */
-    protected $name;
-
+    protected $path;
 
     /**
      * {@inheritDoc}
      *
      * Supported arguments:
-     * - name : the name of the extension.
+     * - path : The file path from where the disk size should be calculated.
+     *          By default the path where this script is located will be used.
      */
     public function __construct($arguments = array())
     {
-        if (empty($arguments['name'])) {
-            $this->value = new Hostingcheck_Value_NotSupported();
-            return;
-        }
-
-        $this->name = $arguments['name'];
+        $this->path = (isset($arguments['path']))
+            ? $arguments['path']
+            : dirname(__FILE__);
     }
 
     /**
@@ -44,11 +42,18 @@ class Check_PHP_Info_Extension extends Hostingcheck_Info_Abstract
      */
     protected function collectValue()
     {
-        if (!extension_loaded($this->name)) {
+        if (!is_dir($this->path)) {
             $this->value = new Hostingcheck_Value_NotSupported();
             return;
         }
 
-        $this->value = new Hostingcheck_Value_Text('Enabled');
+        $this->value = $this->getSize();
     }
+
+    /**
+     * Method to get the actual disk size.
+     *
+     * @return Hostingcheck_Value_Byte
+     */
+    abstract protected function getSize();
 }

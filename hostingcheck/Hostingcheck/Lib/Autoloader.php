@@ -15,7 +15,18 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Autoloader {
+class Hostingcheck_Autoloader
+{
+    /**
+     * Mapping between the class "namespace" and the method to create the full
+     * path to the file that contains the class.
+     */
+    protected $namespaces = array(
+        'Hostingcheck' => 'hostingcheckFile',
+        'Check'        => 'checkFile'
+    );
+
+
     /**
      * Constructor registers itself to the autoload registry.
      */
@@ -32,16 +43,14 @@ class Hostingcheck_Autoloader {
     private function loader($className) {
         $file = $this->filePath($className);
 
-        if (empty($file)) {
-            return;
+        if (!empty($file)) {
+            $filePath = HOSTINGCHECK_BASEPATH . $file;
+
+            // Validate if the file exists.
+            $this->fileExists($filePath, $className);
+
+            require_once $filePath;
         }
-
-        $filePath = HOSTINGCHECK_BASEPATH . $file;
-
-        // Validate if the file exists.
-        $this->fileExists($filePath, $className);
-
-        require_once $filePath;
     }
 
     /**
@@ -55,18 +64,14 @@ class Hostingcheck_Autoloader {
      *     Only if the class is supported by this auto loader.
      */
     protected function filePath($className) {
-        $path = explode('_', $className);
         $file = null;
 
-        switch ($path[0]) {
-            case 'Hostingcheck':
-                $file = $this->hostingcheckFile($path);
-                break;
+        $path = explode('_', $className);
+        $namespace = $path[0];
 
-            case 'Check':
-                $file = $this->checkFile($path);
-                break;
-
+        if (isset($this->namespaces[$namespace])) {
+            $fileMethod = $this->namespaces[$namespace];
+            $file = $this->{$fileMethod}($path);
         }
 
         return $file;

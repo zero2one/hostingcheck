@@ -39,7 +39,7 @@ class Hostingcheck_Scenario_Parser_Info_TestCase extends PHPUnit_Framework_TestC
     public function testWithFormat()
     {
         $config = array(
-            'info' => 'Server_Disk',
+            'info' => 'Server_DiskSize',
             'args' => array(
                 'name' => 'total',
                 'format' => 'Byte',
@@ -49,7 +49,7 @@ class Hostingcheck_Scenario_Parser_Info_TestCase extends PHPUnit_Framework_TestC
         $parser = new Hostingcheck_Scenario_Parser_Info($this->getServices());
         $info = $parser->parse($config);
 
-        $this->assertInstanceOf('Check_Server_Info_Disk', $info);
+        $this->assertInstanceOf('Check_Server_Info_DiskSize', $info);
         $this->assertInstanceOf('Hostingcheck_Value_Byte', $info->getValue());
     }
 

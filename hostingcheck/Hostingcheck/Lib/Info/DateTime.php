@@ -16,6 +16,13 @@
 class Hostingcheck_Info_DateTime extends Hostingcheck_Info_Abstract
 {
     /**
+     * The date string to create the date from.
+     *
+     * @pvar string
+     */
+    protected $dateString;
+
+    /**
      * {@inheritDoc}
      *
      * Supported arguments:
@@ -27,14 +34,17 @@ class Hostingcheck_Info_DateTime extends Hostingcheck_Info_Abstract
      */
     public function __construct($arguments = array())
     {
-        // Create the value.
-        if (empty($arguments['date'])) {
-            $date = new DateTime();
-        }
-        else {
-            $date = new DateTime($arguments['date']);
-        }
+        $this->dateString = (empty($arguments['date']))
+            ? 'now'
+            : $arguments['date'];
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    protected function collectValue()
+    {
+        $date = new DateTime($this->dateString);
         $this->value = new Hostingcheck_Value_DateTime($date);
     }
 }

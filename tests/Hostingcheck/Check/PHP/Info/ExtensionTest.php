@@ -20,13 +20,12 @@ class Check_PHP_Info_Extension_TestCase extends PHPUnit_Framework_TestCase
      */
     public function testGetValue()
     {
-        $jsonVersion = phpversion('json');
         $info = new Check_PHP_Info_Extension(array('name' => 'json'));
         $this->assertInstanceOf(
-            'Hostingcheck_Value_Version',
+            'Hostingcheck_Value_Text',
             $info->getValue()
         );
-        $this->assertEquals($jsonVersion, $info->getValue()->getValue());
+        $this->assertEquals('Enabled', $info->getValue()->getValue());
 
         $name = 'foo_bar_fake_extension';
         $value = new Check_PHP_Info_Extension(array('name' => $name));

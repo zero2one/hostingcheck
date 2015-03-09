@@ -9,24 +9,20 @@
 
 
 /**
- * Value that indicates that the requested value is not found.
+ * Retrieve the free disk space.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Value_NotFound extends Hostingcheck_Value_Abstract
+class Check_Server_Info_DiskSizeFree extends Check_Server_Info_DiskSize_Abstract
 {
     /**
-     * {@inheritDoc}
+     * Get the free disk space.
+     *
+     * @return Hostingcheck_Value_Byte
      */
-    public function __toString()
+    protected function getSize()
     {
-        $string = 'Not Found';
-
-        $value = (string) $this->getValue();
-        if (!empty($value)) {
-            $string = $value;
-        }
-
-        return $string;
+        $size = disk_free_space($this->path);
+        return new Hostingcheck_Value_Byte($size);
     }
 }

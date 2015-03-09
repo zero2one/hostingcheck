@@ -40,6 +40,5 @@ abstract class Hostingcheck_Info_Abstract
      *
      * Will only be called the first time the getValue() method is called.
      */
-    protected function collectValue()
-    {}
+    abstract protected function collectValue();
 }

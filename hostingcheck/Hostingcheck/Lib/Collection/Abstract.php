@@ -68,7 +68,7 @@ class Hostingcheck_Collection_Abstract implements Countable, SeekableIterator
      * {@inheritdoc}
      */
     public function next() {
-        $this->position++;
+        $this->position = $this->position + 1;
     }
 
     /**

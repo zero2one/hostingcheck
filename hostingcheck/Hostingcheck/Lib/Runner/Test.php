@@ -79,13 +79,12 @@ class Hostingcheck_Runner_Test
 
         $validators = $this->scenario->validators();
         foreach ($validators as $validator) {
-            $result = $validator->validate(
-                $this->scenario->info()->getValue()
-            );
+            $value = $this->scenario->info()->getValue();
+            $result = $validator->validate($value);
 
             // Stop validating if there was an error.
             if ($result instanceof Hostingcheck_Result_Failure) {
-                break;
+                return $result;
             }
         }
 

@@ -74,7 +74,7 @@ abstract class Hostingcheck_Service_Abstract
      */
     protected function setErrorFromException(Exception $exception)
     {
-        $this->error = $exception->getMessage();
+        $this->setError($exception->getMessage());
     }
 
     /**

@@ -26,6 +26,19 @@ class Hostingcheck_Value_Boolean extends Hostingcheck_Value_Abstract
     const ON_OFF  = 'on_off';
 
     /**
+     * Supported parsers to convert incoming value to boolean.
+     *
+     * @var array
+     */
+    protected $parsers = array(
+        'boolean' => 'parseBoolean',
+        'integer' => 'parseNumeric',
+        'double'  => 'parseNumeric',
+        'null'    => 'parseBoolean',
+        'string'  => 'parseString',
+    );
+
+    /**
      * Format used to represent the date as a string.
      *
      * @var string
@@ -33,15 +46,15 @@ class Hostingcheck_Value_Boolean extends Hostingcheck_Value_Abstract
     protected $format = self::BOOLEAN;
 
     /**
-     * Supported formats.
+     * Supported output formats.
      *
      * @var array
      */
     protected $formats = array(
-        self::BOOLEAN,
-        self::INTEGER,
-        self::YES_NO,
-        self::ON_OFF,
+        self::BOOLEAN => 'formatBoolean',
+        self::INTEGER => 'formatInteger',
+        self::YES_NO  => 'formatYesNo',
+        self::ON_OFF  => 'formatOnOff',
     );
 
     /**
@@ -114,7 +127,9 @@ class Hostingcheck_Value_Boolean extends Hostingcheck_Value_Abstract
      */
     protected function checkFormat($format)
     {
-        if (!in_array($format, $this->formats)) {
+        $formats = array_keys($this->formats);
+
+        if (!in_array($format, $formats)) {
             throw new Exception(
                 sprintf(
                     'Format %s is not supported.',
@@ -136,25 +151,8 @@ class Hostingcheck_Value_Boolean extends Hostingcheck_Value_Abstract
      */
     protected function format($value, $format)
     {
-        switch($format) {
-            case self::INTEGER:
-                $string = $this->formatInteger($value);
-                break;
-
-            case self::ON_OFF:
-                $string = $this->formatOnOff($value);
-                break;
-
-            case self::YES_NO:
-                $string = $this->formatYesNo($value);
-                break;
-
-            case self::BOOLEAN:
-            default:
-                $string = $this->formatBoolean($value);
-                break;
-        }
-
+        $formatter = $this->formats[$format];
+        $string = $this->{$formatter}($value);
         return $string;
     }
 
@@ -232,30 +230,27 @@ class Hostingcheck_Value_Boolean extends Hostingcheck_Value_Abstract
      */
     protected function parse($value)
     {
-        switch (gettype($value)) {
-            case 'boolean':
-                $parsed = $value;
-                break;
-
-            case 'integer':
-            case 'double':
-                $parsed = $this->parseNumeric($value);
-                break;
-
-            case 'NULL':
-                $parsed = false;
-                break;
-
-            case 'string':
-                $parsed = $this->parseString($value);
-                break;
-
-            default:
-                $parsed = (bool) $value;
-                break;
+        $type = strtolower(gettype($value));
+        if (!isset($this->parsers[$type])) {
+            $type = 'boolean';
         }
 
+        $parser = $this->parsers[$type];
+        $parsed = $this->{$parser}($value);
+
         return $parsed;
+    }
+
+    /**
+     * Parse a boolean value.
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    protected function parseBoolean($value)
+    {
+        return (bool) $value;
     }
 
     /**

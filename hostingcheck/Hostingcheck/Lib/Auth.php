@@ -91,15 +91,49 @@ class Hostingcheck_Auth
         $username = $this->session['username'];
         $password = $this->session['password'];
 
-        // Validate stored data.
+        if (!$this->isUsernameValid($username)) {
+            return false;
+        }
+        if (!$this->isPasswordValid($password)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate the username.
+     *
+     * @param string $username
+     *     The username to validate.
+     *
+     * @return bool
+     *     Is valid.
+     */
+    protected function isUsernameValid($username)
+    {
         if (empty($username) || $username !== $this->username) {
             return false;
         }
+
+        return true;
+    }
+
+    /**
+     * Validate the password.
+     *
+     * @param string $password
+     *     The password to validate.
+     *
+     * @return bool
+     *     Is valid.
+     */
+    protected function isPasswordValid($password)
+    {
         if (empty($password) || $password !== $this->password) {
             return false;
         }
 
-        // All ok.
         return true;
     }
     

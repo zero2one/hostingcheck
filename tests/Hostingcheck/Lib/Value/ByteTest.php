@@ -278,6 +278,7 @@ class Hostingcheck_Value_Byte_TestCase extends PHPUnit_Framework_TestCase
             array(10  *1024*1024*1024*1024*1024,  '10P'),
             array('2.4G',                        '2.4G'),
             array('4096M',                         '4G'),
+            array('2400P',                      '2400P'),
         );
     }
 }

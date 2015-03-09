@@ -16,6 +16,13 @@
 class Hostingcheck_Info_Text extends Hostingcheck_Info_Abstract
 {
     /**
+     * The text to create the value from.
+     *
+     * @var string
+     */
+    protected $textString;
+
+    /**
      * {@inheritDoc}
      *
      * Supported arguments:
@@ -23,12 +30,16 @@ class Hostingcheck_Info_Text extends Hostingcheck_Info_Abstract
      */
     public function __construct($arguments = array())
     {
-        // Create the value.
         if (!empty($arguments['text'])) {
-            $this->value = new Hostingcheck_Value_Text($arguments['text']);
+            $this->textString = $arguments['text'];
         }
-        else {
-            $this->value = new Hostingcheck_Value_Text();
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function collectValue()
+    {
+        $this->value = new Hostingcheck_Value_Text($this->textString);
     }
 }

@@ -31,11 +31,9 @@ class Hostingcheck_Services_Parser extends Hostingcheck_Collection_Keyed
         foreach ($config as $name => $serviceConfig) {
             $service = $this->parseService($serviceConfig);
 
-            if (!$service) {
-                continue;
+            if ($service) {
+                $collection->add($name, $service);
             }
-
-            $collection->add($name, $service);
         }
 
         return $collection;

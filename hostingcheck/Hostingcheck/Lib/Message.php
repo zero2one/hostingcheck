@@ -67,9 +67,14 @@ class Hostingcheck_Message
      */
     public function message()
     {
-        return (empty($this->parameters))
-            ? $this->message
-            : $this->messageFilled();
+        if (empty($this->parameters)) {
+            $message = $this->message;
+        }
+        else {
+            $message = $this->messageFilled();
+        }
+
+        return $message;
     }
 
     /**

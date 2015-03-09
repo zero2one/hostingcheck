@@ -86,17 +86,15 @@ $server[] = array(
 );
 $server[] = array(
     'title' => 'Total disk space',
-    'info' => 'Server_Disk',
+    'info' => 'Server_DiskSize',
 );
 $server[] = array(
     'title' => 'Used disk space',
-    'info' => 'Server_Disk',
-    'args' => array('name' => 'used'),
+    'info' => 'Server_DiskSizeUsed',
 );
 $server[] = array(
     'title' => 'Free disk space',
-    'info' => 'Server_Disk',
-    'args' => array('name' => 'free'),
+    'info' => 'Server_DiskSizeFree',
     'validators' => array(
         array(
             'validator' => 'ByteSize',
@@ -107,8 +105,8 @@ $server[] = array(
 );
 $server[] = array(
     'title' => 'Free disk space of root disk (/)',
-    'info' => 'Server_Disk',
-    'args' => array('name' => 'free', 'path' => '/'),
+    'info' => 'Server_DiskSizeFree',
+    'args' => array('path' => '/'),
 );
 
 

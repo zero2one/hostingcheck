@@ -93,6 +93,7 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Comparable
      *      - M : MegaBytes
      *      - G : GigaBytes
      *      - T : TeraBytes
+     *      - P : PetaBytes
      *      - AUTO : Auto round to nearest value smaller then 1024.
      * @param int precision
      *      Number of digits in the resulting formatted value.
@@ -200,17 +201,32 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Comparable
      */
     protected function formatAuto($value, $precision)
     {
+        $format = $this->getAutoFormat($value);
+        return $this->format($value, $format, $precision);
+    }
+
+    /**
+     * Get format that results in the smallest number and the largest format.
+     *
+     * @param int $value
+     *     The value in bytes
+     *
+     * @return string
+     *     The format to use.
+     */
+    protected function getAutoFormat($value)
+    {
         $mapping = $this->getMapping();
         $format = 'B';
 
         foreach ($mapping as $format => $divider) {
             // Check if the value is still greather or equal as the divider.
             if ($value < ($divider * $this->kilo)) {
-                break;
+                return $format;
             }
         }
 
-        return $this->format($value, $format, $precision);
+        return $format;
     }
 
     /**
@@ -253,7 +269,31 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Comparable
     /**
      * Split the given value in the value and the format.
      *
-     * @param $value
+     * @param string $value
+     *     The value to split.
+     *
+     * @return array
+     *      The splitted string containing:
+     *      - value
+     *      - format
+     */
+    protected function extract($value)
+    {
+        $value = trim(strtoupper($value));
+        $raw = $this->extractRaw($value);
+
+        $clean = array(
+            'value' => $this->cleanValue($raw['value']),
+            'format' => $this->cleanFormat($raw['format']),
+        );
+
+        return $clean;
+    }
+
+    /**
+     * Split the given string in a raw value and format part.
+     *
+     * @param string $value
      *     The value to split.
      *
      * @return array
@@ -264,11 +304,8 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Comparable
      * @throws Exception
      *     If the given value is not valid.
      */
-    protected function extract($value)
+    protected function extractRaw($value)
     {
-        // Prepare value.
-        $value = trim(strtoupper($value));
-
         // Extract info.
         preg_match_all($this->pattern, $value, $found);
 
@@ -282,11 +319,11 @@ class Hostingcheck_Value_Byte extends Hostingcheck_Value_Comparable
             );
         }
 
-        // Return the result.
-        return array(
-            'value' => $this->cleanValue($found[1][0]),
-            'format' => $this->cleanFormat($found[2][0]),
+        $result = array(
+            'value' => $found[1][0],
+            'format' => $found[2][0]
         );
+        return $result;
     }
 
     /**

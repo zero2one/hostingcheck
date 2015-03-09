@@ -27,6 +27,18 @@ class Hostingcheck_Results_Tests extends Hostingcheck_Collection_Abstract
     );
 
     /**
+     * Mapping between the Hostingcheck_Result class name and the count keys.
+     *
+     * @var array
+     */
+    protected $mapping = array(
+        'Hostingcheck_Result_Info' => 'info',
+        'Hostingcheck_Result_Success' => 'success',
+        'Hostingcheck_Result_Failure' => 'failure',
+    );
+
+
+    /**
      * Add a test result to the tests collection.
      *
      * @param Hostingcheck_Results_Test
@@ -107,20 +119,8 @@ class Hostingcheck_Results_Tests extends Hostingcheck_Collection_Abstract
     protected function updateCount(Hostingcheck_Results_Test $result)
     {
         $type = get_class($result->result());
-
-        switch ($type) {
-            case 'Hostingcheck_Result_Info':
-                $this->count['info']++;
-                break;
-
-            case 'Hostingcheck_Result_Success':
-                $this->count['success']++;
-                break;
-
-            case 'Hostingcheck_Result_Failure':
-                $this->count['failure']++;
-                break;
-        }
+        $key = $this->mapping[$type];
+        $this->count[$key] = $this->count[$key] + 1;
     }
 
     /**
