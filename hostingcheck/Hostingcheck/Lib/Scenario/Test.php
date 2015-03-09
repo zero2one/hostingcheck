@@ -30,7 +30,7 @@ class Hostingcheck_Scenario_Test
     protected $info;
 
     /**
-     * The optional validators to validate the info.
+     * The optional validators to validator the info.
      *
      * @var Hostingcheck_Scenario_Validators
      */
@@ -92,7 +92,7 @@ class Hostingcheck_Scenario_Test
     }
 
     /**
-     * Get the validator to validate the retrieved info.
+     * Get the validator to validator the retrieved info.
      *
      * @return Hostingcheck_Scenario_Validators
      */

@@ -7,7 +7,7 @@
 [![SensioLabs Insight](https://img.shields.io/sensiolabs/i/f5be5d8f-9c61-468b-be0d-05d65c5de390.svg?style=flat-square)](https://insight.sensiolabs.com/projects/f5be5d8f-9c61-468b-be0d-05d65c5de390)
 
 
-Hostingcheck is a standalone project to validate the hosting requirements without
+Hostingcheck is a standalone project to validator the hosting requirements without
 the need to install your actual project first.
 
 

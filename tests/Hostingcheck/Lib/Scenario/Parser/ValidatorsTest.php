@@ -52,7 +52,7 @@ class Hostingcheck_Scenario_Parser_Validators_TestCase extends PHPUnit_Framework
         $validators = $parser->parse($config);
         $this->assertCount(1, $validators);
         $this->assertInstanceOf(
-            'Hostingcheck_Validate_NotEmpty',
+            'Hostingcheck_Validator_NotEmpty',
             $validators->current()
         );
     }
@@ -72,7 +72,7 @@ class Hostingcheck_Scenario_Parser_Validators_TestCase extends PHPUnit_Framework
         $validators = $parser->parse($config);
         $this->assertCount(1, $validators);
         $this->assertInstanceOf(
-            'Hostingcheck_Validate_NotEmpty',
+            'Hostingcheck_Validator_NotEmpty',
             $validators->current()
         );
     }
@@ -97,7 +97,7 @@ class Hostingcheck_Scenario_Parser_Validators_TestCase extends PHPUnit_Framework
         $validators = $parser->parse($config);
         $this->assertCount(1, $validators);
         $this->assertInstanceOf(
-            'Hostingcheck_Validate_NotEmpty',
+            'Hostingcheck_Validator_NotEmpty',
             $validators->current()
         );
     }

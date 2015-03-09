@@ -18,9 +18,9 @@ class Hostingcheck_Scenario_Validators extends Hostingcheck_Collection_Abstract
     /**
      * Add a validator to the array.
      *
-     * @param Hostingcheck_Validate_Interface $validate
+     * @param Hostingcheck_Validator_Interface $validate
      */
-    public function add(Hostingcheck_Validate_Interface $validate)
+    public function add(Hostingcheck_Validator_Interface $validate)
     {
         $this->collection[] = $validate;
     }
@@ -28,7 +28,7 @@ class Hostingcheck_Scenario_Validators extends Hostingcheck_Collection_Abstract
     /**
      * {@inheritdoc}
      *
-     * @return Hostingcheck_Validate_Interface
+     * @return Hostingcheck_Validator_Interface
      */
     public function current() {
         return parent::current();
@@ -40,7 +40,7 @@ class Hostingcheck_Scenario_Validators extends Hostingcheck_Collection_Abstract
      * @param int $position
      *     The position in the collection.
      *
-     * @return Hostingcheck_Validate_Interface|null
+     * @return Hostingcheck_Validator_Interface|null
      *     Returns null if no validator is found in the collection.
      */
     public function seek($position)

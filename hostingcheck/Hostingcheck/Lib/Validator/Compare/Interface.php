@@ -9,14 +9,14 @@
 
 
 /**
- * Interface for objects that can validate one value against another.
+ * Interface for objects that can validator one value against another.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-interface Hostingcheck_Validate_Compare_Interface
+interface Hostingcheck_Validator_Compare_Interface
 {
     /**
-     * Helper to validate if the given value is the same as the expected value.
+     * Helper to validator if the given value is the same as the expected value.
      *
      * @param Hostingcheck_Value_Interface $value
      *

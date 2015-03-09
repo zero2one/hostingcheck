@@ -120,7 +120,7 @@ class Hostingcheck_Scenario_Parser_Test_TestCase extends PHPUnit_Framework_TestC
         $this->assertInstanceOf('Hostingcheck_Info_Text', $test->info());
         $this->assertCount(1, $test->validators());
         $this->assertInstanceOf(
-            'Hostingcheck_Validate_Error',
+            'Hostingcheck_Validator_Error',
             $test->validators()->current()
         );
         $this->assertEquals(
@@ -146,7 +146,7 @@ class Hostingcheck_Scenario_Parser_Test_TestCase extends PHPUnit_Framework_TestC
         $this->assertInstanceOf('Hostingcheck_Info_Text', $test->info());
         $this->assertCount(1, $test->validators());
         $this->assertInstanceOf(
-            'Hostingcheck_Validate_Error',
+            'Hostingcheck_Validator_Error',
             $test->validators()->current()
         );
         $this->assertEquals(
@@ -174,7 +174,7 @@ class Hostingcheck_Scenario_Parser_Test_TestCase extends PHPUnit_Framework_TestC
 
         $this->assertCount(1, $test->validators());
         $this->assertInstanceOf(
-            'Hostingcheck_Validate_Error',
+            'Hostingcheck_Validator_Error',
             $test->validators()->current()
         );
         $this->assertEquals(
@@ -201,7 +201,7 @@ class Hostingcheck_Scenario_Parser_Test_TestCase extends PHPUnit_Framework_TestC
 
         $this->assertCount(1, $test->validators());
         $this->assertInstanceOf(
-            'Hostingcheck_Validate_Error',
+            'Hostingcheck_Validator_Error',
             $test->validators()->current()
         );
         $this->assertEquals(

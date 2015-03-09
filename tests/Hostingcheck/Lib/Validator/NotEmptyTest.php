@@ -9,18 +9,18 @@
 
 
 /**
- * Tests for Hostingcheck_Validate_NotEmpty.
+ * Tests for Hostingcheck_Validator_NotEmpty.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Validate_NotEmpty_TestCase extends PHPUnit_Framework_TestCase
+class Hostingcheck_Validator_NotEmpty_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Test the validate() method.
+     * Test the validator() method.
      */
     public function testValidate()
     {
-        $validator = new Hostingcheck_Validate_NotEmpty();
+        $validator = new Hostingcheck_Validator_NotEmpty();
 
         $value = new Hostingcheck_Value_NotSupported();
         $result = $validator->validate($value);

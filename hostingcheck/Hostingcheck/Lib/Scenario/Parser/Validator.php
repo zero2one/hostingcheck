@@ -13,19 +13,19 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Scenario_Parser_Validate
+class Hostingcheck_Scenario_Parser_Validator
     extends Hostingcheck_Scenario_Parser_Abstract
 {
     /**
-     * Parse validate object out of configuration parameters.
+     * Parse validator object out of configuration parameters.
      *
      * @param array $config
-     *     A validate config array.
+     *     A validator config array.
      *     The array should contain:
      *     - validator : the className to use as validator.
      *     - args      : the arguments to use in the validator.
      *
-     * @return Hostingcheck_Validate_Interface
+     * @return Hostingcheck_Validator_Interface
      */
     public function parse($config)
     {
@@ -36,8 +36,8 @@ class Hostingcheck_Scenario_Parser_Validate
             $arguments = $config['args'];
         }
 
-        // Create the validate object.
-        $fullName = $this->getClassName('Validate', $className);
+        // Create the validator object.
+        $fullName = $this->getClassName('Validator', $className);
         return new $fullName($arguments);
     }
 }

@@ -9,33 +9,31 @@
 
 
 /**
- * This validator will always return a failure.
- *
- * Can be used to add a forced error to the result set.
+ * Abstract implementation of the Hostingcheck_Validator_Interface
  *
  * {@inheritDoc}
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Validate_Error extends Hostingcheck_Validate_Abstract
+abstract class Hostingcheck_Validator_Abstract
+    implements Hostingcheck_Validator_Interface
 {
     /**
      * Arguments to use during the validation.
      *
      * @var array
      */
-    protected $arguments = array(
-        'message' => 'An Error occurred.',
-    );
+    protected $arguments = array();
 
     /**
      * {@inheritDoc}
      */
-    public function validate(hostingcheck_Value_Interface $value)
+    public function __construct($arguments = array())
     {
-        $messages = array(
-            new Hostingcheck_Message($this->arguments['message'])
-        );
-        return new Hostingcheck_Result_Failure($messages);
+        foreach ($arguments as $key => $argument) {
+            if (array_key_exists($key, $this->arguments)) {
+                $this->arguments[$key] = $argument;
+            }
+        }
     }
 }

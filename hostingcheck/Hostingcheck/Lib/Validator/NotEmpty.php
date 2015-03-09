@@ -15,7 +15,7 @@
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
-class Hostingcheck_Validate_NotEmpty extends Hostingcheck_Validate_Abstract
+class Hostingcheck_Validator_NotEmpty extends Hostingcheck_Validator_Abstract
 {
     /**
      * {@inheritDoc}
@@ -37,7 +37,7 @@ class Hostingcheck_Validate_NotEmpty extends Hostingcheck_Validate_Abstract
      * Check if the value is not a NotSupported value.
      *
      * @param Hostingcheck_Value_Interface $value
-     *      The value we need to validate.
+     *      The value we need to validator.
      *
      * @return null|string
      *      Message if not supported.
@@ -55,7 +55,7 @@ class Hostingcheck_Validate_NotEmpty extends Hostingcheck_Validate_Abstract
      * Check if the value is not a NotFound value.
      *
      * @param Hostingcheck_Value_Interface $value
-     *      The value we need to validate.
+     *      The value we need to validator.
      *
      * @return null|string
      *      Message if not supported.
@@ -73,7 +73,7 @@ class Hostingcheck_Validate_NotEmpty extends Hostingcheck_Validate_Abstract
      * Check if empty value.
      *
      * @param Hostingcheck_Value_Interface $value
-     *      The value we need to validate.
+     *      The value we need to validator.
      *
      * @return null|string
      *      Message if not supported.

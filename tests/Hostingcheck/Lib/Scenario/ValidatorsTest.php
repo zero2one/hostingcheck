@@ -31,11 +31,11 @@ class Hostingcheck_Scenario_Validators_TestCase extends PHPUnit_Framework_TestCa
     {
         $collection = new Hostingcheck_Scenario_Validators();
 
-        $validate1 = new Hostingcheck_Validate_NotEmpty();
+        $validate1 = new Hostingcheck_Validator_NotEmpty();
         $collection->add($validate1);
-        $validate2 = new Hostingcheck_Validate_ByteSize();
+        $validate2 = new Hostingcheck_Validator_ByteSize();
         $collection->add($validate2);
-        $validate3 = new Hostingcheck_Validate_Version();
+        $validate3 = new Hostingcheck_Validator_Version();
         $collection->add($validate3);
 
         // Countable.

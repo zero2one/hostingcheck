@@ -100,7 +100,7 @@ class Hostingcheck_Scenario_Parser_ClassName
      * Validate of the class name is valid and the class exists.
      *
      * @param string $className
-     *     The full class name to validate.
+     *     The full class name to validator.
      * @param string $type
      *     The class type.
      *     Will be used in the Exception message if class does not exists.
