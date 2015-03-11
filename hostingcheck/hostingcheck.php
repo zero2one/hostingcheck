@@ -1,12 +1,15 @@
 <?php
 /**
- * Hostingcheck_Autoloader
+ * This file is part of Hostingcheck.
  *
- * @category   Hostingcheck
- * @package    Hostingcheck_Autoloader
- * @copyright  Copyright (c) 2012 Serial Graphics (http://serial-graphics.be)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link      https://github.com/zero2one/hostingcheck source repository.
+ * @copyright Copyright (c) 2015 Serial Graphics (http://serial-graphics.be)
+ * @license   http://opensource.org/licenses/MIT
  */
+
 
 // Retrieve the base bath.
 define('HOSTINGCHECK_ROOT', dirname(__FILE__));

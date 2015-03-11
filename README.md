@@ -1,6 +1,7 @@
 # Hostingcheck
 
 [![Author](https://img.shields.io/badge/author-%40sgrame-blue.svg?style=flat-square)](https://twitter.com/sgrame)
+[![License : MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 [![Build Status](https://img.shields.io/travis/zero2one/hostingcheck/master.svg?style=flat-square)](https://travis-ci.org/zero2one/hostingcheck)
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/zero2one/hostingcheck.svg?style=flat-square)](https://scrutinizer-ci.com/g/zero2one/hostingcheck/code-structure)
 [![Quality Score](https://img.shields.io/scrutinizer/g/zero2one/hostingcheck.svg?style=flat-square)](https://scrutinizer-ci.com/g/zero2one/hostingcheck)

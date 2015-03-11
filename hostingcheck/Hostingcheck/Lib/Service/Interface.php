@@ -1,10 +1,13 @@
 <?php
 /**
- * Hostingcheck (https://github.com/zero2one/hostingcheck)
+ * This file is part of Hostingcheck.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
  * @link      https://github.com/zero2one/hostingcheck source repository.
- * @copyright Copyright (c) 2014 Serial Graphics (http://serial-graphics.be)
- * @license   http://opensource.org/licenses/GPL-2.0 GNU Public License
+ * @copyright Copyright (c) 2015 Serial Graphics (http://serial-graphics.be)
+ * @license   http://opensource.org/licenses/MIT
  */
 
 
@@ -19,7 +22,7 @@
  * Each service needs to provide at least one method: isAvailable().
  * This should check if the service is available by:
  * - Trying to connect to it.
- * - Checking if it exists.
+ * - Check if it exists.
  *
  * @author Peter Decuyper <peter@serial-graphics.be>
  */
