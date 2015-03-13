@@ -1,8 +1,6 @@
 <?php
 /**
  * Bootstrap for HostingCheck Unit Tests
- * 
- * @filesource
  */
 
 define(
