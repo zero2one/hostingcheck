@@ -102,7 +102,7 @@ class Hostingcheck_Message
 
         foreach ($this->parameters as $key => $value) {
             $search[] = '#{' . $key . '}#';
-            $replace[] = $value;
+            $replace[] = (string) $value;
         }
 
         return preg_replace($search, $replace, $this->message);
