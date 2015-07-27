@@ -19,6 +19,6 @@ after_script:
   # Scrutinizer-CI.
   # PHP 7-dev does not support xDebug, so phpUnit can not produce a coverage
   # report. We ignore sending the coverage report for PHP 7.
-  - echo "PHP version : $TRAVIS_PHP_VERSION"
+  - echo "PHP $TRAVIS_PHP_VERSION"
   - if [ "$TRAVIS_PHP_VERSION" = "7" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
   - if [ "$TRAVIS_PHP_VERSION" = "7" ]; then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml; fi
